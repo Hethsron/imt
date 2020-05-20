@@ -1,17 +1,20 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
-#include <core/boxes.hpp>
+#include <view/mainview.hpp>
 #include <iostream>
 
 int main(int argc, char* argv[]) {
-    Boxes boxes;
-    std::cout << boxes.getIcon().toStdString() << std::endl;
-    std::cout << boxes.getSplash().toStdString() << std::endl;
-    std::cout << boxes.getStore().toStdString() << std::endl;
     QApplication app(argc, argv);
-    QWidget window;
-    window.resize(320, 240);
-    window.show();
-    window.setWindowTitle(QApplication::translate("toplevel", "Top-level widget"));
-    return app.exec();
+
+    int ret;
+    try {
+        MainView mainView;
+        mainView.show();
+        ret = app.exec();
+    }
+    catch(const std::bad_alloc &) {
+        return EXIT_FAILURE; // exit the application
+    }
+
+    return ret;
 }
