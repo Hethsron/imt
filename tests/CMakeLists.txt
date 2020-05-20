@@ -2,7 +2,8 @@
 ## AUTHOR: Hethsron Jedaël BOUEYA
 ##
 ##                                          LICENSE AGREEMENT
-##                              Copyright (c) 2020, HETHSRON INDUSTRIES
+##                              Copyright (c) 2020, Université de Haute Alsace
+##                            Ecole Nationale Supérieure d'Ingénieurs Sud-Alsace
 ##                                          68200 Mulhouse, France
 ##
 ## Redistribution and use in source and binary form, with or without modification, are in no way permitted.
