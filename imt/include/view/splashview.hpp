@@ -1,0 +1,4 @@
+#ifndef SPLASHVIEW_HPP
+#define SPLASHVIEW_HPP
+
+#endif // ! SPLASHVIEW_HPP
