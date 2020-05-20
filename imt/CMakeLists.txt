@@ -117,7 +117,7 @@ elseif (DOXYGEN_FOUND)
 
     # Substitutes variable values referenced @ONLY
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-    message(STATUS "Doxygen build started")
+    message(STATUS "Doxygen build started ...")
 
     # Adds a target with the given name that executes the given commands
     add_custom_target( doc ALL
