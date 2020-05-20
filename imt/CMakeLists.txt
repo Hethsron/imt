@@ -43,9 +43,7 @@ endif()
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Searches after the QT library on the system and defines some variables
-find_package(Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt5 COMPONENTS Gui REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
 
 # Handle The QT MOC processor automatically
 set(CMAKE_AUTOMOC ON)
@@ -103,3 +101,27 @@ add_executable(${BINARY} ${SRCS})
 
 # Adding target link libraries
 target_link_libraries(${BINARY} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui)
+
+# Check doxygen
+find_package(Doxygen QUIET)
+if (NOT DOXYGEN_FOUND)
+    message(WARNING "Doxygen not found - cannot generate documentation")
+elseif (DOXYGEN_FOUND)
+    message(STATUS "Doxygen found - generating documentation")
+    # Copies a doxygen <input> file to a doxygen <output> file
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_SOURCE_DIR}/doc/Doxyfile)
+
+    # Set doxygen <input> and <output> file
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile)
+
+    # Substitutes variable values referenced @ONLY
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    message("Doxygen build started")
+
+    # Adds a target with the given name that executes the given commands
+    add_custom_target( doc ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMENT "Generating ${CMAKE_PROJECT_NAME} documentation with Doxygen" VERBATIM )
+endif (NOT DOXYGEN_FOUND)
