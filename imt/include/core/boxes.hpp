@@ -24,8 +24,9 @@
  *  \date 			3rd June 2019
  */
 
-#include <QtCore/QString>
-#include <QtCore/QDir>
+#include <QtWidgets/QtWidgets>
+#include <QtUiTools/QtUiTools>
+#include <QtCore/QtCore>
 
 class Boxes
 {

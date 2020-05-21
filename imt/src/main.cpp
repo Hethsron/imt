@@ -1,5 +1,3 @@
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QWidget>
 #include <view/mainview.hpp>
 #include <iostream>
 

@@ -43,7 +43,7 @@ endif()
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Searches after the QT library on the system and defines some variables
-find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Core Gui UiTools Widgets)
 
 # Handle The QT MOC processor automatically
 set(CMAKE_AUTOMOC ON)
@@ -100,7 +100,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 add_executable(${BINARY} ${SRCS})
 
 # Adding target link libraries
-target_link_libraries(${BINARY} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui)
+target_link_libraries(${BINARY} PRIVATE Qt5::Core Qt5::Gui Qt5::UiTools Qt5::Widgets)
 
 # Check doxygen
 find_package(Doxygen QUIET)

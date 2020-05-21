@@ -24,15 +24,8 @@
  *  \date 			3rd June 2019
  */
 
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QMenuBar>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QAction>
-#include <QtGui/QCloseEvent>
-#include <QtWidgets/QMenu>
-#include <QtGui/QIcon>
+#include <QtWidgets/QtWidgets>
+#include <QtGui/QtGui>
 
 class MainView : public QMainWindow
 {
