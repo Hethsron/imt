@@ -14,8 +14,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Searches after the library on the system and defines some variables
-find_package(Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Core Gui UiTools Widgets)
 
 # Handle The QT MOC processor automatically
 set(CMAKE_AUTOMOC ON)
@@ -85,4 +84,4 @@ add_test(NAME ${BINARY} COMMAND ${BINARY})
 # endif()
 
 # Adding target link libraries
-target_link_libraries(${BINARY} PRIVATE gtest Qt5::Widgets Qt5::Core)
+target_link_libraries(${BINARY} PRIVATE gtest Qt5::Core Qt5::Gui Qt5::UiTools Qt5::Widgets)
