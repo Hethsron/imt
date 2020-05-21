@@ -48,6 +48,8 @@ class MainView : public QMainWindow
         /**
          * @fn      closeEvent
          * @brief   Send close event to widget that the user wants to close
+         * 
+         * @param[in]       event       close event received by the event handler
          */
         void closeEvent(QCloseEvent *event) override;
 
