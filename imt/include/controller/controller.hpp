@@ -24,6 +24,4 @@
  *  \date 			21th May 2020
  */
 
-#include <controller/cthread.hpp>
-
 #endif // ! CONTROLLER_HPP

@@ -21,7 +21,7 @@
  *	\author			Hethsron Jedaël BOUEYA (hethsron-jedael.boueya@uha.fr)
  * 
  * 	\bug			No known bug to date
- *  \date 			3rd June 2019
+ *  \date 			21th May 2020
  */
 
 #include <QtCore/QtCore>
@@ -43,7 +43,7 @@ class Boxes
 
         /**
          * @fn      getTitle
-         * @brief   Returns application title
+         * @brief   Virtual function that returns application title
          * 
          * @return  Application title
          */
@@ -51,7 +51,7 @@ class Boxes
 
         /**
          * @fn      getIcon
-         * @brief   Returns distinguished name of application icon
+         * @brief   Virtual function that returns distinguished name of application icon
          * 
          * @return  Distinguished name of application icon
          */
@@ -59,7 +59,7 @@ class Boxes
 
         /**
          * @fn      getSplash
-         * @brief   Returns distinguished name of application splashscreen
+         * @brief   Virtual function that returns distinguished name of application splashscreen
          * 
          * @return  Distinguished name of application splashscreen
          */
@@ -67,7 +67,7 @@ class Boxes
 
         /**
          * @fn      getStyle
-         * @brief   Returns application stylesheet
+         * @brief   Virtual function that returns application stylesheet
          * 
          * @return  Application stylesheet
          */
@@ -75,7 +75,7 @@ class Boxes
 
         /**
          * @fn      getMessage
-         * @brief   Returns application quit message
+         * @brief   Virtual function that returns application quit message
          * 
          * @return  Application quit message
          */
@@ -83,7 +83,7 @@ class Boxes
 
         /**
          * @fn      getBackground
-         * @brief   Returns distinguished name of application background
+         * @brief   Virtual function that returns distinguished name of application background
          * 
          * @return  Distinguished name of Applcation background
          */
@@ -91,7 +91,7 @@ class Boxes
 
         /**
          * @fn      getHeight
-         * @brief   Returns application height
+         * @brief   Virtual function that returns application height
          * 
          * @return  Application height
          */
@@ -99,7 +99,7 @@ class Boxes
 
         /**
          * @fn      getWidth
-         * @brief   Returns application width
+         * @brief   Virtual function that returns application width
          * 
          * @return  Application width
          */

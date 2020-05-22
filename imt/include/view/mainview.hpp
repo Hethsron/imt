@@ -21,7 +21,7 @@
  *	\author			Hethsron Jedaël BOUEYA (hethsron-jedael.boueya@uha.fr)
  * 
  * 	\bug			No known bug to date
- *  \date 			3rd June 2019
+ *  \date 			21th May 2020
  */
 
 #include <QtWidgets/QtWidgets>
@@ -32,7 +32,7 @@ class MainView : public QMainWindow
     public:
         /**
          * @fn      MainView
-         * @brief   Default constructor of class
+         * @brief   Explicit parameterized constructor of class
          * 
          * @param[in]       parent      QWidget parent instance
          */
@@ -47,22 +47,22 @@ class MainView : public QMainWindow
     protected:
         /**
          * @fn      closeEvent
-         * @brief   Send close event to widget that the user wants to close
+         * @brief   Virtual function that send close event to widget that the user wants to close
          * 
-         * @param[in]       event       close event received by the event handler
+         * @param[in]       event       Close event received by the event handler
          */
-        void closeEvent(QCloseEvent *event) override;
+        virtual void closeEvent(QCloseEvent *event) override;
 
     private:
         /**
          * @fn      createActions
-         * @brief   Creates actions buttons for QMenuBar
+         * @brief   Virtual function that creates actions buttons for QMenuBar
          */
         virtual void createActions();
 
         /**
          * @fn      createStatusBar
-         * @brief   Creates status bar field
+         * @brief   Virtual function that creates status bar field
          */
         virtual void createStatusBar();
 
