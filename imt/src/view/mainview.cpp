@@ -43,10 +43,14 @@ void MainView::closeEvent(QCloseEvent *event) {
 }
 
 void MainView::createActions() {
+    Boxes infos;
+    menuBar->setStyleSheet(infos.getStyle());
+    
     /*QMenu* file =*/ menuBar->addMenu("File");
     /*QMenu* edit =*/ menuBar->addMenu("Edit");
     /*QMenu* select =*/ menuBar->addMenu("Select");
     /*QMenu* view =*/ menuBar->addMenu("View");
+    /*QMenu* tools =*/ menuBar->addMenu("Tools");
     /*QMenu* help =*/ menuBar->addMenu("Help");
 
     // Save MenuBar
