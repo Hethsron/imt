@@ -93,6 +93,15 @@ else("${SRCS}" STREQUAL "")
     message(STATUS "Headers of ${CMAKE_PROJECT_NAME} have been loaded successfully")
 endif("${SRCS}" STREQUAL "")
 
+# Set library output path
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
+# Adding library
+add_library(${BINARY}-${CMAKE_PROJECT_VERSION} SHARED ${SRCS})
+
+# Adding target link libraries
+target_link_libraries(${BINARY}-${CMAKE_PROJECT_VERSION} PRIVATE Qt5::Core Qt5::Gui Qt5::UiTools Qt5::Widgets)
+
 # Set executable output path
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 

@@ -71,17 +71,17 @@ add_executable(${BINARY} ${TESTS_SRCS})
 add_test(NAME ${BINARY} COMMAND ${BINARY})
 
 # Check operating system
-# if(UNIX)
-    # if (CMAKE_COMPILER_IS_GNUCC)
+if(UNIX)
+    if (CMAKE_COMPILER_IS_GNUCC)
         # Set variable for framework library
-        # set(EXTERNAL_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}/lib/lib${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}.so)
-    # endif (CMAKE_COMPILER_IS_GNUCC)
-# elseif(APPLE)
-    # if (MINGW)
+        set(EXTERNAL_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}/lib/lib${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}.so)
+    endif (CMAKE_COMPILER_IS_GNUCC)
+elseif(APPLE)
+    if (MINGW)
         # Set variable for framework library
-        # set(EXTERNAL_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}/lib/lib${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}.dylib)
-    # endif(MINGW)
-# endif()
+        set(EXTERNAL_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}/lib/lib${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}.dylib)
+    endif(MINGW)
+endif()
 
 # Adding target link libraries
-target_link_libraries(${BINARY} PRIVATE gtest Qt5::Core Qt5::Gui Qt5::UiTools Qt5::Widgets)
+target_link_libraries(${BINARY} PRIVATE ${EXTERNAL_LIBS} gtest Qt5::Core Qt5::Gui Qt5::UiTools Qt5::Widgets)
