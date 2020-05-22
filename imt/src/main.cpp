@@ -1,5 +1,4 @@
-#include <view/mainview.hpp>
-#include <view/splashview.hpp>
+#include <controller/controller.hpp>
 #include <iostream>
 
 int main(int argc, char* argv[]) {
@@ -7,11 +6,8 @@ int main(int argc, char* argv[]) {
 
     int ret;
     try {
-        // MainView win;
-        // win.show();
-
-        SplashView splash;
-        splash.show();
+        Manager* win = new Manager();
+        win->exec();
         ret = app.exec();
     }
     catch(const std::bad_alloc &) {

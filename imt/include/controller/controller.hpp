@@ -24,4 +24,7 @@
  *  \date 			21th May 2020
  */
 
+#include <controller/manager.hpp>
+#include <controller/observer.hpp>
+
 #endif // ! CONTROLLER_HPP
