@@ -35,8 +35,7 @@ void SplashView::setProgress(const int value) {
         progress = 0;
     }
 
-    update();
-    //repaint();
+    repaint();
     QApplication::processEvents();
 }
 
