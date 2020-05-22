@@ -1,37 +1,29 @@
 #include <core/boxes.hpp>
 
-Boxes::Boxes() {
-    QDir dir;
+Boxes::Boxes()
+    : title("Welcome to Ahora"), icon(""), splash(""), background(""), style("background-color: rgb(4, 19, 43); color: white;"), message("Are you sure you want to quit? Any unsaved work will be lost"), height(820), width(1440) {
+    assignment();
+}
 
+Boxes::~Boxes() {}
+
+void Boxes::assignment() {
     #if _WIN32
-        QString assets = QString("resources\\assets");
+        QString assets = QString("resources\\assets\\img");
     #else
-        QString assets = QString("resources/assets");
+        QString assets = QString("resources/assets/img");
     #endif
 
+    QDir dir;
     if (dir.cdUp() && dir.cdUp() && dir.cd(assets)) {
-        #if _WIN32
-            icon = dir.filePath("img\\imt.ico");
-            splash = dir.filePath("img\\imt.png");
-            store = dir.filePath("tree\\splash.ui");
-        #else
-            icon = dir.filePath("img/imt.ico");
-            splash = dir.filePath("img/imt.png");
-            store = dir.filePath("tree/splash.ui");
-        #endif
+        icon = dir.filePath("ahora.ico");
+        splash = dir.filePath("ahora.png");
+        background = dir.filePath("splash.jpg");
     }
     else {
         qWarning("cannot find %s", dir.path().toStdString().c_str());
     }
-
-    title = QString("Welcome to IMT");
-    style = QString("background-color: rgb(4, 19, 43); color: white;");
-    message = QString("Are you sure you want to quit? Any unsaved work will be lost");
-    height = 820;
-    width = 1440;
 }
-
-Boxes::~Boxes() {}
 
 QString Boxes::getTitle() const {
     return title;
@@ -53,8 +45,8 @@ QString Boxes::getMessage() const {
     return message;
 }
 
-QString Boxes::getStore() const {
-    return store;
+QString Boxes::getBackground() const {
+    return background;
 }
 
 int Boxes::getHeight() const {

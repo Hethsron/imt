@@ -82,12 +82,12 @@ class Boxes
         virtual QString getMessage() const;
 
         /**
-         * @fn      getStore
-         * @brief   Returns application designer store form
+         * @fn      getBackground
+         * @brief   Returns distinguished name of application background
          * 
-         * @return  Application dddddesigner store form
+         * @return  Distinguished name of Applcation background
          */
-        virtual QString getStore() const;
+        virtual QString getBackground() const;
 
         /**
          * @fn      getHeight
@@ -106,12 +106,18 @@ class Boxes
         virtual int getWidth() const;
 
     private:
+        /**
+         * @fn      assignment
+         * @brief   Assigns right distinguished names of application
+         */
+        virtual void assignment();
+
         QString title;                      /*!< Application title */
         QString icon;                       /*!< Distinguished name of application Icon */
         QString splash;                     /*!< Distinguished name of application splashscreen */
+        QString background;                 /*!< Distinguished name of application background */
         QString style;                      /*!< Application stylesheet */
         QString message;                    /*!< Application quit message */
-        QString store;                      /*!< Application designer store form */
         int height;                         /*!< Application height */
         int width;                          /*!< Application width */
 };
