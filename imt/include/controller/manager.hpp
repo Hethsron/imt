@@ -44,31 +44,10 @@ class Manager : public Observer
         virtual ~Manager();
 
         /**
-         * @fn      exec
-         * @brief   Virtual function that execute the current manager
-         * 
-         * @return  Integer value of status
+         * @fn      notify
+         * @brief   Virtual function that allows to treat Observer
          */
-        virtual void exec();
-
-    protected:
-        /**
-         * @fn      attach
-         * @brief   Virtual function that allows to attach application's model
-         */
-        virtual void attach() override;
-
-        /**
-         * @fn      detach
-         * @brief   Virtual function that allows to detach application's model
-         */
-        virtual void detach() override;
-
-        /**
-         * @fn      update
-         * @brief   Virtual function that allows to update application's model
-         */
-        virtual void update() override;
+        virtual void notify() override;
 
     private:
         SplashView* splash;                          /*!< SplashView instance */

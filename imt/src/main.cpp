@@ -1,13 +1,14 @@
 #include <controller/controller.hpp>
 #include <iostream>
 
+using namespace ROUTER;
+
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
     int ret;
     try {
-        Manager* win = new Manager();
-        win->exec();
+        ROUTER::render(new Manager());
         ret = app.exec();
     }
     catch(const std::bad_alloc &) {

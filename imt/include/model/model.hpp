@@ -24,6 +24,4 @@
  *  \date 			21th May 2020
  */
 
-#include <model/subject.hpp>
-
 #endif // ! MODEL_HPP

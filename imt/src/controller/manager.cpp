@@ -1,31 +1,11 @@
 #include <controller/manager.hpp>
 
 Manager::Manager()
-    : Observer(), splash(new SplashView()), win(new MainView()) {
-        attach();
-    }
+    : Observer(), splash(new SplashView()), win(new MainView()) {}
 
-Manager::~Manager() {
-    // The observer need to clear current state of the subject
-    detach();
-}
+Manager::~Manager() {}
 
-void Manager::attach() {
-    // TODO :
-    
-    // The observer need to get the current state of the subject
-    update();
-}
-
-void Manager::update() {
-    // TODO :
-}
-
-void Manager::detach() {
-    // TODO :
-}
-
-void Manager::exec() {
+void Manager::notify() {
     static const int LOAD_TIME_MSEC = 5 * 2000;
 
     splash->show();
@@ -36,7 +16,7 @@ void Manager::exec() {
 
     while (time.elapsed() < LOAD_TIME_MSEC) {
         const int progress = static_cast<double>(time.elapsed()) / LOAD_TIME_MSEC * 100.0;
-
+        
         splash->setProgress(progress);
 
         QApplication::processEvents();

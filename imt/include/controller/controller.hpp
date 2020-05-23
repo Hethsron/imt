@@ -26,5 +26,7 @@
 
 #include <controller/manager.hpp>
 #include <controller/observer.hpp>
+#include <controller/router.hpp>
+#include <controller/subject.hpp>
 
 #endif // ! CONTROLLER_HPP

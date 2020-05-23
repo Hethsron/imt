@@ -39,24 +39,11 @@ class Observer
          */
         virtual ~Observer();
     
-    protected:
         /**
-         * @fn      attach
-         * @brief   Virtual function that allows to attach application's model
+         * @fn      notify
+         * @brief   Virtual function that allows to treat Observer
          */
-        virtual void attach() = 0;
-
-        /**
-         * @fn      detach
-         * @brief   Virtual function that allows to detach application's model
-         */
-        virtual void detach() = 0;
-
-        /**
-         * @fn      update
-         * @brief   Virtual function that allows to update application's model
-         */
-        virtual void update() = 0;
+        virtual void notify() = 0;
 };
 
 #endif // ! OBSERVER_HPP

@@ -5,7 +5,7 @@
  *	\file			subject.hpp
  *	\brief			Header of Subject class
  *
- *					This header contains useful class for application's model
+ *					This header contains useful class to manage Observer instance
  *
  *  \details        System :                IMT GUI
  *                  Component Name :        imt
@@ -25,6 +25,7 @@
  */
 
 #include <controller/observer.hpp>
+#include <QtCore/QtCore>
 
 class Subject
 {
@@ -41,7 +42,6 @@ class Subject
          */
         virtual ~Subject();
 
-    protected:
         /**
          * @fn      subscribe
          * @brief   Virtual function that allows to subscribe application's controller
@@ -62,7 +62,10 @@ class Subject
          * @fn      notify
          * @brief   Virtual function that allows to give notification
          */
-        virtual void notify() const = 0;
+        virtual void notify() const;
+
+    protected:
+        QList<Observer*> collections;               /*!< Collections of Observer instance */
 };
 
 #endif // ! SUBJECT_HPP
