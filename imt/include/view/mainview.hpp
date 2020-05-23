@@ -53,10 +53,15 @@ class MainView : public QMainWindow
          */
         virtual void closeEvent(QCloseEvent *event) override;
 
-    private:
         /**
          * @fn      createActions
          * @brief   Virtual function that creates actions buttons for QMenuBar
+         * 
+         * @see     createFileMenu
+         * @see     createEditMenu
+         * @see     createViewMenu
+         * @see     createToolsMenu
+         * @see     createHelpMenu
          */
         virtual void createActions();
 
@@ -65,6 +70,44 @@ class MainView : public QMainWindow
          * @brief   Virtual function that creates status bar field
          */
         virtual void createStatusBar();
+
+    private slots:
+        /**
+         * @fn      about
+         * @brief   Virtual function that references about action
+         */
+        virtual void about();
+
+    private:
+        /**
+         * @fn      createFileMenu
+         * @brief   Virtual function that creates File menu toolbar
+         */
+        virtual void createFileMenu();
+
+        /**
+         * @fn      createEditMenu
+         * @brief   Virtual function that creates Edit menu toolbar
+         */
+        virtual void createEditMenu();
+
+        /**
+         * @fn      createViewMenu
+         * @brief   Virtual function that creates View menu toolbar
+         */
+        virtual void createViewMenu();
+        
+        /**
+         * @fn      createToolsMenu
+         * @brief   Virtual function that creates Tools menu toolbar
+         */
+        virtual void createToolsMenu();
+
+        /**
+         * @fn      createHelpMenu
+         * @brief   Virtual function that creates Help menu toolbar
+         */
+        virtual void createHelpMenu();
 
         QWidget* widget;                                /*!< Application central widget */
         QStatusBar* statusBar;                          /*!< Application status bar */

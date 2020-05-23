@@ -11,16 +11,18 @@ Manager::~Manager() {
 }
 
 void Manager::attach() {
+    // TODO :
+    
     // The observer need to get the current state of the subject
     update();
 }
 
 void Manager::update() {
-
+    // TODO :
 }
 
 void Manager::detach() {
-
+    // TODO :
 }
 
 void Manager::exec() {

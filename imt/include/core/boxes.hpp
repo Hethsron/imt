@@ -42,6 +42,14 @@ class Boxes
         virtual ~Boxes();
 
         /**
+         * @fn      getCollections
+         * @brief   Virtual function that returns collections of PNG distinguished names
+         * 
+         * @return  Collections of PNG distinguished names
+         */
+        virtual QList<QString> getCollections() const;
+
+        /**
          * @fn      getTitle
          * @brief   Virtual function that returns application title
          * 
@@ -112,6 +120,7 @@ class Boxes
          */
         virtual void assignment();
 
+        QList<QString> collections;         /*!< Collection of PNG distinguished names */
         QString title;                      /*!< Application title */
         QString icon;                       /*!< Distinguished name of application Icon */
         QString splash;                     /*!< Distinguished name of application splashscreen */

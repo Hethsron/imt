@@ -1,7 +1,7 @@
 #include <core/boxes.hpp>
 
 Boxes::Boxes()
-    : title("Welcome to Ahora"), icon(""), splash(""), background(""), style("background-color: rgb(4, 19, 43); color: white;"), message("Are you sure you want to quit? Any unsaved work will be lost"), height(820), width(1440) {
+    : collections(QList<QString>()), title("Welcome to Ahora"), icon(""), splash(""), background(""), style("background-color: rgb(4, 19, 43); color: white;"), message("Are you sure you want to quit? Any unsaved work will be lost"), height(820), width(1440) {
     assignment();
 }
 
@@ -16,13 +16,28 @@ void Boxes::assignment() {
 
     QDir dir;
     if (dir.cdUp() && dir.cdUp() && dir.cd(assets)) {
-        icon = dir.filePath("ahora.ico");
-        splash = dir.filePath("ahora.png");
         background = dir.filePath("splash.jpg");
+        splash = dir.filePath("imt.png");
+        icon = dir.filePath("imt.ico");
+        collections.append("new.png");
+        collections.append("open.png");
+        collections.append("save.png");
+        collections.append("exit.png");
+        collections.append("undo.png");
+        collections.append("redo.png");
+        collections.append("cut.png");
+        collections.append("copy.png");
+        collections.append("paste.png");
+        collections.append("conversion.png");
+        collections.append("about.png");
     }
     else {
         qWarning("cannot find %s", dir.path().toStdString().c_str());
     }
+}
+
+QList<QString> Boxes::getCollections() const {
+    return collections;
 }
 
 QString Boxes::getTitle() const {
