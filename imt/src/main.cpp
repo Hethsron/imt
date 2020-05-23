@@ -1,8 +1,6 @@
 #include <controller/controller.hpp>
 #include <iostream>
 
-using namespace ROUTER;
-
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
