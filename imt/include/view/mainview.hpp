@@ -111,8 +111,12 @@ class MainView : public QMainWindow
 
         QWidget* widget;                                /*!< Application central widget */
         QStatusBar* statusBar;                          /*!< Application status bar */
-        QMenuBar* menuBar;                              /*!< Application menu bar */              
-
+        QMenuBar* menuBar;                              /*!< Application menu bar */
+        QMenu* fileMenu;                                /*!< Applicattttion File menu */
+        QMenu* editMenu;                                /*!< Applicattttion Edit menu */
+        QMenu* viewMenu;                                /*!< Applicattttion View menu */
+        QMenu* toolsMenu;                               /*!< Applicattttion Tools menu */
+        QMenu* helpMenu;                                /*!< Applicattttion Help menu */
 };
 
 #endif // ! MAINVIEW_HPP

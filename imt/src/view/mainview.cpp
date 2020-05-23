@@ -2,7 +2,7 @@
 #include <core/boxes.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -67,8 +67,8 @@ void MainView::createStatusBar() {
 }
 
 void MainView::about() {
-    QMessageBox::about(this, tr("About Ahora"),
-            tr("<b>Ahora</b> "
+    QMessageBox::about(this, tr("About IMT"),
+            tr("<b>IMT</b> "
             "<p>Version: 1.0.0 Release 1<br>"
             "Date: 2020-05-21<br>"
             "Dependencies : QT5 Framework<br>"
@@ -78,7 +78,7 @@ void MainView::about() {
 
 void MainView::createFileMenu() {
     Boxes infos;
-    QMenu* fileMenu = menuBar->addMenu(tr("&File"));
+    fileMenu = menuBar->addMenu(tr("&File"));
 
     // Setting Icons
     const QIcon newIcon = QIcon(infos.getCollections()[0]);
@@ -87,14 +87,14 @@ void MainView::createFileMenu() {
     const QIcon exitIcon = QIcon(infos.getCollections()[3]);
 
     // Setting New Action
-    QAction* newAct = new QAction(newIcon, tr("&New"), this);
+    QAction* newAct = new QAction(newIcon, tr("&New File"), this);
     newAct->setShortcuts(QKeySequence::New);
     newAct->setStatusTip(tr("Create a new config file"));
     // TODO : connect
     fileMenu->addAction(newAct);
 
     // Setting Open Action
-    QAction* openAct = new QAction(openIcon, tr("&Open..."), this);
+    QAction* openAct = new QAction(openIcon, tr("&Open File..."), this);
     openAct->setShortcuts(QKeySequence::Open);
     openAct->setStatusTip(tr("Open an existing config file"));
     // TODO : connect
@@ -118,7 +118,7 @@ void MainView::createFileMenu() {
 
 void MainView::createEditMenu() {
     Boxes infos;
-    QMenu* editMenu = menuBar->addMenu(tr("&Edit"));
+    editMenu = menuBar->addMenu(tr("&Edit"));
 
     // Setting Icons
     const QIcon undoIcon = QIcon(infos.getCollections()[4]);
@@ -167,12 +167,12 @@ void MainView::createEditMenu() {
 }
 
 void MainView::createViewMenu() {
-    /*QMenu* viewMenu =*/ menuBar->addMenu(tr("&View"));
+    viewMenu = menuBar->addMenu(tr("&View"));
 }
 
 void MainView::createToolsMenu() {
     Boxes infos;
-    QMenu* toolsMenu = menuBar->addMenu(tr("&Tools"));
+    toolsMenu = menuBar->addMenu(tr("&Tools"));
 
     // Setting Icons
     const QIcon conversionIcon = QIcon(infos.getCollections()[9]);
@@ -186,13 +186,13 @@ void MainView::createToolsMenu() {
 
 void MainView::createHelpMenu() {
     Boxes infos;
-    QMenu* helpMenu = menuBar->addMenu(tr("&Help"));
+    helpMenu = menuBar->addMenu(tr("&Help"));
 
     // Setting Icons
     const QIcon aboutIcon = QIcon(infos.getCollections()[10]);
 
     // Setting About Action
-    QAction* aboutAct = new QAction(aboutIcon, tr("&About"), this);
+    QAction* aboutAct = new QAction(aboutIcon, tr("&About IMT"), this);
     aboutAct->setStatusTip(tr("Show the application's About box"));
     connect(aboutAct, &QAction::triggered, this, &MainView::about);
     helpMenu->addAction(aboutAct);
