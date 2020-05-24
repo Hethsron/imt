@@ -127,6 +127,9 @@ void MainView::saveAsMonitoring() {
 
 void MainView::closeMonitoring() {
     // TODO : Implementation
+
+    // Removes all actions from the toolbar
+    monitoringToolBar->clear();
 }
 
 void MainView::createFileMenu() {
