@@ -82,6 +82,14 @@ class Boxes
         virtual QString getStyle() const;
 
         /**
+         * @fn      getStyleSheet
+         * brief Virtual function that returns application global stylesheet
+         * 
+         * @return  Application global stylesheet
+         */
+        virtual QString getStyleSheet() const;
+
+        /**
          * @fn      getMessage
          * @brief   Virtual function that returns application quit message
          * 
@@ -126,6 +134,7 @@ class Boxes
         QString splash;                     /*!< Distinguished name of application splashscreen */
         QString background;                 /*!< Distinguished name of application background */
         QString style;                      /*!< Application stylesheet */
+        QString stylesheet;                 /*!< Application global stylesheet */
         QString message;                    /*!< Application quit message */
         int height;                         /*!< Application height */
         int width;                          /*!< Application width */

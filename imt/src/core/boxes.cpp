@@ -1,7 +1,7 @@
 #include <core/boxes.hpp>
 
 Boxes::Boxes()
-    : collections(QList<QString>()), title("Welcome to IMT"), icon(""), splash(""), background(""), style("background-color: rgb(4, 19, 43); color: white;"), message("Are you sure you want to quit? Any unsaved work will be lost"), height(820), width(1440) {
+    : collections(QList<QString>()), title("Welcome to IMT"), icon(""), splash(""), background(""), style("background-color: rgb(4, 19, 43); color: white;"), stylesheet(""), message("Are you sure you want to quit? Any unsaved work will be lost"), height(820), width(1440) {
     assignment();
 }
 
@@ -32,9 +32,29 @@ void Boxes::assignment() {
         collections.append("about.png");
         collections.append("configuration.png");
         collections.append("webHelp.png");
+
+        if (dir.cdUp()) {
+            #if _WIN32
+                QString filename = dir.filePath("css\\style.css");
+            #else
+                QString filename = dir.filePath("css/style.css");
+            #endif
+
+            QFile file(filename);
+            if (file.open(QFile::ReadOnly)) {
+                stylesheet = QLatin1String(file.readAll());
+                file.close();
+            }
+            else {
+                qWarning("Cannot open %s", filename.toStdString().c_str());
+            }
+        }
+        else {
+            qWarning("Cannot find %s", dir.path().toStdString().c_str());
+        }
     }
     else {
-        qWarning("cannot find %s", dir.path().toStdString().c_str());
+        qWarning("Cannot find %s", dir.path().toStdString().c_str());
     }
 }
 
@@ -56,6 +76,10 @@ QString Boxes::getSplash() const {
 
 QString Boxes::getStyle() const {
     return style;
+}
+
+QString Boxes::getStyleSheet() const {
+    return stylesheet;
 }
 
 QString Boxes::getMessage() const {

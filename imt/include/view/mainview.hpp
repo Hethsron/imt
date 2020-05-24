@@ -119,7 +119,13 @@ class MainView : public QMainWindow
          * @fn      createMonitoringMenu
          * @brief   Virtual function that creates Monitoring in MenuBar
          */
-        virtual void createMonitoringMenu();        
+        virtual void createMonitoringMenu();
+
+        /**
+         * @fn      createMonitoringToolBar
+         * @brief   Virtual function that creates Toolbar for Monitoring process
+         */
+        virtual void createMonitoringToolBar();   
 
         /**
          * @fn      createEditMenu
