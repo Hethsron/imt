@@ -1,7 +1,7 @@
 #include <core/boxes.hpp>
 
 Boxes::Boxes()
-    : collections(QList<QString>()), title("Welcome to Ahora"), icon(""), splash(""), background(""), style("background-color: rgb(4, 19, 43); color: white;"), message("Are you sure you want to quit? Any unsaved work will be lost"), height(820), width(1440) {
+    : collections(QList<QString>()), title("Welcome to IMT"), icon(""), splash(""), background(""), style("background-color: rgb(4, 19, 43); color: white;"), message("Are you sure you want to quit? Any unsaved work will be lost"), height(820), width(1440) {
     assignment();
 }
 
@@ -30,6 +30,8 @@ void Boxes::assignment() {
         collections.append("paste.png");
         collections.append("conversion.png");
         collections.append("about.png");
+        collections.append("configuration.png");
+        collections.append("webHelp.png");
     }
     else {
         qWarning("cannot find %s", dir.path().toStdString().c_str());

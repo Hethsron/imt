@@ -2,7 +2,7 @@
 #include <core/boxes.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -48,6 +48,7 @@ void MainView::createActions() {
 
     // Creating menu toolbar
     createFileMenu();
+    createMonitoringMenu();
     createEditMenu();
     createViewMenu();
     createToolsMenu();
@@ -76,44 +77,134 @@ void MainView::about() {
             "© Copyright - UHA - ENSISA 2020</p>"));
 }
 
+void MainView::newMonitoring() {
+    QFileDialog dialog(this);
+
+    // Setting QFileDialog instance
+    dialog.setWindowTitle("Setting up a configuration from a database");
+    dialog.setFileMode(QFileDialog::DirectoryOnly);
+    dialog.setOption(QFileDialog::DontUseNativeDialog, false);
+    dialog.setOption(QFileDialog::ReadOnly, true);
+    
+    // Check if there is no error
+    if (dialog.exec()) {
+        // TODO : Implementation
+    }
+    else {
+        qWarning("cannot setting up a configuration from a database");
+    }
+}
+
+void MainView::openMonitoring() {
+    QFileDialog dialog(this);
+
+    // Setting QFileDialog instance
+    dialog.setWindowTitle("Open a configuration file from a previous database");
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setOption(QFileDialog::DontUseNativeDialog, false);
+    dialog.setOption(QFileDialog::ReadOnly, true);
+    dialog.setNameFilter(tr("Files (*.json)"));
+
+    // Check if there is no error
+    if (dialog.exec()) {
+        // TODO : Implementation
+    }
+    else {
+        qWarning("cannot open a configuration file from a previous database");
+    }
+}
+
+void MainView::saveMonitoring() {
+    // TODO : Implementation
+}
+
+void MainView::saveAsMonitoring() {
+    // TODO : Implementation
+}
+
+void MainView::closeMonitoring() {
+    // TODO : Implementation
+}
+
 void MainView::createFileMenu() {
     Boxes infos;
     fileMenu = menuBar->addMenu(tr("&File"));
 
     // Setting Icons
-    const QIcon newIcon = QIcon(infos.getCollections()[0]);
-    const QIcon openIcon = QIcon(infos.getCollections()[1]);
-    const QIcon saveIcon = QIcon(infos.getCollections()[2]);
     const QIcon exitIcon = QIcon(infos.getCollections()[3]);
+    const QIcon configIcon = QIcon(infos.getCollections()[11]);
 
-    // Setting New Action
-    QAction* newAct = new QAction(newIcon, tr("&New File"), this);
-    newAct->setShortcuts(QKeySequence::New);
-    newAct->setStatusTip(tr("Create a new config file"));
+    // Setting Configuration Action
+    QAction* configAct = new QAction(configIcon, tr("&Configuration"), this);
+    configAct->setStatusTip(tr("Security configuration"));
+    configAct->setIconVisibleInMenu(true);
     // TODO : connect
-    fileMenu->addAction(newAct);
-
-    // Setting Open Action
-    QAction* openAct = new QAction(openIcon, tr("&Open File..."), this);
-    openAct->setShortcuts(QKeySequence::Open);
-    openAct->setStatusTip(tr("Open an existing config file"));
-    // TODO : connect
-    fileMenu->addAction(openAct);
-
-    // Setting Save Action
-    QAction* saveAct = new QAction(saveIcon, tr("&Save"), this);
-    saveAct->setShortcuts(QKeySequence::Save);
-    saveAct->setStatusTip(tr("Save the config file to disk"));
-    // TODO : connect
-    fileMenu->addAction(saveAct);
+    fileMenu->addAction(configAct);
 
     // Adding seperator
     fileMenu->addSeparator();
 
     // Setting Exit Action
-    QAction* exitAct = fileMenu->addAction(exitIcon, tr("E&xit"), this, &QWidget::close);
+    QAction* exitAct = fileMenu->addAction(exitIcon, tr("&Exit"), this, &QWidget::close);
     exitAct->setShortcuts(QKeySequence::Quit);
     exitAct->setStatusTip(tr("Exit the application"));
+    exitAct->setIconVisibleInMenu(true);
+}
+
+void MainView::createMonitoringMenu() {
+    Boxes infos;
+    monitoringMenu = menuBar->addMenu(tr("&Monitoring"));
+
+    // Setting Icons
+    const QIcon newIcon = QIcon(infos.getCollections()[0]);
+    const QIcon openIcon = QIcon(infos.getCollections()[1]);
+    const QIcon saveIcon = QIcon(infos.getCollections()[2]);
+    const QIcon closeIcon = QIcon(infos.getCollections()[3]);
+
+    // Setting New Action
+    QAction* newAct = new QAction(newIcon, tr("&New"), this);
+    newAct->setShortcuts(QKeySequence::New);
+    newAct->setStatusTip(tr("Setting up a configuration from a database"));
+    newAct->setIconVisibleInMenu(true);
+    connect(newAct, &QAction::triggered, this, &MainView::newMonitoring);
+    monitoringMenu->addAction(newAct);
+
+    // Setting Open Action
+    QAction* openAct = new QAction(openIcon, tr("&Open..."), this);
+    openAct->setShortcuts(QKeySequence::Open);
+    openAct->setStatusTip(tr("Open a configuration file from a previous database"));
+    openAct->setIconVisibleInMenu(true);
+    connect(openAct, &QAction::triggered, this, &MainView::openMonitoring);
+    monitoringMenu->addAction(openAct);
+
+    // Adding seperator
+    monitoringMenu->addSeparator();
+
+    // Setting Save Action
+    QAction* saveAct = new QAction(saveIcon, tr("&Save"), this);
+    saveAct->setShortcuts(QKeySequence::Save);
+    saveAct->setStatusTip(tr("Save the configuration file to disk"));
+    saveAct->setIconVisibleInMenu(true);
+    connect(saveAct, &QAction::triggered, this, &MainView::saveMonitoring);
+    monitoringMenu->addAction(saveAct);
+
+    // Setting Save As Action
+    QAction* saveAsAct = new QAction(saveIcon, tr("&Save As..."), this);
+    saveAsAct->setShortcuts(QKeySequence::SaveAs);
+    saveAsAct->setStatusTip(tr("Save the configuration file under a new name"));
+    saveAsAct->setIconVisibleInMenu(true);
+    connect(saveAsAct, &QAction::triggered, this, &MainView::saveAsMonitoring);
+    monitoringMenu->addAction(saveAsAct);
+
+    // Adding seperator
+    monitoringMenu->addSeparator();
+
+    // Setting Exit Action
+    QAction* closeAct = new QAction(closeIcon, tr("&Close"), this);
+    closeAct->setStatusTip(tr("Stop monitoring"));
+    closeAct->setIconVisibleInMenu(true);
+    connect(closeAct, &QAction::triggered, this, &MainView::closeMonitoring);
+    monitoringMenu->addAction(closeAct);
 }
 
 void MainView::createEditMenu() {
@@ -131,6 +222,7 @@ void MainView::createEditMenu() {
     QAction* undoAct = new QAction(undoIcon, tr("&Undo"), this);
     undoAct->setShortcuts(QKeySequence::Undo);
     undoAct->setStatusTip(tr("Undo last action"));
+    undoAct->setIconVisibleInMenu(true);
     // TODO : connect
     editMenu->addAction(undoAct);
 
@@ -138,6 +230,7 @@ void MainView::createEditMenu() {
     QAction* redoAct = new QAction(redoIcon, tr("&Redo"), this);
     redoAct->setShortcuts(QKeySequence::Redo);
     redoAct->setStatusTip(tr("Redo last action"));
+    redoAct->setIconVisibleInMenu(true);
     // TODO : connect
     editMenu->addAction(redoAct);
 
@@ -148,6 +241,7 @@ void MainView::createEditMenu() {
     QAction* cutAct = new QAction(cutIcon, tr("&Cut"), this);
     cutAct->setShortcuts(QKeySequence::Cut);
     cutAct->setStatusTip(tr("Cut the current selection's contents to the clipboard"));
+    cutAct->setIconVisibleInMenu(true);
     // TODO : connect
     editMenu->addAction(cutAct);
 
@@ -155,6 +249,7 @@ void MainView::createEditMenu() {
     QAction* copyAct = new QAction(copyIcon, tr("&Copy"), this);
     copyAct->setShortcuts(QKeySequence::Copy);
     copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
+    copyAct->setIconVisibleInMenu(true);
     // TODO : connect
     editMenu->addAction(copyAct);
 
@@ -162,6 +257,7 @@ void MainView::createEditMenu() {
     QAction* pasteAct = new QAction(pasteIcon, tr("&Paste"), this);
     pasteAct->setShortcuts(QKeySequence::Paste);
     pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current selection"));
+    pasteAct->setIconVisibleInMenu(true);
     // TODO : connect
     editMenu->addAction(pasteAct);
 }
@@ -180,6 +276,7 @@ void MainView::createToolsMenu() {
     // Setting Conversion Action
     QAction* conversionAct = new QAction(conversionIcon, tr("&Conversion"), this);
     conversionAct->setStatusTip(tr("Convert kinect files to more standard format files"));
+    conversionAct->setIconVisibleInMenu(true);
     // TODO : connect
     toolsMenu->addAction(conversionAct);
 }
@@ -190,10 +287,24 @@ void MainView::createHelpMenu() {
 
     // Setting Icons
     const QIcon aboutIcon = QIcon(infos.getCollections()[10]);
+    const QIcon summaryIcon = QIcon(infos.getCollections()[12]);
+    
+    // Setting Summary Action
+    QAction* summaryAct = new QAction(summaryIcon, tr("&Summary..."), this);
+    summaryAct->setShortcuts(QKeySequence::HelpContents);
+    summaryAct->setStatusTip(tr("Provide informations about application's functionalities and usage"));
+    summaryAct->setIconVisibleInMenu(true);
+    // TODO : connect
+    helpMenu->addAction(summaryAct);
+
+    // Adding separator
+    helpMenu->addSeparator();
 
     // Setting About Action
     QAction* aboutAct = new QAction(aboutIcon, tr("&About IMT"), this);
-    aboutAct->setStatusTip(tr("Show the application's About box"));
+    aboutAct->setShortcuts(QKeySequence::WhatsThis);
+    aboutAct->setStatusTip(tr("Provide informations about application's version and licences"));
+    aboutAct->setIconVisibleInMenu(true);
     connect(aboutAct, &QAction::triggered, this, &MainView::about);
     helpMenu->addAction(aboutAct);
 }

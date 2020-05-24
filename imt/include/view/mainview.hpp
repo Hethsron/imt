@@ -74,38 +74,74 @@ class MainView : public QMainWindow
     private slots:
         /**
          * @fn      about
-         * @brief   Virtual function that references about action
+         * @brief   Virtual function that references About action
          */
         virtual void about();
+
+        /**
+         * @fn      newMonitoring
+         * @brief   Virtual function that references New action
+         */
+        virtual void newMonitoring();
+
+        /**
+         * @fn      openMonitoring
+         * @brief   Virtual function that references Open action
+         */
+        virtual void openMonitoring();
+
+        /**
+         * @fn      saveMonitoring
+         * @brief   Virtual function that references Save action
+         */
+        virtual void saveMonitoring();
+
+        /**
+         * @fn      saveAsMonitoring
+         * @brief   Virtual function that references Save As action
+         */
+        virtual void saveAsMonitoring();
+
+        /**
+         * @fn      closeMonitoring
+         * @brief   Virtual function that references Close action
+         */
+        virtual void closeMonitoring();
 
     private:
         /**
          * @fn      createFileMenu
-         * @brief   Virtual function that creates File menu toolbar
+         * @brief   Virtual function that creates File menu in MenuBar
          */
         virtual void createFileMenu();
 
         /**
+         * @fn      createMonitoringMenu
+         * @brief   Virtual function that creates Monitoring in MenuBar
+         */
+        virtual void createMonitoringMenu();        
+
+        /**
          * @fn      createEditMenu
-         * @brief   Virtual function that creates Edit menu toolbar
+         * @brief   Virtual function that creates Edit menu in MenuBar
          */
         virtual void createEditMenu();
 
         /**
          * @fn      createViewMenu
-         * @brief   Virtual function that creates View menu toolbar
+         * @brief   Virtual function that creates View menu in MenuBar
          */
         virtual void createViewMenu();
         
         /**
          * @fn      createToolsMenu
-         * @brief   Virtual function that creates Tools menu toolbar
+         * @brief   Virtual function that creates Tools menu in MenuBar
          */
         virtual void createToolsMenu();
 
         /**
          * @fn      createHelpMenu
-         * @brief   Virtual function that creates Help menu toolbar
+         * @brief   Virtual function that creates Help menu in MenuBar
          */
         virtual void createHelpMenu();
 
@@ -113,10 +149,12 @@ class MainView : public QMainWindow
         QStatusBar* statusBar;                          /*!< Application status bar */
         QMenuBar* menuBar;                              /*!< Application menu bar */
         QMenu* fileMenu;                                /*!< Applicattttion File menu */
+        QMenu* monitoringMenu;                          /*!< Application Monitoring menu */
         QMenu* editMenu;                                /*!< Applicattttion Edit menu */
         QMenu* viewMenu;                                /*!< Applicattttion View menu */
         QMenu* toolsMenu;                               /*!< Applicattttion Tools menu */
         QMenu* helpMenu;                                /*!< Applicattttion Help menu */
+        QToolBar* monitoringToolBar;                    /*!< Application Monitoring ToolBar */
 };
 
 #endif // ! MAINVIEW_HPP
