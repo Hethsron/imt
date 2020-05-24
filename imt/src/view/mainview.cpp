@@ -311,14 +311,24 @@ void MainView::createToolsMenu() {
     toolsMenu = menuBar->addMenu(tr("&Tools"));
 
     // Setting Icons
-    const QIcon conversionIcon = QIcon(infos.getCollections()[9]);
+    const QIcon extractIcon = QIcon(infos.getCollections()[9]);
 
-    // Setting Conversion Action
-    QAction* conversionAct = new QAction(conversionIcon, tr("&Conversion"), this);
-    conversionAct->setStatusTip(tr("Convert kinect files to more standard format files"));
-    conversionAct->setIconVisibleInMenu(true);
+    // Setting XEF toolkit Action
+    QAction* xefAct = new QAction(extractIcon, tr("&XEF toolkit          "), this);
+    xefAct->setStatusTip(tr("Extracting Kinect Studio XEF files on multiple platforms format"));
+    xefAct->setIconVisibleInMenu(true);
     // TODO : connect
-    toolsMenu->addAction(conversionAct);
+    toolsMenu->addAction(xefAct);
+
+    // Adding seperator
+    toolsMenu->addSeparator();
+
+    // Setting MVN toolkit Action
+    QAction* mvnAct = new QAction(extractIcon, tr("&MVN toolkit         "), this);
+    mvnAct->setStatusTip(tr("Extracting Xsens MVN files on multiple platforms format"));
+    mvnAct->setIconVisibleInMenu(true);
+    // TODO : connect
+    toolsMenu->addAction(mvnAct);
 }
 
 void MainView::createHelpMenu() {
