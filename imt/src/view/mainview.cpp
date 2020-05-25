@@ -1,4 +1,5 @@
 #include <view/mainview.hpp>
+#include <core/writer.hpp>
 #include <core/boxes.hpp>
 #include <iostream>
 
@@ -81,28 +82,31 @@ void MainView::about() {
 }
 
 void MainView::newMonitoring() {
-    QString pathname = QFileDialog::getExistingDirectory(this,
+    QString cfg = QFileDialog::getExistingDirectory(this,
             tr("Setting up configuration from sensors database"), "",
             QFileDialog::DontUseNativeDialog | QFileDialog::ShowDirsOnly | QFileDialog::ReadOnly | QFileDialog::DontResolveSymlinks);
     
     // Check if pathname if empty
-    if (pathname.isEmpty()) {
+    if (cfg.isEmpty()) {
         statusBar->showMessage(tr("Unable to set up configuration from sensors database"));
         return;
     }
     else {
-        QDir dir(pathname);
+        QDir dir(cfg);
 
         // Check if directory exists
         if (!dir.exists()) {
             QMessageBox::information(this, 
                     tr("Unable to find sensors database"),
-                    tr("Selected sensors database [%s] doesn't exists", pathname.toStdString().c_str()));
+                    tr("Selected sensors database [%s] doesn't exists", cfg.toStdString().c_str()));
             return;
         }
 
+        // Update configuration
+        config.setObject(WRITER::execute(cfg));
+
         // TODO : Implementation
-        std::cout << pathname.toStdString() << std::endl;
+        std::cout << cfg.toStdString() << std::endl;
 
         // Create monitoring toolbar
         createMonitoringToolBar();

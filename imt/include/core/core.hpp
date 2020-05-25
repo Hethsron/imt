@@ -24,6 +24,9 @@
  *  \date 			21th May 2020
  */
 
+#include <core/processor.hpp>
+#include <core/command.hpp>
+#include <core/writer.hpp>
 #include <core/boxes.hpp>
 
 #endif // ! CORE_HPP
