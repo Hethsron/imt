@@ -58,7 +58,7 @@ class Processor
          * @param[in]       pattern         Given regex pattern
          * @return          Distinguished name extracted from configuration data
          */
-        //virtual QString read(const QJsonDocument& cfg, const QString& pattern) const;
+        virtual QString read(const QJsonDocument& cfg, const QString& pattern) const;
 };
 
 #endif // ! PROCESSOR_HPP

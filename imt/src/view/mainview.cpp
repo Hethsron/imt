@@ -1,7 +1,6 @@
 #include <view/mainview.hpp>
 #include <core/writer.hpp>
 #include <core/boxes.hpp>
-#include <iostream>
 
 MainView::MainView(QWidget* parent) 
     : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()) {
@@ -105,11 +104,10 @@ void MainView::newMonitoring() {
         // Update configuration
         config.setObject(WRITER::execute(cfg));
 
-        // TODO : Implementation
-        std::cout << cfg.toStdString() << std::endl;
-
         // Create monitoring toolbar
         createMonitoringToolBar();
+
+        // TODO : Implementation (Navigation bar)
     }
 }
 
@@ -152,11 +150,11 @@ void MainView::openMonitoring() {
                     tr("The file you are attempting to open contains no configuration"));
         }
         else {
-            // TODO : Implementation
-            std::cout << data.toStdString() << std::endl;
-
+            
             // Create monitoring toolbar
             createMonitoringToolBar();
+
+            // TODO : Implementation (Navigation bar)
         }
     }
 }

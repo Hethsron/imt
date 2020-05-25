@@ -21,6 +21,7 @@ QJsonObject Processor::write(const QString& filename) const {
         // Define regex
         QRegularExpression re(pattern, QRegularExpression::CaseInsensitiveOption);
 
+        // Define iterator
         QStringListIterator iterator(list);
         while(iterator.hasNext()) {
             const QString str = iterator.next();
@@ -39,6 +40,37 @@ QJsonObject Processor::write(const QString& filename) const {
     return obj;
 }
 
-// QString Processor::read(const QJsonDocument& cfg, const QString& pattern) const {
-//     return nullptr;
-// }
+QString Processor::read(const QJsonDocument& cfg, const QString& pattern) const {
+    QJsonObject obj = cfg.object();
+
+    // Define distinguished name
+    QString pathname;
+
+    // Check if QJsonObject instance is empty
+    if (!obj.isEmpty()) {
+        // Set entry list to compare
+        QStringList list = obj.keys();
+
+        // Define regex
+        QRegularExpression re(pattern, QRegularExpression::CaseInsensitiveOption);
+
+        // Define iterator
+        QStringListIterator iterator(list);
+        while(iterator.hasNext()) {
+            const QString str = iterator.next();
+            QRegularExpressionMatch match = re.match(str);
+
+            // Check if finded key match with given pattern regex
+            if (match.hasMatch()) {
+
+                // Save distinguished name
+                pathname = obj.take(str).toString();
+
+                // Leave loop
+                break;
+            }
+        }
+    }
+
+    return pathname;
+}
