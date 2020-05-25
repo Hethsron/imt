@@ -161,6 +161,7 @@ class MainView : public QMainWindow
         QMenu* toolsMenu;                               /*!< Applicattttion Tools menu */
         QMenu* helpMenu;                                /*!< Applicattttion Help menu */
         QToolBar* monitoringToolBar;                    /*!< Application Monitoring ToolBar */
+        QJsonDocument config;                           /*!< Application configuration data */
 };
 
 #endif // ! MAINVIEW_HPP

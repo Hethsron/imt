@@ -1,8 +1,9 @@
 #include <view/mainview.hpp>
 #include <core/boxes.hpp>
+#include <iostream>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -28,6 +29,7 @@ void MainView::closeEvent(QCloseEvent *event) {
     switch (reply) {
     case QMessageBox::Save:
         // Save was clicked
+        saveMonitoring();
         break;
     case QMessageBox::Close:
         // Don't Save was clicked
@@ -79,50 +81,152 @@ void MainView::about() {
 }
 
 void MainView::newMonitoring() {
-    QFileDialog dialog(this);
-
-    // Setting QFileDialog instance
-    dialog.setWindowTitle("Setting up a configuration from a database");
-    dialog.setFileMode(QFileDialog::DirectoryOnly);
-    dialog.setOption(QFileDialog::DontUseNativeDialog, false);
-    dialog.setOption(QFileDialog::ReadOnly, true);
+    QString pathname = QFileDialog::getExistingDirectory(this,
+            tr("Setting up configuration from sensors database"), "",
+            QFileDialog::DontUseNativeDialog | QFileDialog::ShowDirsOnly | QFileDialog::ReadOnly | QFileDialog::DontResolveSymlinks);
     
-    // Check if there is no error
-    if (dialog.exec()) {
-        // TODO : Implementation
-        createMonitoringToolBar();
+    // Check if pathname if empty
+    if (pathname.isEmpty()) {
+        statusBar->showMessage(tr("Unable to set up configuration from sensors database"));
+        return;
     }
     else {
-        statusBar->showMessage("Cannot setting up a configuration from a database");
+        QDir dir(pathname);
+
+        // Check if directory exists
+        if (!dir.exists()) {
+            QMessageBox::information(this, 
+                    tr("Unable to find sensors database"),
+                    tr("Selected sensors database [%s] doesn't exists", pathname.toStdString().c_str()));
+            return;
+        }
+
+        // TODO : Implementation
+        std::cout << pathname.toStdString() << std::endl;
+
+        // Create monitoring toolbar
+        createMonitoringToolBar();
     }
 }
 
 void MainView::openMonitoring() {
-    QFileDialog dialog(this);
+    QString filename = QFileDialog::getOpenFileName(this,
+            tr("Open configuration file"), "",
+            tr("Configuration File (*.json)"), nullptr,
+            QFileDialog::DontUseNativeDialog | QFileDialog::ReadOnly);
 
-    // Setting QFileDialog instance
-    dialog.setWindowTitle("Open a configuration file from a previous database");
-    dialog.setFileMode(QFileDialog::ExistingFile);
-    dialog.setOption(QFileDialog::DontUseNativeDialog, false);
-    dialog.setOption(QFileDialog::ReadOnly, true);
-    dialog.setNameFilter(tr("Files (*.json)"));
-
-    // Check if there is no error
-    if (dialog.exec()) {
-        // TODO : Implementation
-        createMonitoringToolBar();
+    // Check if file name is empty
+    if (filename.isEmpty()) {
+        statusBar->showMessage(tr("Unable to open configuration file"));
+        return;
     }
     else {
-        statusBar->showMessage("Cannot open a configuration file from a previous database");
+        QFile file(filename);
+
+        // Check if file is not open on readonly
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QMessageBox::information(this, 
+                    tr("Unable to open configuration file"),
+                    file.errorString());
+            return;
+        }
+
+        // Read data configuration
+        const QString data = file.readAll();
+
+        // Close file stream
+        file.close();
+
+        // Parse data configuration to Json format
+        config = QJsonDocument::fromJson(data.toUtf8());
+
+
+        // Check if config file is empty
+        if (config.isEmpty()) {
+            QMessageBox::information(this, 
+                    tr("No configuration in file"),
+                    tr("The file you are attempting to open contains no configuration"));
+        }
+        else {
+            // TODO : Implementation
+            std::cout << data.toStdString() << std::endl;
+
+            // Create monitoring toolbar
+            createMonitoringToolBar();
+        }
     }
 }
 
 void MainView::saveMonitoring() {
-    // TODO : Implementation
+    // Check if config is empty
+    if (config.isEmpty()) {
+        QMessageBox::information(this, 
+                    tr("No configuration in the application system"),
+                    tr("The configuration you are attempting to save doesn't exist yet"));
+            return;
+    }
+    else {
+        Boxes infos;
+        QFile file(infos.getConfig());
+
+        // Check if file is not open on writeonly
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QFile::Truncate)) {
+            QMessageBox::information(this, 
+                    tr("Unable to save configuration file"),
+                    file.errorString());
+            return;
+        }
+
+        // Write Json file
+        file.write(config.toJson());
+
+        // Close file stream
+        file.close();
+
+        // Show success message
+        statusBar->showMessage(tr("Configuration file saved"));
+    }
 }
 
 void MainView::saveAsMonitoring() {
-    // TODO : Implementation
+    QString filename = QFileDialog::getSaveFileName(this, 
+            tr("Save configuration file under a new name"), "", 
+            tr("Configuration file (*.json)"));
+
+    // Check if filename is empty
+    if (filename.isEmpty()) {
+        statusBar->showMessage("Cannot save configuration file under new name");
+        return;
+    }
+    else {
+        // Check if config is empty
+        if (config.isEmpty()) {
+            QMessageBox::information(this, 
+                    tr("No configuration in the application system"),
+                    tr("The configuration you are attempting to save doesn't exist yet"));
+            return;
+        }
+        else {
+            QFile file(filename);
+
+            // Check if file is not open on writeonly
+            if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QFile::Truncate)) {
+                QMessageBox::information(this, 
+                        tr("Unable to save configuration file"),
+                        file.errorString());
+                return;
+            }
+
+            // Write Json file
+            file.write(config.toJson());
+
+            // Close file stream
+            file.close();
+
+            // Show success message
+            statusBar->showMessage(tr("Configuration file saved under new name"));
+        }
+    }
 }
 
 void MainView::closeMonitoring() {
@@ -130,6 +234,11 @@ void MainView::closeMonitoring() {
 
     // Removes all actions from the toolbar
     monitoringToolBar->clear();
+
+    // Remove configuration data from the system
+    if (!config.isEmpty()) {
+        config = QJsonDocument();
+    }
 }
 
 void MainView::createFileMenu() {
@@ -199,7 +308,7 @@ void MainView::createMonitoringMenu() {
     // Setting Save As Action
     QAction* saveAsAct = new QAction(saveIcon, tr("&Save As...          "), this);
     saveAsAct->setShortcuts(QKeySequence::SaveAs);
-    saveAsAct->setStatusTip(tr("Save the configuration file under a new name"));
+    saveAsAct->setStatusTip(tr("Save the configuration file under new name"));
     saveAsAct->setIconVisibleInMenu(true);
     connect(saveAsAct, &QAction::triggered, this, &MainView::saveAsMonitoring);
     monitoringMenu->addAction(saveAsAct);

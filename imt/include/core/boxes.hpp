@@ -73,6 +73,15 @@ class Boxes
          */
         virtual QString getSplash() const;
 
+        
+        /**
+         * @fn      getConfig
+         * @brief   Virtual function that returns distinguished name of application configuration file
+         * 
+         * @return  Distinguished name of application configuration file
+         */
+        virtual QString getConfig() const;
+
         /**
          * @fn      getStyle
          * @brief   Virtual function that returns application stylesheet
@@ -133,6 +142,7 @@ class Boxes
         QString icon;                       /*!< Distinguished name of application Icon */
         QString splash;                     /*!< Distinguished name of application splashscreen */
         QString background;                 /*!< Distinguished name of application background */
+        QString config;                     /*!< Distinguished name of application configuration file */
         QString style;                      /*!< Application stylesheet */
         QString stylesheet;                 /*!< Application global stylesheet */
         QString message;                    /*!< Application quit message */
