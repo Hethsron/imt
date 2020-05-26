@@ -108,6 +108,18 @@ class MainView : public QMainWindow
          */
         virtual void closeMonitoring();
 
+        /**
+         * @fn      clearItems
+         * @brief   Virtual function that references CLear Items action
+         */
+        virtual void clearItems();
+
+        /**
+         * @fn      openRecent
+         * @brief   Virtual function that references Open Recent configuration action
+         */
+        virtual void openRecent();
+
     private:
         /**
          * @fn      createFileMenu
@@ -151,10 +163,17 @@ class MainView : public QMainWindow
          */
         virtual void createHelpMenu();
 
+        /**
+         * @fn      updateRecentActions
+         * @brief   Virtual function that updates recent actions in MenuBar
+         */
+        virtual void updateRecentActions();
+
         QWidget* widget;                                /*!< Application central widget */
         QStatusBar* statusBar;                          /*!< Application status bar */
         QMenuBar* menuBar;                              /*!< Application menu bar */
         QMenu* fileMenu;                                /*!< Applicattttion File menu */
+        QMenu* recentFilesMenu;                         /*!< Application recent files menu */
         QMenu* monitoringMenu;                          /*!< Application Monitoring menu */
         QMenu* editMenu;                                /*!< Applicattttion Edit menu */
         QMenu* viewMenu;                                /*!< Applicattttion View menu */
@@ -162,6 +181,8 @@ class MainView : public QMainWindow
         QMenu* helpMenu;                                /*!< Applicattttion Help menu */
         QToolBar* monitoringToolBar;                    /*!< Application Monitoring ToolBar */
         QJsonDocument config;                           /*!< Application configuration data */
+        QList<QAction*> recentFilesAct;                 /*!< Application recent files action list */
+        QStringList recentFiles;                        /*!< Application recent files */
 };
 
 #endif // ! MAINVIEW_HPP

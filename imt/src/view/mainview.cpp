@@ -3,7 +3,7 @@
 #include <core/boxes.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -185,6 +185,15 @@ void MainView::saveMonitoring() {
         // Close file stream
         file.close();
 
+        // Store recent config file
+        recentFiles.append(infos.getConfig());
+
+        // Remove duplicates entry from list
+        recentFiles.removeDuplicates();
+
+        // Update recent actions
+        updateRecentActions();
+
         // Show success message
         statusBar->showMessage(tr("Configuration file saved"));
     }
@@ -225,6 +234,15 @@ void MainView::saveAsMonitoring() {
             // Close file stream
             file.close();
 
+            // Store recent config file
+            recentFiles.append(filename);
+
+            // Remove duplicates entry from list
+            recentFiles.removeDuplicates();
+
+            // Update recent actions
+            updateRecentActions();
+
             // Show success message
             statusBar->showMessage(tr("Configuration file saved under new name"));
         }
@@ -241,6 +259,23 @@ void MainView::closeMonitoring() {
     if (!config.isEmpty()) {
         config = QJsonDocument();
     }
+}
+
+void MainView::clearItems() {
+    const int sizes = static_cast<int>(7);
+
+    // Clear list of files
+    if (!recentFiles.isEmpty()) {
+        recentFiles.clear();
+
+        for (int i = 0; i <= sizes; ++i) {
+            recentFilesAct.at(i)->setVisible(false);
+        }
+    }
+}
+
+void MainView::openRecent() {
+    
 }
 
 void MainView::createFileMenu() {
@@ -270,6 +305,19 @@ void MainView::createFileMenu() {
     fileMenu->addAction(exitAct);
 }
 
+void MainView::updateRecentActions() {
+    const int sizes = static_cast<int>(7);
+
+    // Check if file is empty
+    if (!recentFiles.isEmpty()) {
+        for (int i = 0; recentFiles.size() <= sizes && i < recentFiles.size(); ++i) {
+            recentFilesAct.at(i)->setText(recentFiles.at(i));
+            recentFilesAct.at(i)->setVisible(true);
+        }
+        recentFilesAct.at(sizes)->setVisible(true);
+    }
+}
+
 void MainView::createMonitoringMenu() {
     Boxes infos;
     monitoringMenu = menuBar->addMenu(tr("&Monitoring"));
@@ -288,6 +336,9 @@ void MainView::createMonitoringMenu() {
     connect(newAct, &QAction::triggered, this, &MainView::newMonitoring);
     monitoringMenu->addAction(newAct);
 
+    // Adding seperator
+    monitoringMenu->addSeparator();
+
     // Setting Open Action
     QAction* openAct = new QAction(openIcon, tr("&Open...           "), this);
     openAct->setShortcuts(QKeySequence::Open);
@@ -296,6 +347,30 @@ void MainView::createMonitoringMenu() {
     connect(openAct, &QAction::triggered, this, &MainView::openMonitoring);
     monitoringMenu->addAction(openAct);
 
+    // Setting Open Recent Action
+    recentFilesMenu = monitoringMenu->addMenu(tr("&Open Recent          "));
+    
+    const int sizes = static_cast<int>(7);
+    for (int i = 0; i < sizes; ++i) {
+        QAction* recentAct = new QAction(this);
+        recentAct->setVisible(false);
+        connect(recentAct, &QAction::triggered, this, &MainView::openRecent);
+        recentFilesAct.append(recentAct);
+    }
+
+    QAction* clearItem = new QAction(tr("&Clear Items           "), this);
+    clearItem->setVisible(false);
+    connect(clearItem, &QAction::triggered, this, &MainView::clearItems);
+    recentFilesAct.append(clearItem);
+
+    QListIterator<QAction*> iterator(recentFilesAct);
+    while (iterator.hasNext()) {
+        recentFilesMenu->addAction(iterator.next());
+    }
+
+    // Update Recent Actions
+    updateRecentActions();    
+    
     // Adding seperator
     monitoringMenu->addSeparator();
 
