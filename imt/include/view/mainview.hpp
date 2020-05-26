@@ -183,6 +183,7 @@ class MainView : public QMainWindow
         QJsonDocument config;                           /*!< Application configuration data */
         QList<QAction*> recentFilesAct;                 /*!< Application recent files action list */
         QStringList recentFiles;                        /*!< Application recent files */
+        bool isToolBar;                                 /*!< Application main tool bar status */
 };
 
 #endif // ! MAINVIEW_HPP

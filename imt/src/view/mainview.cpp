@@ -3,7 +3,7 @@
 #include <core/boxes.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), isToolBar(false) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -104,8 +104,18 @@ void MainView::newMonitoring() {
         // Update configuration
         config.setObject(Writer::release(cfg));
 
-        // Create monitoring toolbar
-        createMonitoringToolBar();
+        // Check if tool bar exists
+        if (!isToolBar) {
+            // Create monitoring toolbar
+            createMonitoringToolBar();
+        }
+        else {
+            // Removes all actions from the toolbar
+            monitoringToolBar->clear();
+
+            // Create monitoring toolbar
+            createMonitoringToolBar();
+        }
 
         // TODO : Implementation (Navigation bar)
     }
@@ -151,8 +161,18 @@ void MainView::openMonitoring() {
         }
         else {
             
-            // Create monitoring toolbar
-            createMonitoringToolBar();
+            // Check if tool bar exists
+            if (!isToolBar) {
+                // Create monitoring toolbar
+                createMonitoringToolBar();
+            }
+            else {
+                // Removes all actions from the toolbar
+                monitoringToolBar->clear();
+
+                // Create monitoring toolbar
+                createMonitoringToolBar();
+            }
 
             // TODO : Implementation (Navigation bar)
         }
@@ -254,6 +274,7 @@ void MainView::closeMonitoring() {
 
     // Removes all actions from the toolbar
     monitoringToolBar->clear();
+    isToolBar = false;
 
     // Remove configuration data from the system
     if (!config.isEmpty()) {
@@ -434,6 +455,8 @@ void MainView::createMonitoringToolBar() {
     xsensAct->setStatusTip(tr("Xsens sensors data analysis"));
     // TODO : connect
     monitoringToolBar->addAction(xsensAct);
+
+    isToolBar = true;
 }
 
 void MainView::createEditMenu() {
