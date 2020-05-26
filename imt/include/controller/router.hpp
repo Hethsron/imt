@@ -27,16 +27,6 @@
 #include <controller/subject.hpp>
 #include <controller/observer.hpp>
 
-namespace ROUTER {
-    /**
-     * @fn          render
-     * @brief       Rendering one shot notification
-     * 
-     * @param[in]           o       Observer instance
-     */
-    void render(Observer* o);
-}
-
 class Router : public Subject
 {
     public:
@@ -59,6 +49,14 @@ class Router : public Subject
          * @param[in]       o       Observer instance
          */
         virtual void subscribe(Observer* o) override;
+
+        /**
+         * @fn          release
+         * @brief       Static function that allows to treat given observer
+         * 
+         * @param[in]           o       Observer instance
+         */
+        static void release(Observer* o);
 
         /**
          * @fn      unsubscribe

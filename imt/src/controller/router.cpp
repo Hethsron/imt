@@ -13,10 +13,8 @@ void Router::unsubscribe(Observer* o) {
     collections.removeOne(o);
 }
 
-namespace ROUTER {
-    void render(Observer* o) {
-        Router* router = new Router();
-        router->subscribe(o);
-        router->notify();
-    }
+void Router::release(Observer* o) {
+    Router* router = new Router();
+    router->subscribe(o);
+    router->notify();
 }

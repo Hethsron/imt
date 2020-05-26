@@ -27,17 +27,6 @@
 #include <core/command.hpp>
 #include <core/processor.hpp>
 
-namespace WRITER {
-    /**
-     * @fn          execute
-     * @brief       Function that writes configuration data from sensors database
-     *  
-     * @param[in]           cfg     Distinguished name of sensors database
-     * @return      QJsonObject instance
-     */
-    QJsonObject execute(const QString& cfg);
-}
-
 class Writer : public Command
 {
     public:
@@ -56,12 +45,21 @@ class Writer : public Command
         virtual ~Writer();
 
         /**
+         * @fn       release
+         * @brief    Static function that writes configuration data from sensors database
+         *  
+         * @param[in]       cfg     Distinguished name of sensors database
+         * @return          QJsonObject instance
+         */
+        static QJsonObject release(const QString& cfg);
+
+        /**
          * @fn      getJson
          * @brief   Virtual function that returns inner QJSonObject instance
          * 
-         * @return  QJsonObject instance
+         * @return          QJsonObject instance
          */
-        QJsonObject getJson() const;
+        virtual QJsonObject getJson() const;
 
         /**
          * @fn      execute
@@ -69,6 +67,7 @@ class Writer : public Command
          */
         virtual void execute() override;
 
+    private:
         Processor cpu;                              /*!< Processor instance used as receiver */
         QString config;                             /*!< Distinguished name of sensors database */
         QJsonObject json;                           /*!< Configuration file Json data */

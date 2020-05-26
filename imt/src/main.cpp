@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
 
     int ret;
     try {
-        ROUTER::render(new Manager());
+        Router::release(new Manager());
         ret = app.exec();
     }
     catch(const std::bad_alloc &) {

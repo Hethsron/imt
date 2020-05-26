@@ -102,7 +102,7 @@ void MainView::newMonitoring() {
         }
 
         // Update configuration
-        config.setObject(WRITER::execute(cfg));
+        config.setObject(Writer::release(cfg));
 
         // Create monitoring toolbar
         createMonitoringToolBar();

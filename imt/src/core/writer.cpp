@@ -13,10 +13,8 @@ void Writer::execute() {
     json = cpu.write(config);
 }
 
-namespace WRITER {
-    QJsonObject execute(const QString& cfg) {
-        Writer writer(cfg);
-        writer.execute();
-        return writer.getJson();
-    }
+QJsonObject Writer::release(const QString& cfg) {
+    Writer w(cfg);
+    w.execute();
+    return w.getJson();
 }
