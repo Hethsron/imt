@@ -295,8 +295,67 @@ void MainView::clearItems() {
     }
 }
 
+void MainView::openRecentFile(const QString& filename) {
+    // Check if file name is empty
+    if (filename.isEmpty()) {
+        statusBar->showMessage(tr("Unable to open configuration file"));
+        return;
+    }
+    else {
+        QFile file(filename);
+
+        // Check if file is not open on readonly
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QMessageBox::information(this, 
+                    tr("Unable to open configuration file"),
+                    file.errorString());
+            return;
+        }
+
+        // Read data configuration
+        const QString data = file.readAll();
+
+        // Close file stream
+        file.close();
+
+        // Parse data configuration to Json format
+        config = QJsonDocument::fromJson(data.toUtf8());
+
+
+        // Check if config file is empty
+        if (config.isEmpty()) {
+            QMessageBox::information(this, 
+                    tr("No configuration in file"),
+                    tr("The file you are attempting to open contains no configuration"));
+        }
+        else {
+            
+            // Check if tool bar exists
+            if (!isToolBar) {
+                // Create monitoring toolbar
+                createMonitoringToolBar();
+            }
+            else {
+                // Removes all actions from the toolbar
+                monitoringToolBar->clear();
+
+                // Create monitoring toolbar
+                createMonitoringToolBar();
+            }
+
+            // TODO : Implementation (Navigation bar)
+        }
+    }
+}
+
 void MainView::openRecent() {
+    // Catching sended action
+    QAction* action = qobject_cast<QAction*>(sender());
     
+    // Check if sended action is not null
+    if (action) {
+        openRecentFile(action->text());
+    }
 }
 
 void MainView::createFileMenu() {

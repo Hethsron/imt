@@ -169,6 +169,14 @@ class MainView : public QMainWindow
          */
         virtual void updateRecentActions();
 
+        /**
+         * @fn      openRecentFile
+         * @brief   Virtual function that open recent configuration file in MenuBar
+         * 
+         * @param[in]       filename        Recent configuration file
+         */
+        virtual void openRecentFile(const QString& filename);
+
         QWidget* widget;                                /*!< Application central widget */
         QStatusBar* statusBar;                          /*!< Application status bar */
         QMenuBar* menuBar;                              /*!< Application menu bar */
