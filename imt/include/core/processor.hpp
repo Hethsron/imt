@@ -45,10 +45,10 @@ class Processor
          * @fn      write
          * @brief   Virtual function that writes configuration data from given sensors database
          * 
-         * @param[in]       filename        Distinguished name of sensors database
+         * @param[in]       cfg             Distinguished name of sensors database
          * @return          QJsonObject instance
          */
-        virtual QJsonObject write(const QString& filename) const;
+        virtual QJsonObject write(const QString& cfg) const;
 
         /**
          * @fn      read
@@ -59,6 +59,15 @@ class Processor
          * @return          Distinguished name extracted from configuration data
          */
         virtual QString read(const QJsonDocument& cfg, const QString& pattern) const;
+
+        /**
+         * @fn      deepRead
+         * @brief   Virtual function that reads list of activities and subjects from given sensor database
+         * 
+         * @param[in]       cfg             Distinguished name of sensor database
+         * @return          List of activities and subjects
+         */
+        virtual QList<QStringList> deepRead(const QString& cfg) const;
 };
 
 #endif // ! PROCESSOR_HPP

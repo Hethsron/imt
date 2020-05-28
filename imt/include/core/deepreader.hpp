@@ -43,10 +43,34 @@ class DeepReader : public Command
          * @brief   Destructor of class
          */
         virtual ~DeepReader();
+        
+        /**
+         * @fn      release
+         * @brief   Static function that returns list of subjects from activities of sensor database
+         * 
+         * @param[in]       cfg     Distinguished name of sensor database
+         * @return          List of subjects from activities of sensor database
+         */
+        static QList<QStringList> release(const QString& cfg);
+
+        /**
+         * @fn      execute
+         * @brief   Virtual function that performs operations on some external data source
+         */
+        virtual void execute();
+
+        /**
+         * @fn      getAssets
+         * @brief   Virtual function that returns list of subjects from activities of sensor database
+         * 
+         * @return          List of subjects from activities of sensor database
+         */
+        virtual QList<QStringList> getAssets() const;
 
     private:
         Processor cpu;                              /*!< Processor instance used as receiver */
         QString config;                             /*!< Distinguished name of sensor database */
+        QList<QStringList> assets;                  /*!< List of subjects from activities of sensor database */
 };
 
 #endif // ! DEEPREADER_HPP
