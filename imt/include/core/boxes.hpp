@@ -115,6 +115,14 @@ class Boxes
         virtual QString getBackground() const;
 
         /**
+         * @fn      getQHC
+         * @brief   Virtual function that returns Qt Help collection file of html
+         * 
+         * @return  Application help collection file
+         */
+        virtual QString getQHC() const;
+
+        /**
          * @fn      getHeight
          * @brief   Virtual function that returns application height
          * 
@@ -146,6 +154,7 @@ class Boxes
         QString style;                      /*!< Application stylesheet */
         QString stylesheet;                 /*!< Application global stylesheet */
         QString message;                    /*!< Application quit message */
+        QString qhc;                        /*!< Application help collection file */
         int height;                         /*!< Application height */
         int width;                          /*!< Application width */
 };

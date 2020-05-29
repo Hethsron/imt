@@ -1,9 +1,10 @@
 #include <view/mainview.hpp>
+#include <view/helpbrowser.hpp>
 #include <core/writer.hpp>
 #include <core/boxes.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), isToolBar(false) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), isToolBar(false) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -11,6 +12,7 @@ MainView::MainView(QWidget* parent)
         setCentralWidget(widget);
         setStyleSheet(infos.getStyleSheet());
         
+        createHelpWindow();
         createActions();
         createStatusBar();
     }
@@ -45,6 +47,44 @@ void MainView::closeEvent(QCloseEvent *event) {
     }
 }
 
+void MainView::createHelpWindow() {
+    Boxes infos;
+
+    // Creating QHelpEngine instance
+    QHelpEngine* helpEngine = new QHelpEngine(infos.getQHC());
+    helpEngine->setupData();
+
+    // Setting help window
+    helpWindow = new QDockWidget(tr("&Help"), this);
+
+    // Setting allowed areas for QDockWidget
+    helpWindow->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
+    // Setting splitter
+    QSplitter* helpPanel = new QSplitter(Qt::Horizontal);
+
+    // Setting help browser
+    HelpBrowser* helpBrowser = new HelpBrowser(helpEngine);
+    helpBrowser->setSource(QUrl("qthelp://imt.summary/doc/index.html"));
+
+    // Setting tab widget
+    QTabWidget* tabWidget = new QTabWidget();
+    tabWidget->addTab((QWidget*) helpEngine->contentWidget(), tr("Summary"));
+    tabWidget->addTab((QWidget*) helpEngine->indexWidget(), tr("Index"));
+
+    helpPanel->insertWidget(0, tabWidget);
+    helpPanel->insertWidget(1, helpBrowser);
+    helpPanel->setStretchFactor(1, 1);
+
+    helpWindow->setWidget(helpPanel);
+    helpWindow->hide();
+    
+    connect((QWidget*) helpEngine->contentWidget(),SIGNAL(linkActivated(QUrl)), helpBrowser, SLOT(setSource(QUrl)));
+    connect((QWidget*) helpEngine->indexWidget(), SIGNAL(linkActivated(QUrl, QString)), helpBrowser, SLOT(setSource(QUrl)));
+
+    addDockWidget(Qt::RightDockWidgetArea, helpWindow);
+}
+
 void MainView::createActions() {
     Boxes infos;
     menuBar->setStyleSheet(infos.getStyle());
@@ -72,7 +112,7 @@ void MainView::createStatusBar() {
 
 void MainView::about() {
     QMessageBox::about(this, tr("About IMT"),
-            tr("<b>IMT</b> "
+            tr("<b>IMT ® Plateform</b> "
             "<p>Version: 1.0.0 Release 1<br>"
             "Date: 2020-05-21<br>"
             "Dependencies : QT5 Framework<br>"
@@ -615,7 +655,7 @@ void MainView::createHelpMenu() {
     summaryAct->setShortcuts(QKeySequence::HelpContents);
     summaryAct->setStatusTip(tr("Provide informations about application's functionalities and usage"));
     summaryAct->setIconVisibleInMenu(true);
-    // TODO : connect
+    connect(summaryAct, &QAction::triggered, helpWindow, &QWidget::show);
     helpMenu->addAction(summaryAct);
 
     // Adding separator

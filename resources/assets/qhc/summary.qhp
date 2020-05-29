@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>imt.summary</namespace>
+    <virtualFolder>doc</virtualFolder>
+    <filterSection>
+        <toc>
+            <section title="IMT ® Plateform" ref="../html/index.html">
+                <section title="Preface" ref="../html/preface.html" />
+                <section title="First Steps" ref="../html/firststeps.html" />
+                <section title="Advanced Topics" ref="../html/advancedtopics.html" />
+                <section title="Troubleshooting" ref="../html/troubleshooting.html" />
+                <section title="Known Limitations" ref="../html/knownlimitations.html" />
+                <section title="Change Log" ref="../html/changelog.html" />
+            </section>
+        </toc>
+        <keywords>
+            <keyword name="Preface" ref="../html/preface.html"/>
+            <keyword name="First Steps" ref="../html/firststeps.html"/>
+            <keyword name="Advanced Topics" ref="../html/advancedtopics.html" />
+            <keyword name="Troubleshooting" ref="../html/troubleshooting.html" />
+            <keyword name="Known Limitations" ref="../html/knownlimitations.html" />
+            <keyword name="Change Log" ref="../html/changelog.html" />
+        </keywords>
+        <files>
+            <file>../html/index.html</file>
+            <file>../html/preface.html</file>
+            <file>../html/firststeps.html</file>
+            <file>../html/advancedtopics.html</file>
+            <file>../html/troubleshooting.html</file>
+            <file>../html/knownlimitations.html</file>
+            <file>../html/changelog.html</file>
+        </files>
+    </filterSection>
+</QtHelpProject>

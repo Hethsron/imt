@@ -24,6 +24,7 @@
  *  \date 			21th May 2020
  */
 
+#include <view/helpbrowser.hpp>
 #include <view/mainview.hpp>
 #include <view/splashview.hpp>
 

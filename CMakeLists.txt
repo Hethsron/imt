@@ -25,6 +25,24 @@ set(LIBS_GOOGLETEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/googletest)
 set(SRCS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME})
 set(TESTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
+# Compress html files
+find_program(GENERATOR qhelpgenerator)
+if(NOT GENERATOR)
+    message(FATAL_ERROR "Generator not found - cannot compress ${CMAKE_PROJECT_NAME} html files")
+else(NOT GENERATOR)
+	message(STATUS "Generator found - compressing ${CMAKE_PROJECT_NAME} html files")
+
+	# Set qcollectiongenerator <input> and <output> file
+	set(GENERATOR_IN ${CMAKE_CURRENT_SOURCE_DIR}/resources/assets/qhc/summary.qhcp)
+	set(GENERATOR_OUT ${CMAKE_CURRENT_SOURCE_DIR}/resources/assets/qhc/summary.qhc)
+
+	add_custom_target(qhc ALL
+		COMMAND ${GENERATOR} ${GENERATOR_IN} -o ${GENERATOR_OUT}
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		COMMENT "Compress ${CMAKE_PROJECT_NAME} the html files"
+	)
+endif(NOT GENERATOR)
+
 # Include this directories to find the headers files
 include_directories(${LIBS_GOOGLETEST_DIR})
 include_directories(${SRCS_DIR})

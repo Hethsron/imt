@@ -71,6 +71,12 @@ class MainView : public QMainWindow
          */
         virtual void createStatusBar();
 
+        /**
+         * @fn      createHelpWindow
+         * @brief   Virtual function that creates Help Window contents for QMenuBar
+         */
+        virtual void createHelpWindow();
+
     private slots:
         /**
          * @fn      about
@@ -191,6 +197,7 @@ class MainView : public QMainWindow
         QJsonDocument config;                           /*!< Application configuration data */
         QList<QAction*> recentFilesAct;                 /*!< Application recent files action list */
         QStringList recentFiles;                        /*!< Application recent files */
+        QDockWidget* helpWindow;                        /*!< Application help window */
         bool isToolBar;                                 /*!< Application main tool bar status */
 };
 

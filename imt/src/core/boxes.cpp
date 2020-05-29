@@ -1,7 +1,7 @@
 #include <core/boxes.hpp>
 
 Boxes::Boxes()
-    : collections(QList<QString>()), title(QString()), icon(QString()), splash(QString()), background(QString()), config(QString()), style(QString()), stylesheet(QString()), message(QString()), height(820), width(1440) {
+    : collections(QList<QString>()), title(QString()), icon(QString()), splash(QString()), background(QString()), config(QString()), style(QString()), stylesheet(QString()), message(QString()), qhc(QString()), height(820), width(1440) {
     assignment();
 }
 
@@ -41,9 +41,11 @@ void Boxes::assignment() {
         if (dir.cdUp()) {
             #if _WIN32
                 QString filename = dir.filePath("css\\style.css");
+                qhc = dir.filePath("qhc\\summary.qhc");
                 config = dir.filePath("json\\config.json");
             #else
                 QString filename = dir.filePath("css/style.css");
+                qhc = dir.filePath("qhc/summary.qhc");
                 config = dir.filePath("json/config.json");
             #endif
 
@@ -99,6 +101,10 @@ QString Boxes::getStyleSheet() const {
 
 QString Boxes::getMessage() const {
     return message;
+}
+
+QString Boxes::getQHC() const {
+    return qhc;
 }
 
 int Boxes::getHeight() const {
