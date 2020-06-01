@@ -246,9 +246,13 @@ class MainView : public QMainWindow
         QLabel* playlistDuration;                       /*!< Application innder playlist duration label */ 
         QSpinBox* playlistActivities;                   /*!< Aplication inner playlist activities QSpinBox */
         QSpinBox* playlistSubjects;                     /*!< Application inner playlist subjects QSpinBox */
-        QPushButton* loadButton;                        /*!< Application inner playlist Load push button */
-        QPushButton* annotationButton;                  /*!< Application inner playlist Annotion push button */
+        QPushButton* loadButton;                        /*!< Application inner playlist Upload push button */
+        QPushButton* annotationButton;                  /*!< Application inner playlist Annotation push button */
+        QPushButton* colorButton;                       /*!< Application inner playlist Color Viewer button */
+        QPushButton* depthButton;                       /*!< Application inner playlist Depth Viewer button */
+        QPushButton* dButton;                           /*!< Applicatioo inner playlist 3D Viewer button */
         QPushButton* editorButton;                      /*!< Application inner playlist Editor push button */
+        QPushButton* skeletonButton;                    /*!< Application inner playlist Skeleton push button */
         bool isToolBar;                                 /*!< Application main tool bar status */
         bool isKinect;                                  /*!< Application kinet tool status */
 };

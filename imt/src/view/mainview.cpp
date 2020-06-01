@@ -5,7 +5,7 @@
 #include <core/boxes.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), editorButton(nullptr), isToolBar(false), isKinect(false) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), isToolBar(false), isKinect(false) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -389,6 +389,38 @@ void MainView::closeKinectVisualizer() {
         }
     }
 
+    // Close inner Color Viewer button
+    if (colorButton != nullptr) {
+        // Check if Color Viewer button is closed
+        if (colorButton->close()) {
+            colorButton = nullptr;
+        }
+    }
+
+    // Close inner Depth Viewer button
+    if (depthButton != nullptr) {
+        // Check if Depth Viewer button is closed
+        if (depthButton->close()) {
+            depthButton = nullptr;
+        }
+    }
+
+    // Close inner 3D Viewer button
+    if (dButton != nullptr) {
+        // Check if 3D Viewer button is closed
+        if (dButton->close()) {
+            dButton = nullptr;
+        }
+    }
+
+    // Close inner Skeleton button
+    if (skeletonButton !=  nullptr) {
+        // Check if Skeleton button is closed
+        if (skeletonButton->close()) {
+            skeletonButton = nullptr;
+        }
+    }
+
     // Close inner Editor button
     if (editorButton != nullptr) {
         // Check if Editor button is closed
@@ -552,17 +584,37 @@ void MainView::kinectVisualizer() {
     // Define Upload push button
     loadButton = new QPushButton(tr("Upload"), this);
     loadButton->setStatusTip(tr("Upload kinect sensor database"));
-    // TODO : connect annotation push button
+    // TODO : connect Upload push button
+
+    // Define Skeleton push button
+    skeletonButton = new QPushButton(tr("Skeleton"), this);
+    skeletonButton->setStatusTip(tr("Access to skeleton tracking joints"));
+    // TODO : connect Skeleton push button
+
+    // Define Color Viewer push button
+    colorButton = new QPushButton(tr("Color"), this);
+    colorButton->setStatusTip(tr("Display color view of the data captured by Kinect"));
+    // TODO : connect Color Viewer push button
+
+    // Define 3D Viewer push button
+    dButton = new QPushButton(tr("3D"), this);
+    dButton->setStatusTip(tr("Display 3D view of the data captured by Kinect"));
+    // TODO : connect 3D Viewer push button
+
+    // Define Depth Viewer push button
+    depthButton = new QPushButton(tr("Depth"), this);
+    depthButton->setStatusTip(tr("Display depth view of the data captured by Kinect"));
+    // TODO : connect Depth Viewer push button
 
     // Define Annotation push button
     annotationButton = new QPushButton(tr("Annotation"), this);
     annotationButton->setStatusTip(tr("Make annotations"));
-    // TODO : connect annotation push button
+    // TODO : connect Annotation push button
 
     // Define Editor push button
     editorButton = new QPushButton(tr("Video Editor"), this);
     editorButton->setStatusTip(tr("Edit videos and record voice"));
-    // TODO : connect editor push button
+    // TODO : connect Editor push button
 
     // Define player control
     controls = new PlayerControls(this);
@@ -585,8 +637,13 @@ void MainView::kinectVisualizer() {
     controlLayout->addStretch(1);
     controlLayout->addWidget(controls);
     controlLayout->addStretch(1);
-    controlLayout->addWidget(annotationButton);
+    controlLayout->addWidget(skeletonButton);
     controlLayout->addStretch(1);
+    controlLayout->addWidget(colorButton);
+    controlLayout->addWidget(dButton);
+    controlLayout->addWidget(depthButton);
+    controlLayout->addStretch(1);
+    controlLayout->addWidget(annotationButton);
     controlLayout->addWidget(editorButton);
     controlLayout->addStretch(1);
 
