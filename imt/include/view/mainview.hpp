@@ -24,6 +24,8 @@
  *  \date 			21th May 2020
  */
 
+#include <model/playlist.hpp>
+#include <view/playercontrols.hpp>
 #include <QtWidgets/QtWidgets>
 #include <QtGui/QtGui>
 
@@ -36,7 +38,7 @@ class MainView : public QMainWindow
          * 
          * @param[in]       parent      QWidget parent instance
          */
-        explicit MainView(QWidget* parent = 0);
+        explicit MainView(QWidget* parent = nullptr);
 
         /**
          * @fn      ~MainView
@@ -47,9 +49,9 @@ class MainView : public QMainWindow
     protected:
         /**
          * @fn      closeEvent
-         * @brief   Virtual function that send close event to widget that the user wants to close
+         * @brief   Virtual function that receives close event for the widget
          * 
-         * @param[in]       event       Close event received by the event handler
+         * @param[in]       event       Close event received
          */
         virtual void closeEvent(QCloseEvent *event) override;
 
@@ -126,6 +128,42 @@ class MainView : public QMainWindow
          */
         virtual void openRecent();
 
+        /**
+         * @fn      kinectVisualizer
+         * @brief   Virtual function that references Kinect Action in QToolBar
+         */
+        virtual void kinectVisualizer();
+
+        /**
+         * @fn      closeKinectVisualizer
+         * @brief   Virtual function that references kinect closing visualizer Action in QMenu
+         */
+        virtual void closeKinectVisualizer();
+
+        /**
+         * @fn      ambiantVisualizer
+         * @brief   Virtual function that references Ambiant Action in QToolBar
+         */
+        virtual void ambiantVisualizer();
+
+        /**
+         * @fn      robotsVisualizer
+         * @brief   Virtual function that references Robots Action in QToolBar
+         */
+        virtual void robotsVisualizer();
+
+        /**
+         * @fn      wearablesVisualizer
+         * @brief   Virtual function that references Wearables Action in QToolBar
+         */
+        virtual void wearablesVisualizer();
+
+        /**
+         * @fn      xsensVisualizer
+         * @brief   Virtual function that references Xsens Action in QToolBar
+         */
+        virtual void xsensVisualizer();
+
     private:
         /**
          * @fn      createFileMenu
@@ -198,7 +236,21 @@ class MainView : public QMainWindow
         QList<QAction*> recentFilesAct;                 /*!< Application recent files action list */
         QStringList recentFiles;                        /*!< Application recent files */
         QDockWidget* helpWindow;                        /*!< Application help window */
+        QMediaPlayer* player;                           /*!< Application inner media player */
+        QMediaPlaylist* playlist;                       /*!< Application inner media playlist */
+        QVideoWidget* videoWidget;                      /*!< Application inner video widget */
+        PlayList* playlistModel;                        /*!< Application inner playlist model */
+        PlayerControls* controls;                       /*!< Application inner player controls */
+        QAbstractItemView* playlistView;                /*!< Application inner playlist view */
+        QSlider* playlistSlider;                        /*!< Application inner playlist slider */
+        QLabel* playlistDuration;                       /*!< Application innder playlist duration label */ 
+        QSpinBox* playlistActivities;                   /*!< Aplication inner playlist activities QSpinBox */
+        QSpinBox* playlistSubjects;                     /*!< Application inner playlist subjects QSpinBox */
+        QPushButton* loadButton;                        /*!< Application inner playlist Load push button */
+        QPushButton* annotationButton;                  /*!< Application inner playlist Annotion push button */
+        QPushButton* editorButton;                      /*!< Application inner playlist Editor push button */
         bool isToolBar;                                 /*!< Application main tool bar status */
+        bool isKinect;                                  /*!< Application kinet tool status */
 };
 
 #endif // ! MAINVIEW_HPP

@@ -37,7 +37,7 @@ class SplashView : public QSplashScreen
          * @param[in]       app         QApplication instance
          * @param[in]       parent      QWidget parent instance
          */
-        explicit SplashView(QWidget* parent = 0);
+        explicit SplashView(QWidget* parent = nullptr);
 
         /**
          * @fn      ~SplashView

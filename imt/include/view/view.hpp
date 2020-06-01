@@ -25,7 +25,9 @@
  */
 
 #include <view/helpbrowser.hpp>
+#include <view/playercontrols.hpp>
 #include <view/mainview.hpp>
 #include <view/splashview.hpp>
+#include <view/videoview.hpp>
 
 #endif // ! VIEW_HPP

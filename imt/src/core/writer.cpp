@@ -1,7 +1,7 @@
 #include <core/writer.hpp>
 
 Writer::Writer(const QString& cfg)
-    : Command(), cpu(Processor()), config(cfg), json(QJsonObject()) {}
+    : Command(), config(cfg), json(QJsonObject()) {}
 
 Writer::~Writer() {}
 

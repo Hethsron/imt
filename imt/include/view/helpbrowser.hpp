@@ -38,7 +38,7 @@ class HelpBrowser : public QTextBrowser
          * @param[in]       heg         QHelpEngine instance
          * @param[in]       parent      QWidget parent instance
          */
-        explicit HelpBrowser(QHelpEngine* heg, QWidget* parent = 0);
+        explicit HelpBrowser(QHelpEngine* heg, QWidget* parent = nullptr);
 
         /**
          * @fn      ~HelpBrowser

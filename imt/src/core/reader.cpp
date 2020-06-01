@@ -1,7 +1,7 @@
 #include <core/reader.hpp>
 
 Reader::Reader(const QJsonDocument& cfg, const QString& p)
-    : Command(), cpu(Processor()), config(cfg), pattern(p), dir(QString()) {}
+    : Command(), config(cfg), pattern(p), dir(QString()) {}
 
 Reader::~Reader() {}
 

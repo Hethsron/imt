@@ -1,7 +1,7 @@
 #include <core/deepreader.hpp>
 
 DeepReader::DeepReader(const QString& cfg)
-    : Command(), cpu(Processor()), config(cfg), assets(QList<QStringList>()) {}
+    : Command(), config(cfg), assets(QList<QStringList>()) {}
 
 DeepReader::~DeepReader() {}
 

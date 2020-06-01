@@ -1,6 +1,7 @@
 #include <core/processor.hpp>
 
-Processor::Processor() {}
+Processor::Processor()
+    : QObject() {}
 
 Processor::~Processor() {}
 

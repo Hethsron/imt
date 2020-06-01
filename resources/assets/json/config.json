@@ -1,9 +1,9 @@
 {
-    "Ambiant": "Sensors/Ambiant",
-    "Annotations": "Sensors/Annotations",
-    "Kinect": "Sensors/Kinect",
-    "Robots": "Sensors/Robots",
-    "Wearables": "Sensors/Wearables",
-    "Xsens": "Sensors/Xsens",
-    "robot": "Sensors/robot"
+    "Ambiant": "/home/hethsron/test/build/Sensors/Ambiant",
+    "Annotations": "/home/hethsron/test/build/Sensors/Annotations",
+    "Kinect": "/home/hethsron/test/build/Sensors/Kinect",
+    "Robots": "/home/hethsron/test/build/Sensors/Robots",
+    "Wearables": "/home/hethsron/test/build/Sensors/Wearables",
+    "Xsens": "/home/hethsron/test/build/Sensors/Xsens",
+    "robot": "/home/hethsron/test/build/Sensors/robot"
 }

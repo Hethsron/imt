@@ -1,10 +1,11 @@
 #include <view/mainview.hpp>
 #include <view/helpbrowser.hpp>
+#include <view/videoview.hpp>
 #include <core/writer.hpp>
 #include <core/boxes.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), isToolBar(false) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), editorButton(nullptr), isToolBar(false), isKinect(false) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -309,8 +310,114 @@ void MainView::saveAsMonitoring() {
     }
 }
 
+void MainView::closeKinectVisualizer() {
+    // Reset inner player
+    if (player != nullptr) {
+        player = nullptr;
+    }
+
+    // Reset inner playlist
+    if (playlist != nullptr) {
+        // Check if playlist is empty
+        if (!playlist->isEmpty()) {
+            playlist->clear();
+        }
+        playlist = nullptr;
+    }
+
+    // Close inner video widget
+    if (videoWidget != nullptr) {
+        // Check if video widget is closed
+        if (videoWidget->close()) {
+            videoWidget = nullptr;
+        }
+    }
+
+    // Close inner playlist view
+    if (playlistView != nullptr) {
+        // Check if playlist view is closed
+        if (playlistView->close()) {
+            playlistView = nullptr;
+        }
+    }
+
+    // Close inner playlist slider
+    if (playlistSlider != nullptr) {
+        // Check if playlist slider is closed
+        if (playlistSlider->close()) {
+            playlistSlider = nullptr;
+        }
+    }
+
+    // Close inner playlist activities
+    if (playlistActivities != nullptr) {
+        // Check if playlist activities spinbox is closed
+        if (playlistActivities->close()) {
+            playlistActivities = nullptr;
+        }
+    }
+
+    // Close inner playlist subjects
+    if (playlistSubjects != nullptr) {
+        // Check if playlist subjects spinbox is closed
+        if (playlistSubjects->close()) {
+            playlistSubjects = nullptr;
+        }
+    }
+
+    // Close inner playlist controls
+    if (controls != nullptr) {
+        // Check if player controller is closed
+        if (controls->close()) {
+            controls = nullptr;
+        }
+    }
+
+    // Close inner Upload button
+    if (loadButton != nullptr) {
+        // Check if Upload button is closed
+        if (loadButton->close()) {
+            loadButton = nullptr;
+        }
+    }
+
+    // Close inner Annotation button
+    if (annotationButton != nullptr) {
+        // Check if Annotation button is closed
+        if (annotationButton->close()) {
+            annotationButton = nullptr;
+        }
+    }
+
+    // Close inner Editor button
+    if (editorButton != nullptr) {
+        // Check if Editor button is closed
+        if (editorButton->close()) {
+            editorButton = nullptr;
+        }
+    }
+
+    // Reset inner layout
+    if (widget->layout() != nullptr) {
+        // Check if widget is closed
+        if (widget->close()) {
+            // Define new widget
+            widget = new QWidget();
+            // Update central widget
+            setCentralWidget(widget);
+        }
+    }
+
+    // Reset status
+    isKinect = false;
+}
+
 void MainView::closeMonitoring() {
-    // TODO : Implementation
+    // Check if kinect visualizer has been enabled
+    if (isKinect) {
+        // Closing Kinect visualiser
+        closeKinectVisualizer();
+    }
 
     // Removes all actions from the toolbar
     monitoringToolBar->clear();
@@ -398,6 +505,141 @@ void MainView::openRecent() {
     }
 }
 
+void MainView::kinectVisualizer() {
+    // Define inner player
+    player = new QMediaPlayer(this);
+    player->setAudioRole(QAudio::VideoRole);
+
+    // Define inner playlist
+    playlist = new QMediaPlaylist();
+    player->setPlaylist(playlist);
+    // TODO : connect player
+
+    // Define video widget
+    videoWidget = new VideoView(this);
+    player->setVideoOutput(videoWidget);
+
+    // Define playlist model
+    playlistModel = new PlayList(this);
+    playlistModel->setPlaylist(playlist);
+
+    // Define playlist view
+    playlistView = new QListView(this);
+    playlistView->setModel(playlistModel);
+    playlistView->setCurrentIndex(playlistModel->index(playlist->currentIndex(), 0));
+    // TODO : connect playlist view
+
+    // Define playlist slider
+    playlistSlider = new QSlider(Qt::Horizontal, this);
+    playlistSlider->setRange(0, player->duration() / 1000);
+    // TODO : connect playlist slider
+
+    // Define playlist label duration
+    playlistDuration = new QLabel(this);
+
+    // Define playlist activities
+    playlistActivities = new QSpinBox(this);
+    playlistActivities->setPrefix(tr("Activity      "));
+    playlistActivities->setRange(1, 100);
+    playlistActivities->setStatusTip(tr("Choose the activity to be monitored"));
+
+    // Define playlist subjects
+    playlistSubjects = new QSpinBox(this);
+    playlistSubjects->setPrefix(tr("Subject     "));
+    playlistSubjects->setRange(1, 100);
+    playlistSubjects->setStatusTip(tr("Choose the subject to be monitored"));
+
+    // Define Upload push button
+    loadButton = new QPushButton(tr("Upload"), this);
+    loadButton->setStatusTip(tr("Upload kinect sensor database"));
+    // TODO : connect annotation push button
+
+    // Define Annotation push button
+    annotationButton = new QPushButton(tr("Annotation"), this);
+    annotationButton->setStatusTip(tr("Make annotations"));
+    // TODO : connect annotation push button
+
+    // Define Editor push button
+    editorButton = new QPushButton(tr("Video Editor"), this);
+    editorButton->setStatusTip(tr("Edit videos and record voice"));
+    // TODO : connect editor push button
+
+    // Define player control
+    controls = new PlayerControls(this);
+    controls->setState(player->state());
+    controls->setVolume(player->volume());
+    controls->setMuted(controls->isMuted());
+    // TODO : connect controls
+
+    // Define display layout
+    QBoxLayout* displayLayout = new QHBoxLayout(this);
+    displayLayout->addWidget(videoWidget, 2);
+    displayLayout->addWidget(playlistView);
+    
+    // Define control layout
+    QBoxLayout* controlLayout = new QHBoxLayout(this);
+    controlLayout->setContentsMargins(0, 0, 0, 0);
+    controlLayout->addWidget(playlistActivities);
+    controlLayout->addWidget(playlistSubjects);
+    controlLayout->addWidget(loadButton);
+    controlLayout->addStretch(1);
+    controlLayout->addWidget(controls);
+    controlLayout->addStretch(1);
+    controlLayout->addWidget(annotationButton);
+    controlLayout->addStretch(1);
+    controlLayout->addWidget(editorButton);
+    controlLayout->addStretch(1);
+
+    // Define horizontal layout
+    QHBoxLayout* hLayout = new QHBoxLayout(this);
+    hLayout->addWidget(playlistSlider);
+    hLayout->addWidget(playlistDuration);
+
+    // Define vertical layout
+    QBoxLayout* vLayout = new QVBoxLayout(this);
+    vLayout->addLayout(displayLayout);
+    vLayout->addLayout(hLayout);
+    vLayout->addLayout(controlLayout);
+
+    // Set Layout
+    widget->setLayout(vLayout);
+
+    // Set status
+    isKinect = true;
+}
+
+void MainView::ambiantVisualizer() {
+    // Check if kinect visualizer has been closed
+    if (isKinect) {
+        // Closing Kinect visualiser
+        closeKinectVisualizer();
+    }
+}
+
+void MainView::robotsVisualizer() {
+    // Check if kinect visualizer has been closed
+    if (isKinect) {
+        // Closing Kinect visualiser
+        closeKinectVisualizer();
+    }
+}
+
+void MainView::wearablesVisualizer() {
+    // Check if kinect visualizer has been closed
+    if (isKinect) {
+        // Closing Kinect visualiser
+        closeKinectVisualizer();
+    }
+}
+
+void MainView::xsensVisualizer() {
+    // Check if kinect visualizer has been closed
+    if (isKinect) {
+        // Closing Kinect visualiser
+        closeKinectVisualizer();
+    }
+}
+
 void MainView::createFileMenu() {
     Boxes infos;
     fileMenu = menuBar->addMenu(tr("&File"));
@@ -469,7 +711,8 @@ void MainView::createMonitoringMenu() {
 
     // Setting Open Recent Action
     recentFilesMenu = monitoringMenu->addMenu(tr("&Open Recent          "));
-    
+    recentFilesMenu->setStatusTip(tr("Open previous configuration files"));
+
     const int sizes = static_cast<int>(7);
     for (int i = 0; i < sizes; ++i) {
         QAction* recentAct = new QAction(this);
@@ -528,31 +771,31 @@ void MainView::createMonitoringToolBar() {
     // Setting Ambiant Action
     QAction* ambiantAct = new QAction(tr("&Ambiant"), this);
     ambiantAct->setStatusTip(tr("Ambiant sensors data analysis"));
-    // TODO : connect
+    connect(ambiantAct, &QAction::triggered, this, &MainView::ambiantVisualizer);
     monitoringToolBar->addAction(ambiantAct);
 
     // Setting Kinect Action
     QAction* kinectAct = new QAction(tr("&Kinect"), this);
     kinectAct->setStatusTip(tr("Kinect sensor data analysis"));
-    // TODO : connect
+    connect(kinectAct, &QAction::triggered, this, &MainView::kinectVisualizer);
     monitoringToolBar->addAction(kinectAct);
 
     // Setting Robots Action
     QAction* robotsAct = new QAction(tr("&Robots"), this);
     robotsAct->setStatusTip(tr("Robots sensors data analysis"));
-    // TODO : connect
+    connect(robotsAct, &QAction::triggered, this, &MainView::robotsVisualizer);
     monitoringToolBar->addAction(robotsAct);
 
     // Setting Wearables Action
     QAction* wearablesAct = new QAction(tr("&Wearables"), this);
     wearablesAct->setStatusTip(tr("Wearables sensors data analysis"));
-    // TODO : connect
+    connect(wearablesAct, &QAction::triggered, this, &MainView::wearablesVisualizer);
     monitoringToolBar->addAction(wearablesAct);
 
     // Setting Xsens Action
     QAction* xsensAct = new QAction(tr("&Xsens"), this);
     xsensAct->setStatusTip(tr("Xsens sensors data analysis"));
-    // TODO : connect
+    connect(xsensAct, &QAction::triggered, this, &MainView::xsensVisualizer);
     monitoringToolBar->addAction(xsensAct);
 
     isToolBar = true;

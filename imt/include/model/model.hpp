@@ -24,6 +24,7 @@
  *  \date 			21th May 2020
  */
 
+#include <model/playlist.hpp>
 #include <model/type.hpp>
 
 #endif // ! MODEL_HPP

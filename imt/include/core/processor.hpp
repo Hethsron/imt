@@ -26,14 +26,14 @@
 
 #include <QtCore/QtCore>
 
-class Processor
+class Processor : public QObject
 {
     public:
         /**
          * @fn      Processor
-         * @brief   Default constructor of class
+         * @brief   Explicit default constructor of class
          */
-        Processor();
+        explicit Processor();
         
         /**
          * @fn      ~Processor
