@@ -875,8 +875,8 @@ void MainView::kinectVisualizer() {
     // Set Layout
     widget->setLayout(vLayout);
 
-    // Check if player is available
-    if (player->isAvailable()) {
+    // Check if player is not available
+    if (!player->isAvailable()) {
         QMessageBox::warning(this, tr("Service is not available"),
                                 tr("MediaPlayer does not have a valid service \n"
                                     "Please check if the media service plugins are installed"));
