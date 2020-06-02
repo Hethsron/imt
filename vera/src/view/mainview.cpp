@@ -83,6 +83,7 @@ void MainView::createHelpWindow() {
     connect((QWidget*) helpEngine->contentWidget(),SIGNAL(linkActivated(QUrl)), helpBrowser, SLOT(setSource(QUrl)));
     connect((QWidget*) helpEngine->indexWidget(), SIGNAL(linkActivated(QUrl, QString)), helpBrowser, SLOT(setSource(QUrl)));
 
+    // Adding dock widget
     addDockWidget(Qt::RightDockWidgetArea, helpWindow);
 }
 
