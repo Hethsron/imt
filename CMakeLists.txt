@@ -12,10 +12,10 @@
 cmake_minimum_required (VERSION 3.16)
 
 # Define project name
-project(imt
+project(vera
         VERSION 1.0.1
         HOMEPAGE_URL "https://github.com/Hethsron/imt.git"
-        DESCRIPTION "Ahora in C++")
+        DESCRIPTION "Vera in C++")
 
 # Set project version
 set(CMAKE_CXX_STANDARD 11)

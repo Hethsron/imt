@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QtHelpProject version="1.0">
-    <namespace>imt.summary</namespace>
+    <namespace>vera.summary</namespace>
     <virtualFolder>doc</virtualFolder>
     <filterSection>
         <toc>
-            <section title="IMT ® Plateform" ref="../html/index.html">
+            <section title="Vera ® Plateform" ref="../html/index.html">
                 <section title="Preface" ref="../html/preface.html" />
                 <section title="First Steps" ref="../html/firststeps.html" />
                 <section title="Advanced Topics" ref="../html/advancedtopics.html" />
