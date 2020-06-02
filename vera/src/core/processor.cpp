@@ -141,3 +141,15 @@ QList<QStringList> Processor::deepRead(const QString& cfg) const {
 
     return assets;
 }
+
+bool Processor::isPlaylist(const QUrl& url) {
+    // Check if url is not a local file
+    if (!url.isLocalFile()) {
+        return false;
+    }
+
+    // Define file information
+    const QFileInfo fileInfo(url.toLocalFile());
+
+    return (fileInfo.exists() && !fileInfo.suffix().compare(QLatin1String("m3u"), Qt::CaseInsensitive));
+}

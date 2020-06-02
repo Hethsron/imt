@@ -700,6 +700,38 @@ void MainView::jump(const QModelIndex& index) {
     }
 }
 
+void MainView::seek(int second) {
+    // Setting position
+    player->setPosition(second * 1000);
+}
+
+void MainView::previousClicked() {
+    // Check player position
+    if (player->position() <= 5000) {
+        playlist->previous();
+    }
+    else {
+        player->setPosition(0);
+    }
+}
+
+void MainView::addToPlaylist(const QList<QUrl>& urls) {
+    QListIterator<QUrl> iterator(urls);
+    while (iterator.hasNext()) {
+        const QUrl url = iterator.next();
+
+        // Check if given url is a playlist
+        if (Processor::isPlaylist(url)) {
+            // Load url in the playlist
+            playlist->load(url);
+        }
+        else {
+            // Adding media
+            playlist->addMedia(url);
+        }
+    }
+}
+
 void MainView::kinectVisualizer() {
     // Define inner player
     player = new QMediaPlayer(this);
@@ -734,7 +766,7 @@ void MainView::kinectVisualizer() {
     // Define playlist slider
     playlistSlider = new QSlider(Qt::Horizontal, this);
     playlistSlider->setRange(0, player->duration() / 1000);
-    // TODO : connect playlist slider
+    connect(playlistSlider, &QSlider::sliderMoved, this, &MainView::seek);
 
     // Define playlist label duration
     playlistDuration = new QLabel(this);
@@ -756,7 +788,7 @@ void MainView::kinectVisualizer() {
     loadButton->setStatusTip(tr("Upload kinect sensor database"));
     // TODO : connect Upload push button
 
-    // Define Skeleton push button
+    // Define Skeleton Viewer push button
     skeletonButton = new QPushButton(tr("Skeleton"), this);
     skeletonButton->setStatusTip(tr("Access to skeleton tracking joints"));
     // TODO : connect Skeleton push button
@@ -791,7 +823,19 @@ void MainView::kinectVisualizer() {
     controls->setState(player->state());
     controls->setVolume(player->volume());
     controls->setMuted(controls->isMuted());
-    // TODO : connect controls
+    // connect(controls, &PlayerControls::play, player, &QMediaPlayer::play);
+    // connect(controls, &PlayerControls::pause, player, &QMediaPlayer::pause);
+    // connect(controls, &PlayerControls::stop, player, &QMediaPlayer::stop);
+    // connect(controls, &PlayerControls::next, playlist, &QMediaPlaylist::next);
+    // connect(controls, &PlayerControls::previous, this, &MainView::previousClicked);
+    // connect(controls, &PlayerControls::changeVolume, player, &QMediaPlayer::setVolume);
+    // connect(controls, &PlayerControls::changeMuting, player, &QMediaPlayer::setMuted);
+    // connect(controls, &PlayerControls::changeRate, player, &QMediaPlayer::setPlaybackRate);
+    // connect(controls, &PlayerControls::stop, videoWidget, QOverload<>::of(&QVideoWidget::update));
+
+    connect(player, &QMediaPlayer::stateChanged, controls, &PlayerControls::setState);
+    connect(player, &QMediaPlayer::volumeChanged, controls, &PlayerControls::setVolume);
+    connect(player, &QMediaPlayer::mutedChanged, controls, &PlayerControls::setMuted);
 
     // Define display layout
     QBoxLayout* displayLayout = new QHBoxLayout(this);
@@ -831,8 +875,44 @@ void MainView::kinectVisualizer() {
     // Set Layout
     widget->setLayout(vLayout);
 
+    // Check if player is available
+    if (player->isAvailable()) {
+        QMessageBox::warning(this, tr("Service is not available"),
+                                tr("MediaPlayer does not have a valid service \n"
+                                    "Please check if the media service plugins are installed"));
+        // Deactive playlist controls
+        controls->setEnabled(false);
+
+        // Deactive playlist view
+        playlistView->setEnabled(false);
+
+        // Deactive Upload push button
+        loadButton->setEnabled(false);
+
+        // Deactive Skeleton Viewer push button
+        skeletonButton->setEnabled(false);
+
+        // Deactive Color Viewer push button
+        colorButton->setEnabled(false);
+
+        // Deactive 3D Viewer push button
+        dButton->setEnabled(false);
+
+        // Deactive Depth Viewer push button
+        depthButton->setEnabled(false);
+
+        // Deactive Annotation push button
+        annotationButton->setEnabled(false);
+
+        // Deactive Editor push button
+        editorButton->setEnabled(false);
+    }
+
     // Set status
     isKinect = true;
+
+    // Change meta data
+    changeMetaData();
 }
 
 void MainView::ambiantVisualizer() {

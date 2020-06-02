@@ -68,6 +68,15 @@ class Processor : public QObject
          * @return          List of activities and subjects
          */
         virtual QList<QStringList> deepRead(const QString& cfg) const;
+
+        /**
+         * @fn      isPlaylist
+         * @brief   Static function that returns true if given resource url ils a playlist, false otherwise
+         * 
+         * @param[in]       url         Given resource url
+         * @return          true if given resource url is a playlist, false otherwise
+         */
+        static bool isPlaylist(const QUrl& url);
 };
 
 #endif // ! PROCESSOR_HPP

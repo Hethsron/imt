@@ -79,114 +79,6 @@ class MainView : public QMainWindow
          */
         virtual void createHelpWindow();
 
-    protected slots:
-        /**
-         * @fn      changeDuration
-         * @brief   Virtual function that references duration change event
-         * 
-         * @param[in]       duration        Duration value to set
-         */
-        virtual void changeDuration(qint64 duration);
-
-        /**
-         * @fn      changePosition
-         * @brief   Virtual function that references position change event
-         * 
-         * @param[in]       progress        Progress value to set
-         */
-        virtual void changePosition(qint64 progress);
-
-        /**
-         * @fn      changeMetaData
-         * @brief   Virtual function that references meta data change event
-         */
-        virtual void changeMetaData();
-
-        /**
-         * @fn      changePlaylistPosition
-         * @brief   Virtual function that references playlist position change event
-         * 
-         * @param[in]       progress        Progress  value to set
-         */
-        virtual void changePlaylistPosition(int progress);
-
-        /**
-         * @fn      changeMediaStatus
-         * @brief   Virtual function that references media change status event
-         * 
-         * @param[in]       status          Media status to set
-         */
-        virtual void changeMediaStatus(QMediaPlayer::MediaStatus status);
-
-        /**
-         * @fn      changeBufferStatus
-         * @brief   Virtual function that references buffer change status event
-         * 
-         * @param[in]       progress        Progress value to set
-         */
-        virtual void changeBufferStatus(int progress);
-
-        /**
-         * @fn      printError
-         * @brief   Virtual function that references media player error message event
-         */
-        virtual void printError();
-
-        /**
-         * @fn      changeState
-         * @brief   Virtual function that references state change event
-         * 
-         * @param[in]       state           State to set
-         */
-        virtual void changeState(QMediaPlayer::State state);
-
-        /**
-         * @fn      jump
-         * @brief   Virtual function that references activated item view event
-         * 
-         * @param[in]       index           Index of playlist model
-         */
-        virtual void jump(const QModelIndex& index);
-
-    protected:
-        /**
-         * @fn      xsensVisualizer
-         * @brief   Virtual function that references Xsens Action in QToolBar
-         */
-        virtual void xsensVisualizer();
-
-        /**
-         * @fn      updateDurationInfo
-         * @brief   Virtual function that references duration information of Kinect visualizer in playlist
-         * 
-         * @param[in]       duration        Duration value to update
-         */
-        virtual void updateDurationInfo(qint64 duration);
-
-        /**
-         * @fn      updateStatusInfo
-         * @brief   Virtual function that references status information of Kinect visualizer in playlist
-         * 
-         * @param[in]       info            Status information
-         */
-        virtual void updateStatusInfo(const QString& info);
-
-        /**
-         * @fn      setTrackInfo
-         * @brief   Virtual function that creates tracking information on playlist
-         * 
-         * @param[in]       info            Tracking information
-         */
-        virtual void setTrackInfo(const QString& info);
-
-        /**
-         * @fn      handleCursor
-         * @brief   Virtual function that handles cursor on playlist
-         * 
-         * @param[in]       status          Media player status
-         */
-        virtual void handleCursor(QMediaPlayer::MediaStatus status);
-
     private slots:
         /**
          * @fn      about
@@ -260,6 +152,142 @@ class MainView : public QMainWindow
          */
         virtual void wearablesVisualizer();
 
+        /**
+         * @fn      xsensVisualizer
+         * @brief   Virtual function that references Xsens Action in QToolBar
+         */
+        virtual void xsensVisualizer();
+
+    protected slots:
+        /**
+         * @fn      changeDuration
+         * @brief   Virtual function that references duration change event
+         * 
+         * @param[in]       duration        Duration value to set
+         */
+        virtual void changeDuration(qint64 duration);
+
+        /**
+         * @fn      changePosition
+         * @brief   Virtual function that references position change event
+         * 
+         * @param[in]       progress        Progress value to set
+         */
+        virtual void changePosition(qint64 progress);
+
+        /**
+         * @fn      changeMetaData
+         * @brief   Virtual function that references meta data change event
+         */
+        virtual void changeMetaData();
+
+        /**
+         * @fn      changePlaylistPosition
+         * @brief   Virtual function that references playlist position change event
+         * 
+         * @param[in]       progress        Progress  value to set
+         */
+        virtual void changePlaylistPosition(int progress);
+
+        /**
+         * @fn      changeMediaStatus
+         * @brief   Virtual function that references media change status event
+         * 
+         * @param[in]       status          Media status to set
+         */
+        virtual void changeMediaStatus(QMediaPlayer::MediaStatus status);
+
+        /**
+         * @fn      changeBufferStatus
+         * @brief   Virtual function that references buffer change status event
+         * 
+         * @param[in]       progress        Progress value to set
+         */
+        virtual void changeBufferStatus(int progress);
+
+        /**
+         * @fn      printError
+         * @brief   Virtual function that references media player error message event
+         */
+        virtual void printError();
+
+        /**
+         * @fn      changeState
+         * @brief   Virtual function that references state change event
+         * 
+         * @param[in]       state           State to set
+         */
+        virtual void changeState(QMediaPlayer::State state);
+
+        /**
+         * @fn      jump
+         * @brief   Virtual function that references activated item view event
+         * 
+         * @param[in]       index           Index of playlist model
+         */
+        virtual void jump(const QModelIndex& index);
+
+        /**
+         * @fn      seek
+         * @brief   Virtual function that references playlist slider duration move event
+         * 
+         * @param[in]       second          Second value to set
+         */
+        virtual void seek(int second);
+
+        /**
+         * @fn      previousClicked
+         * @brief   Virtual function that references playlist previous action event
+         */
+        virtual void previousClicked();
+
+    protected:
+        /**
+         * @fn      closeKinectVisualizer
+         * @brief   Virtual function that references kinect closing visualizer Action in QMenu
+         */
+        virtual void closeKinectVisualizer();
+
+        /**
+         * @fn      updateDurationInfo
+         * @brief   Virtual function that references duration information of Kinect visualizer in playlist
+         * 
+         * @param[in]       duration        Duration value to update
+         */
+        virtual void updateDurationInfo(qint64 duration);
+
+        /**
+         * @fn      updateStatusInfo
+         * @brief   Virtual function that references status information of Kinect visualizer in playlist
+         * 
+         * @param[in]       info            Status information
+         */
+        virtual void updateStatusInfo(const QString& info);
+
+        /**
+         * @fn      setTrackInfo
+         * @brief   Virtual function that creates tracking information on playlist
+         * 
+         * @param[in]       info            Tracking information
+         */
+        virtual void setTrackInfo(const QString& info);
+
+        /**
+         * @fn      handleCursor
+         * @brief   Virtual function that handles cursor on playlist
+         * 
+         * @param[in]       status          Media player status
+         */
+        virtual void handleCursor(QMediaPlayer::MediaStatus status);
+
+        /**
+         * @fn      addToPlaylist
+         * @brief   Virtual function that appends selected urls in playlist
+         * 
+         * @param[in]       urls            Selected urls to append
+         */
+        virtual void addToPlaylist(const QList<QUrl>& urls);
+
     private:
         /**
          * @fn      createFileMenu
@@ -277,7 +305,7 @@ class MainView : public QMainWindow
          * @fn      createMonitoringToolBar
          * @brief   Virtual function that creates Toolbar for Monitoring process
          */
-        virtual void createMonitoringToolBar();   
+        virtual void createMonitoringToolBar();      
 
         /**
          * @fn      createEditMenu
@@ -316,12 +344,6 @@ class MainView : public QMainWindow
          * @param[in]       filename        Recent configuration file
          */
         virtual void openRecentFile(const QString& filename);
-
-        /**
-         * @fn      closeKinectVisualizer
-         * @brief   Virtual function that references kinect closing visualizer Action in QMenu
-         */
-        virtual void closeKinectVisualizer();
 
         QWidget* widget;                                /*!< Application central widget */
         QStatusBar* statusBar;                          /*!< Application status bar */
