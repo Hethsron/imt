@@ -106,7 +106,7 @@ target_link_libraries(${BINARY}-${CMAKE_PROJECT_VERSION} PRIVATE Qt5::Core Qt5::
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 # Adding executable
-add_executable(${BINARY} ${SRCS})
+add_executable(${BINARY} ${SRCS} ${HEADERS})
 
 # Adding target link libraries
 target_link_libraries(${BINARY} PRIVATE Qt5::Core Qt5::DBus Qt5::Gui Qt5::Help Qt5::Multimedia Qt5::MultimediaWidgets Qt5::UiTools Qt5::Widgets)

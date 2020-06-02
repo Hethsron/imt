@@ -823,15 +823,15 @@ void MainView::kinectVisualizer() {
     controls->setState(player->state());
     controls->setVolume(player->volume());
     controls->setMuted(controls->isMuted());
-    // connect(controls, &PlayerControls::play, player, &QMediaPlayer::play);
-    // connect(controls, &PlayerControls::pause, player, &QMediaPlayer::pause);
-    // connect(controls, &PlayerControls::stop, player, &QMediaPlayer::stop);
-    // connect(controls, &PlayerControls::next, playlist, &QMediaPlaylist::next);
-    // connect(controls, &PlayerControls::previous, this, &MainView::previousClicked);
-    // connect(controls, &PlayerControls::changeVolume, player, &QMediaPlayer::setVolume);
-    // connect(controls, &PlayerControls::changeMuting, player, &QMediaPlayer::setMuted);
-    // connect(controls, &PlayerControls::changeRate, player, &QMediaPlayer::setPlaybackRate);
-    // connect(controls, &PlayerControls::stop, videoWidget, QOverload<>::of(&QVideoWidget::update));
+    connect(controls, &PlayerControls::play, player, &QMediaPlayer::play);
+    connect(controls, &PlayerControls::pause, player, &QMediaPlayer::pause);
+    connect(controls, &PlayerControls::stop, player, &QMediaPlayer::stop);
+    connect(controls, &PlayerControls::next, playlist, &QMediaPlaylist::next);
+    connect(controls, &PlayerControls::previous, this, &MainView::previousClicked);
+    connect(controls, &PlayerControls::changeVolume, player, &QMediaPlayer::setVolume);
+    connect(controls, &PlayerControls::changeMuting, player, &QMediaPlayer::setMuted);
+    connect(controls, &PlayerControls::changeRate, player, &QMediaPlayer::setPlaybackRate);
+    connect(controls, &PlayerControls::stop, videoWidget, QOverload<>::of(&QVideoWidget::update));
 
     connect(player, &QMediaPlayer::stateChanged, controls, &PlayerControls::setState);
     connect(player, &QMediaPlayer::volumeChanged, controls, &PlayerControls::setVolume);

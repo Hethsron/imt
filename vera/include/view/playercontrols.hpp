@@ -30,6 +30,8 @@
 
 class PlayerControls : public QWidget
 {
+    Q_OBJECT
+    
     public:
         /**
          * @fn      PlayerControls
@@ -113,57 +115,57 @@ class PlayerControls : public QWidget
     signals:
         /**
          * @fn      play
-         * @brief   Virtual function that references play signal
+         * @brief   AUTOMOC function that references play signal
          */
-        virtual void play();
+        void play();
 
         /**
          * @fn      pause
-         * @brief   Virtual function that references pause signal
+         * @brief   AUTOMOC function that references pause signal
          */
-        virtual void pause();
+        void pause();
 
         /**
          * @fn      stop
-         * @brief   Virtual function that references stop signal
+         * @brief   AUTOMOC function that references stop signal
          */
-        virtual void stop();
+        void stop();
 
         /**
          * @fn      next
-         * @brief   Virtual function that references next signal
+         * @brief   AUTOMOC function that references next signal
          */
-        virtual void next();
+        void next();
 
         /**
          * @fn      previous
-         * @brief   Virtual function that references previous signal
+         * @brief   AUTOMOC function that references previous signal
          */
-        virtual void previous();
+        void previous();
 
         /**
          * @fn      changeVolume
-         * @brief   Virtual function that references changing volume signal
+         * @brief   AUTOMOC function that references changing volume signal
          * 
          * @param[in]       v       Volume of media player
          */
-        virtual void changeVolume(int v);
+        void changeVolume(int v);
 
         /**
          * @fn      changeMuting
-         * @brief   Virtual function that references changing mute signal
+         * @brief   AUTOMOC function that references changing mute signal
          * 
          * @param[in]       m       Muted state of media player
          */
-        virtual void changeMuting(bool m);
+        void changeMuting(bool m);
 
         /**
          * @fn      changeRate
-         * @brief   Virtual function that references changing state signal
+         * @brief   AUTOMOC function that references changing state signal
          * 
          * @param[in]       r       Playback rate of media player
          */
-        virtual void changeRate(qreal r);
+        void changeRate(qreal r);
 
     private slots:
         /**

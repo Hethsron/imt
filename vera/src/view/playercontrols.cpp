@@ -157,25 +157,3 @@ void PlayerControls::updateRate() {
 void PlayerControls::onVolumeSliderValueChanged() {
     emit changeVolume(getVolume());
 }
-
-void PlayerControls::changeMuting(bool m) {
-    Q_UNUSED(m);
-}
-
-void PlayerControls::changeRate(qreal r) {
-    Q_UNUSED(r);
-}
-
-void PlayerControls::changeVolume(int v) {
-    Q_UNUSED(v);
-}
-
-void PlayerControls::play() {}
-
-void PlayerControls::pause() {}
-
-void PlayerControls::stop() {}
-
-void PlayerControls::next() {}
-
-void PlayerControls::previous() {}
