@@ -1,15 +1,24 @@
 #include <model/sensor.hpp>
+#include <core/deepreader.hpp>
+#include <core/reader.hpp>
 
 Sensor::Sensor()
-    :  type(Type::Unknown), name(QString()), location(QString()) {}
+    :  type(Type::Unknown), name(QString()), location(QString()), storage(QList<QStringList>()) {}
 
 Sensor::Sensor(Type category, const QString& key, const QJsonDocument& cfg)
-    : type(category), name(key), location(QString()) {
+    : type(category), name(key), location(QString()), storage(QList<QStringList>()) {
+        // Getting default location
         location = Reader::release(cfg, name);
+
+        // Getting default storage
+        storage = DeepReader::release(location);
     }
 
 Sensor::Sensor(const Sensor& other)
-    : type(other.type), name(other.name), location(other.location) {}
+    : type(other.type), name(other.name), location(other.location), storage(other.storage) {}
+
+Sensor::Sensor(std::nullptr_t)
+    :  type(Type::Unknown), name(QString()), location(QString()), storage(QList<QStringList>()) {}
 
 Sensor::~Sensor() {}
 
@@ -19,6 +28,10 @@ Type Sensor::getType() const {
 
 QString Sensor::getLocation() const {
     return location;
+}
+
+QList<QStringList> Sensor::getStorage() const {
+    return storage;
 }
 
 Sensor& Sensor::operator=(const Sensor& other) {

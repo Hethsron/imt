@@ -25,6 +25,7 @@
  */
 
 #include <model/playlist.hpp>
+#include <model/sensor.hpp>
 #include <view/histogramchart.hpp>
 #include <view/playercontrols.hpp>
 #include <QtWidgets/QtWidgets>
@@ -434,6 +435,7 @@ class MainView : public QMainWindow
         QVideoProbe* videoProbe;                        /*!< Application inner video probe */
         QAudioProbe* audioProbe;                        /*!< Application inner audio probe */
         QString trackInfo;                              /*!< Application inner playlist track information */
+        Sensor* sensor;                                 /*!< Application inner sensor */
         bool isToolBar;                                 /*!< Application main tool bar status */
         bool isKinect;                                  /*!< Application kinet tool status */
         qint64 pDuration;                               /*!< Application playlist duration */

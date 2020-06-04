@@ -25,8 +25,8 @@
  */
 
 #include <QtCore/QtCore>
-#include <core/reader.hpp>
 #include <model/type.hpp>
+#include <iostream>
 
 class Sensor
 {
@@ -51,9 +51,17 @@ class Sensor
          * @fn      Sensor
          * @brief   Copy constructor of class
          * 
-         * @param[in]       other           Another Sensor
+         * @param[in]       other       Sensor instance
          */
         Sensor(const Sensor& other);
+
+        /**
+         * @fn      Sensor
+         * @brief   Copy constructor of class
+         * 
+         * @param[in]       ptr         Null instance
+         */
+        Sensor(std::nullptr_t ptr);
 
         /**
          * @fn      ~Sensor
@@ -76,6 +84,14 @@ class Sensor
          * @return          Default data directory location
          */
         virtual QString getLocation() const;
+
+        /**
+         * @fn      getStorage
+         * @brief   Virtual function that returns the default storage tree
+         * 
+         * @return          Default storage tree
+         */
+        virtual QList<QStringList> getStorage() const;
 
         /**
          * @fn      isEmpty
@@ -116,6 +132,7 @@ class Sensor
         Type type;                              /*!< Sensor category */
         QString name;                           /*!< Sensor name pattern regex */
         QString location;                       /*!< Default data directory location */
+        QList<QStringList> storage;             /*!< Default Sensor storage tree */
 };
 
 #endif // ! SENSOR_HPP

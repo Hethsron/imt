@@ -3,9 +3,10 @@
 #include <view/videoview.hpp>
 #include <core/writer.hpp>
 #include <core/boxes.hpp>
+#include <model/kinect.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), isToolBar(false), isKinect(false) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), isToolBar(false), isKinect(false) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -451,9 +452,14 @@ void MainView::closeKinectVisualizer() {
         videoProbe = nullptr;
     }
 
-    // Rest inner audio probe
+    // Reset inner audio probe
     if (audioProbe != nullptr) {
         audioProbe = nullptr;
+    }
+
+    // Reset inner sensor
+    if (sensor != nullptr) {
+        sensor = nullptr;
     }
 
     // Reset inner layout
@@ -782,8 +788,9 @@ void MainView::uploadClicked() {
         fileDialog.setMimeTypeFilters(supportedMimeTypes);
     }
     fileDialog.setDirectory(QStandardPaths::standardLocations(QStandardPaths::MoviesLocation).value(0, QDir::homePath()));
-    if (fileDialog.exec() == QDialog::Accepted)
+    if (fileDialog.exec() == QDialog::Accepted) {
         addToPlaylist(fileDialog.selectedUrls());
+    }
 }
 
 void MainView::annotationClicked() {
@@ -811,6 +818,9 @@ void MainView::skeletonClicked() {
 }
 
 void MainView::kinectVisualizer() {
+    // Define Kinect sensor
+    sensor = new Kinect(config);
+
     // Define inner player
     player = new QMediaPlayer(this);
     player->setAudioRole(QAudio::VideoRole);
