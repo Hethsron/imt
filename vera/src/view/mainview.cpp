@@ -882,14 +882,16 @@ void MainView::kinectVisualizer() {
 
     // Define playlist activities
     playlistActivities = new QSpinBox(this);
-    playlistActivities->setPrefix(tr("Activity      "));
-    playlistActivities->setRange(1, 100);
+    playlistActivities->setPrefix(tr("Activity  "));
+    playlistActivities->setSuffix(tr(" .°"));
+    playlistActivities->setRange(1, sensor->count());
     playlistActivities->setStatusTip(tr("Choose the activity to be monitored"));
 
     // Define playlist subjects
     playlistSubjects = new QSpinBox(this);
-    playlistSubjects->setPrefix(tr("Subject     "));
-    playlistSubjects->setRange(1, 100);
+    playlistSubjects->setPrefix(tr("Subject "));
+    playlistSubjects->setSuffix(tr(" .°"));
+    playlistSubjects->setRange(1, sensor->count(playlistActivities->value() - 1));
     playlistSubjects->setStatusTip(tr("Choose the subject to be monitored"));
 
     // Define Upload push button
