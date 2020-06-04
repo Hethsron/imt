@@ -61,6 +61,11 @@ class Robots : public Sensor
         virtual bool isEmpty() const override;
 
     private:
+        /**
+         * @fn      Robots
+         * @brief   Default constructor of class
+         */
+        Robots();
 };
 
 #endif // ! ROBOTS_HPP

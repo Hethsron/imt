@@ -61,6 +61,11 @@ class Wearables : public Sensor
         virtual bool isEmpty() const override;
 
     private:
+        /**
+         * @fn      Wearables
+         * @brief   Default constructor of class
+         */
+        Wearables();
 };
 
 #endif // WEARABLES_HPP

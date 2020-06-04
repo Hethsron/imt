@@ -1,5 +1,8 @@
 #include <model/wearables.hpp>
 
+Wearables::Wearables()
+    : Sensor() {}
+
 Wearables::Wearables(const QJsonDocument& cfg)
     : Sensor(Type::Wearables, Pattern::Wearables, cfg) {}
 

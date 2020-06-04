@@ -13,6 +13,10 @@ MainView::MainView(QWidget* parent)
         setWindowIcon(QIcon(infos.getIcon()));
         setCentralWidget(widget);
         setStyleSheet(infos.getStyleSheet());
+
+        // Moving splash screen in the center of screen
+        QSize size = QApplication::screens()[0]->size();
+        move((size.width() / 2) - (frameSize().width() / 2), (size.height() / 2) - (frameSize().height() / 2));
         
         createHelpWindow();
         createActions();
@@ -883,14 +887,14 @@ void MainView::kinectVisualizer() {
     // Define playlist activities
     playlistActivities = new QSpinBox(this);
     playlistActivities->setPrefix(tr("Activity  "));
-    playlistActivities->setSuffix(tr(" .°"));
+    playlistActivities->setSuffix(tr(" °"));
     playlistActivities->setRange(1, sensor->count());
     playlistActivities->setStatusTip(tr("Choose the activity to be monitored"));
 
     // Define playlist subjects
     playlistSubjects = new QSpinBox(this);
     playlistSubjects->setPrefix(tr("Subject "));
-    playlistSubjects->setSuffix(tr(" .°"));
+    playlistSubjects->setSuffix(tr(" °"));
     playlistSubjects->setRange(1, sensor->count(playlistActivities->value() - 1));
     playlistSubjects->setStatusTip(tr("Choose the subject to be monitored"));
 

@@ -1,5 +1,8 @@
 #include <model/robots.hpp>
 
+Robots::Robots()
+    : Sensor() {}
+
 Robots::Robots(const QJsonDocument& cfg)
     : Sensor(Type::Robots, Pattern::Robots, cfg) {}
 

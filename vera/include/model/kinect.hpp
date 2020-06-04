@@ -61,6 +61,11 @@ class Kinect : public Sensor
         virtual bool isEmpty() const override;
 
     private:
+        /**
+         * @fn      Kinect
+         * @brief   Default constructor of class
+         */
+        Kinect();
 };
 
 #endif // ! KINECT_HPP

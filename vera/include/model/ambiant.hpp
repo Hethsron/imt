@@ -61,6 +61,11 @@ class Ambiant : public Sensor
         virtual bool isEmpty() const override;
 
     private:
+        /**
+         * @fn      Ambiant
+         * @brief   Default constructor of class
+         */
+        Ambiant();
 };
 
 #endif // ! AMBIANT_HPP

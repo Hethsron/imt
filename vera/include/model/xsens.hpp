@@ -61,6 +61,11 @@ class Xsens : public Sensor
         virtual bool isEmpty() const override;
 
     private:
+        /**
+         * @fn      Xsens
+         * @brief   Default constructor of class
+         */
+        Xsens();
 };
 
 #endif // ! XSENS_HPP

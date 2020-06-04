@@ -1,5 +1,8 @@
 #include <model/ambiant.hpp>
 
+Ambiant::Ambiant()
+    : Sensor() {}
+
 Ambiant::Ambiant(const QJsonDocument& cfg)
     : Sensor(Type::Ambiant, Pattern::Ambiant, cfg) {}
 

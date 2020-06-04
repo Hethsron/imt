@@ -1,5 +1,8 @@
 #include <model/kinect.hpp>
 
+Kinect::Kinect()
+    : Sensor() {}
+
 Kinect::Kinect(const QJsonDocument& cfg)
     : Sensor(Type::kinect, Pattern::Kinect, cfg) {}
 

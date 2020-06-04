@@ -1,5 +1,8 @@
 #include <model/xsens.hpp>
 
+Xsens::Xsens()
+    : Sensor() {}
+
 Xsens::Xsens(const QJsonDocument& cfg)
     : Sensor(Type::Xsens, Pattern::Xsens, cfg) {}
 
