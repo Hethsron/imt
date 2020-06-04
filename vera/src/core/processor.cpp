@@ -153,3 +153,86 @@ bool Processor::isPlaylist(const QUrl& url) {
 
     return (fileInfo.exists() && !fileInfo.suffix().compare(QLatin1String("m3u"), Qt::CaseInsensitive));
 }
+
+void Processor::read(QVideoFrame frame, int level) {
+    // Define histogram data
+    QVector<qreal> histogram(level);
+
+    do {
+        // Check if level is null
+        if (!level) {
+            // Leave loop
+            break;
+        }
+
+        // Check if frame map is not on readonly
+        if (!frame.map(QAbstractVideoBuffer::ReadOnly)) {
+            // Leave loop
+            break;
+        }
+
+        // Check frame pixel format
+        if (frame.pixelFormat() == QVideoFrame::Format_YUV420P || frame.pixelFormat() == QVideoFrame::Format_NV12) {
+            // Read YUV data
+            uchar* b = frame.bits();
+            for (int i = 0; i < frame.height(); ++i) {
+                // Get last pixel
+                uchar* lastPixel = b + frame.width();
+                for (uchar* currentPixel = b; currentPixel < lastPixel; ++currentPixel) {
+                    histogram[(*currentPixel * level) >> 8] += 1.0;
+                }
+                // Update YUV data
+                b += frame.bytesPerLine();
+            }
+        }
+        else {
+            // Get image format
+            QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(frame.pixelFormat());
+
+            // Check if format is valid
+            if (imageFormat != QImage::Format_Invalid) {
+                // Read RGB data
+                QImage image(frame.bits(), frame.width(), frame.height(), imageFormat);
+                
+                // Convert RGB data to RGB format
+                image = image.convertToFormat(QImage::Format_RGB32);
+                const QRgb* b = (const QRgb*) image.bits();
+                for (int i = 0; i < image.height(); ++i) {
+                    // Get last pixel
+                    const QRgb* lastPixel = b + frame.width();
+                    for (const QRgb* currentPixel = b; currentPixel < lastPixel; ++currentPixel) {
+                        histogram[(qGray(*currentPixel) * level) >> 8] += 1.0;
+                    }
+
+                    // Update RGB data
+                    b = (const QRgb*) ((uchar*) b + image.bytesPerLine());
+                }
+            }
+        }
+
+        // Find maximum value
+        qreal maxValue = 0.0;
+        for (int i = 0; i < histogram.size(); ++i) {
+            // Check maximum value
+            if (histogram[i] > maxValue) {
+                // Update max value
+                maxValue = histogram[i];
+            }
+        }
+
+        // Check max value
+        if (maxValue > 0.0) {
+            for (int i = 0; i < histogram.size(); ++i) {
+                histogram[i] /= maxValue;
+            }
+        }
+
+        // Unmap frame
+        frame.unmap();
+    } 
+    while (false);
+
+
+    // Send signal
+    emit histogramReady(histogram);
+}

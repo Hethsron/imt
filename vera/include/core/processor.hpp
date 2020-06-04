@@ -25,9 +25,12 @@
  */
 
 #include <QtCore/QtCore>
+#include <QtMultimedia/QtMultimedia>
 
 class Processor : public QObject
 {
+    Q_OBJECT
+
     public:
         /**
          * @fn      Processor
@@ -77,6 +80,25 @@ class Processor : public QObject
          * @return          true if given resource url is a playlist, false otherwise
          */
         static bool isPlaylist(const QUrl& url);
+
+    public slots:
+        /**
+         * @fn      read
+         * @brief   Virtual function that reads video frame with some level
+         * 
+         * @param[in]       frame       Video frame
+         * @param[in]       level       Reading level
+         */
+        virtual void read(QVideoFrame frame, int level);
+
+    signals:
+        /**
+         * @fn      histogramReady
+         * @brief   AUTOMOC function that references histogram reading event
+         * 
+         * @param[in]       histogram   Histogram data
+         */
+        void histogramReady(const QVector<qreal>& histogram);
 };
 
 #endif // ! PROCESSOR_HPP

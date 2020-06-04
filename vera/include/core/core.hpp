@@ -24,11 +24,11 @@
  *  \date 			21th May 2020
  */
 
+#include <core/boxes.hpp>
+#include <core/command.hpp>
 #include <core/deepreader.hpp>
 #include <core/processor.hpp>
-#include <core/command.hpp>
-#include <core/writer.hpp>
 #include <core/reader.hpp>
-#include <core/boxes.hpp>
+#include <core/writer.hpp>
 
 #endif // ! CORE_HPP

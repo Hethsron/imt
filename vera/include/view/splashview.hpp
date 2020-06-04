@@ -29,6 +29,8 @@
 
 class SplashView : public QSplashScreen
 {
+    Q_OBJECT
+    
     public:
         /**
          * @fn      SplashView

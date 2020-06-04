@@ -24,9 +24,11 @@
  *  \date 			21th May 2020
  */
 
+#include <view/audiochart.hpp>
 #include <view/helpbrowser.hpp>
-#include <view/playercontrols.hpp>
+#include <view/histogramchart.hpp>
 #include <view/mainview.hpp>
+#include <view/playercontrols.hpp>
 #include <view/splashview.hpp>
 #include <view/videoview.hpp>
 

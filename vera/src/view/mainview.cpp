@@ -5,7 +5,7 @@
 #include <core/boxes.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), trackInfo(QString()), isToolBar(false), isKinect(false) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), isToolBar(false), isKinect(false) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -430,6 +430,32 @@ void MainView::closeKinectVisualizer() {
         }
     }
 
+    // Close inner video histogram chart
+    if (video != nullptr) {
+        // Check if video histogram chart is closed
+        if (video->close()) {
+            video = nullptr;
+        }
+    }
+
+    // Close inner audio histogram chart
+    if (audio != nullptr) {
+        // Check if audio histogram chart is closed
+        if (audio->close()) {
+            audio = nullptr;
+        }
+    }
+
+    // Reset inner video probe
+    if (videoProbe != nullptr) {
+        videoProbe = nullptr;
+    }
+
+    // Rest inner audio probe
+    if (audioProbe != nullptr) {
+        audioProbe = nullptr;
+    }
+
     // Reset inner layout
     if (widget->layout() != nullptr) {
         // Check if widget is closed
@@ -603,6 +629,9 @@ void MainView::setTrackInfo(const QString& info) {
 }
 
 void MainView::changePlaylistPosition(int progress) {
+    // Clear histogram charts
+    clearHistogramCharts();
+    
     // Setting current index of playlist
     playlistView->setCurrentIndex(playlistModel->index(progress, 0));
 }
@@ -684,6 +713,9 @@ void MainView::printError() {
 void MainView::changeState(QMediaPlayer::State state) {
     // Check if state is set to stop
     if (state == QMediaPlayer::StoppedState) {
+        // Clear histogram charts
+        clearHistogramCharts();
+        
         // Update info status
         updateStatusInfo(tr("Stopped"));
     }
@@ -732,6 +764,52 @@ void MainView::addToPlaylist(const QList<QUrl>& urls) {
     }
 }
 
+void MainView::clearHistogramCharts() {
+    // Invoke readFrame method
+    QMetaObject::invokeMethod(video, "readFrame", Qt::QueuedConnection, Q_ARG(QVideoFrame, QVideoFrame()));
+    
+    // Invoke readBuffer method
+    QMetaObject::invokeMethod(audio, "readBuffer", Qt::QueuedConnection, Q_ARG(QAudioBuffer, QAudioBuffer()));
+}
+
+void MainView::uploadClicked() {
+    QFileDialog fileDialog(this);
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setWindowTitle(tr("Open Files"));
+    QStringList supportedMimeTypes = player->supportedMimeTypes();
+    if (!supportedMimeTypes.isEmpty()) {
+        supportedMimeTypes.append("audio/x-m3u"); // MP3 playlists
+        fileDialog.setMimeTypeFilters(supportedMimeTypes);
+    }
+    fileDialog.setDirectory(QStandardPaths::standardLocations(QStandardPaths::MoviesLocation).value(0, QDir::homePath()));
+    if (fileDialog.exec() == QDialog::Accepted)
+        addToPlaylist(fileDialog.selectedUrls());
+}
+
+void MainView::annotationClicked() {
+
+}
+
+void MainView::colorClicked() {
+
+}
+
+void MainView::depthClicked() {
+
+}
+
+void MainView::dClicked() {
+
+}
+
+void MainView::editorClicked() {
+
+}
+
+void MainView::skeletonClicked() {
+    
+}
+
 void MainView::kinectVisualizer() {
     // Define inner player
     player = new QMediaPlayer(this);
@@ -768,6 +846,27 @@ void MainView::kinectVisualizer() {
     playlistSlider->setRange(0, player->duration() / 1000);
     connect(playlistSlider, &QSlider::sliderMoved, this, &MainView::seek);
 
+    // Define video histogram chart
+    video = new HistogramChart(this);
+
+    // Define audio histogram chart
+    audio = new HistogramChart(this);
+
+    // Define histogram charts layout
+    QHBoxLayout* histogramLayout = new QHBoxLayout(this);
+    histogramLayout->addWidget(video, 1);
+    histogramLayout->addWidget(audio, 2);
+
+    // Define video probe
+    videoProbe = new QVideoProbe(this);
+    connect(videoProbe, &QVideoProbe::videoFrameProbed, video, &HistogramChart::readFrame);
+    videoProbe->setSource(player);
+
+    // Define audio probe
+    audioProbe = new QAudioProbe(this);
+    connect(audioProbe, &QAudioProbe::audioBufferProbed, audio, &HistogramChart::readBuffer);
+    audioProbe->setSource(player);
+
     // Define playlist label duration
     playlistDuration = new QLabel(this);
 
@@ -786,37 +885,37 @@ void MainView::kinectVisualizer() {
     // Define Upload push button
     loadButton = new QPushButton(tr("Upload"), this);
     loadButton->setStatusTip(tr("Upload kinect sensor database"));
-    // TODO : connect Upload push button
+    connect(loadButton, &QPushButton::clicked, this, &MainView::uploadClicked);
 
     // Define Skeleton Viewer push button
     skeletonButton = new QPushButton(tr("Skeleton"), this);
     skeletonButton->setStatusTip(tr("Access to skeleton tracking joints"));
-    // TODO : connect Skeleton push button
+    connect(skeletonButton, &QPushButton::clicked, this, &MainView::skeletonClicked);
 
     // Define Color Viewer push button
     colorButton = new QPushButton(tr("Color"), this);
     colorButton->setStatusTip(tr("Display color view of the data captured by Kinect"));
-    // TODO : connect Color Viewer push button
+    connect(colorButton, &QPushButton::clicked, this, &MainView::colorClicked);
 
     // Define 3D Viewer push button
     dButton = new QPushButton(tr("3D"), this);
     dButton->setStatusTip(tr("Display 3D view of the data captured by Kinect"));
-    // TODO : connect 3D Viewer push button
+    connect(dButton, &QPushButton::clicked, this, &MainView::dClicked);
 
     // Define Depth Viewer push button
     depthButton = new QPushButton(tr("Depth"), this);
     depthButton->setStatusTip(tr("Display depth view of the data captured by Kinect"));
-    // TODO : connect Depth Viewer push button
+    connect(depthButton, &QPushButton::clicked, this, &MainView::depthClicked);
 
     // Define Annotation push button
     annotationButton = new QPushButton(tr("Annotation"), this);
     annotationButton->setStatusTip(tr("Make annotations"));
-    // TODO : connect Annotation push button
+    connect(annotationButton, &QPushButton::clicked, this, &MainView::annotationClicked);
 
     // Define Editor push button
     editorButton = new QPushButton(tr("Video Editor"), this);
     editorButton->setStatusTip(tr("Edit videos and record voice"));
-    // TODO : connect Editor push button
+    connect(editorButton, &QPushButton::clicked, this, &MainView::editorClicked);
 
     // Define player control
     controls = new PlayerControls(this);
@@ -871,6 +970,7 @@ void MainView::kinectVisualizer() {
     vLayout->addLayout(displayLayout);
     vLayout->addLayout(hLayout);
     vLayout->addLayout(controlLayout);
+    vLayout->addLayout(histogramLayout);
 
     // Set Layout
     widget->setLayout(vLayout);
@@ -906,6 +1006,12 @@ void MainView::kinectVisualizer() {
 
         // Deactive Editor push button
         editorButton->setEnabled(false);
+
+        // Deactive video histogram
+        video->setEnabled(false);
+
+        // Deactive audio histogram
+        audio->setEnabled(false);
     }
 
     // Set status

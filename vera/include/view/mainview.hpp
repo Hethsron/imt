@@ -25,12 +25,15 @@
  */
 
 #include <model/playlist.hpp>
+#include <view/histogramchart.hpp>
 #include <view/playercontrols.hpp>
 #include <QtWidgets/QtWidgets>
 #include <QtGui/QtGui>
 
 class MainView : public QMainWindow
 {
+    Q_OBJECT
+    
     public:
         /**
          * @fn      MainView
@@ -241,6 +244,48 @@ class MainView : public QMainWindow
          */
         virtual void previousClicked();
 
+        /**
+         * @fn      uploadClicked
+         * @brief   Virtual function that references Upload push button clicked event
+         */
+        virtual void uploadClicked();
+        
+        /**
+         * @fn      annotationClicked
+         * @brief   Virtual function that references Annotation push button clicked event
+         */
+        virtual void annotationClicked();
+
+        /**
+         * @fn      colorClicked
+         * @brief   Virtual function that references Color push button clicked event
+         */
+        virtual void colorClicked();
+
+        /**
+         * @fn      depthClicked
+         * @brief   Virtual function that references Depth push button clicked event
+         */
+        virtual void depthClicked();
+
+        /**
+         * @fn      dClicked
+         * @brief   Virtual function that references 3D push button clicked event
+         */
+        virtual void dClicked();
+
+        /**
+         * @fn      editorClicked
+         * @brief   Virtual function that references Editor push button clicked event
+         */
+        virtual void editorClicked();
+
+        /**
+         * @fn      skeletonClicked
+         * @brief   Virtual function that references Skeleton push button clicked event
+         */
+        virtual void skeletonClicked();
+
     protected:
         /**
          * @fn      closeKinectVisualizer
@@ -345,6 +390,12 @@ class MainView : public QMainWindow
          */
         virtual void openRecentFile(const QString& filename);
 
+        /**
+         * @fn      clearHistogramCharts
+         * @brief   Virtual function that clear all histogram chart in kinect media player
+         */
+        virtual void clearHistogramCharts();
+
         QWidget* widget;                                /*!< Application central widget */
         QStatusBar* statusBar;                          /*!< Application status bar */
         QMenuBar* menuBar;                              /*!< Application menu bar */
@@ -378,6 +429,10 @@ class MainView : public QMainWindow
         QPushButton* dButton;                           /*!< Applicatioo inner playlist 3D Viewer button */
         QPushButton* editorButton;                      /*!< Application inner playlist Editor push button */
         QPushButton* skeletonButton;                    /*!< Application inner playlist Skeleton push button */
+        HistogramChart* video;                          /*!< Application inner video histogram chart */
+        HistogramChart* audio;                          /*!< Application inner audio histogram chart */
+        QVideoProbe* videoProbe;                        /*!< Application inner video probe */
+        QAudioProbe* audioProbe;                        /*!< Application inner audio probe */
         QString trackInfo;                              /*!< Application inner playlist track information */
         bool isToolBar;                                 /*!< Application main tool bar status */
         bool isKinect;                                  /*!< Application kinet tool status */

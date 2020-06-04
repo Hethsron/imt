@@ -24,7 +24,14 @@
  *  \date 			21th May 2020
  */
 
+#include <model/ambiant.hpp>
+#include <model/kinect.hpp>
+#include <model/pattern.hpp>
 #include <model/playlist.hpp>
+#include <model/robots.hpp>
+#include <model/sensor.hpp>
 #include <model/type.hpp>
+#include <model/wearables.hpp>
+#include <model/xsens.hpp>
 
 #endif // ! MODEL_HPP

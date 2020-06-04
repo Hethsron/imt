@@ -31,7 +31,8 @@ enum class Type
     kinect,                 /*!< Type of Kinect sensor */
     Robots,                 /*!< Type of Robots sensors */
     Wearables,              /*!< Type of Wearables sensors */
-    Xsens                   /*!< Type of Xsens sensors */
+    Xsens,                  /*!< Type of Xsens sensors */
+    Unknown,                /*!< Unknown type of sensor */
 };
 
 #endif // ! TYPE_HPP
