@@ -94,6 +94,23 @@ class Sensor
         virtual QList<QStringList> getStorage() const;
 
         /**
+         * @fn      count
+         * @brief   Virtual function that returns the number of activities in the storage
+         * 
+         * @return          Number of activities in the storage
+         */
+        virtual int count() const;
+
+        /**
+         * @fn      count
+         * @brief   Virtual function that returns the number of subjects at index position i of the activity in theeee storage
+         * 
+         * @param[in]       i           Index position of the activity in the storage
+         * @return          Number of subjects at index position of the activity in the storage
+         */
+        virtual int count(int i) const;
+
+        /**
          * @fn      isEmpty
          * @brief   Virtual function that returns true if location is empty, false otherwise
          * 
@@ -106,7 +123,7 @@ class Sensor
          * @brief   Assignment operator overloading
          * 
          * @param[in]       other       Sensor instance
-         * @retun           Right Sensor instance
+         * @return           Right Sensor instance
          */
         Sensor& operator=(const Sensor& other);
 

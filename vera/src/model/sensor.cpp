@@ -34,6 +34,14 @@ QList<QStringList> Sensor::getStorage() const {
     return storage;
 }
 
+int Sensor::count() const {
+    return storage.count();
+}
+
+int Sensor::count(int i) const {
+    return storage.at(i).count();
+}
+
 Sensor& Sensor::operator=(const Sensor& other) {
     // Avoid self assignment
     if (this != &other) {
