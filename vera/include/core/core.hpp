@@ -24,6 +24,7 @@
  *  \date 			21th May 2020
  */
 
+#include <core/backwriter.hpp>
 #include <core/boxes.hpp>
 #include <core/command.hpp>
 #include <core/deepreader.hpp>

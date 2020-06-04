@@ -1,6 +1,7 @@
 #include <view/mainview.hpp>
 #include <view/helpbrowser.hpp>
 #include <view/videoview.hpp>
+#include <core/backwriter.hpp>
 #include <core/writer.hpp>
 #include <core/boxes.hpp>
 #include <model/kinect.hpp>
@@ -783,17 +784,22 @@ void MainView::clearHistogramCharts() {
 }
 
 void MainView::uploadClicked() {
-    QFileDialog fileDialog(this);
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setWindowTitle(tr("Open Files"));
-    QStringList supportedMimeTypes = player->supportedMimeTypes();
-    if (!supportedMimeTypes.isEmpty()) {
-        supportedMimeTypes.append("audio/x-m3u"); // MP3 playlists
-        fileDialog.setMimeTypeFilters(supportedMimeTypes);
+    // Getting indexes
+    const int i = playlistActivities->value() - 1;
+    const int j = playlistSubjects->value() - 1;
+
+    // Release back writer
+    QList<QUrl> urls = BackWriter::release(sensor->getStorage().at(i).at(j));
+
+    // Check if urls is not empty
+    if (!urls.isEmpty()) {
+        // Append media files URLs to playlist
+        addToPlaylist(urls);
     }
-    fileDialog.setDirectory(QStandardPaths::standardLocations(QStandardPaths::MoviesLocation).value(0, QDir::homePath()));
-    if (fileDialog.exec() == QDialog::Accepted) {
-        addToPlaylist(fileDialog.selectedUrls());
+    else {
+        QMessageBox::information(this, 
+                    tr("No experiences per activity"),
+                    tr("The subject you are attempting to upload contains no experiences"));
     }
 }
 

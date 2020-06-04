@@ -54,6 +54,15 @@ class Processor : public QObject
         virtual QJsonObject write(const QString& cfg) const;
 
         /**
+         * @fn      writeBack
+         * @brief   Virtual function that provides a convenient interface for working with media files URLs
+         * 
+         * @param[in]       cfg         Distinguished name of sensor database
+         * @return          Media files URLs
+         */
+        virtual QList<QUrl> writeBack(const QString& cfg) const;
+
+        /**
          * @fn      read
          * @brief   Virtual function that reads distinguished name according to given pattern
          * 

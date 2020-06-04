@@ -41,6 +41,38 @@ QJsonObject Processor::write(const QString& cfg) const {
     return obj;
 }
 
+QList<QUrl> Processor::writeBack(const QString& cfg) const {
+    // Define URLs
+    QList<QUrl> urls;
+
+    // Define directory
+    QDir dir(cfg);
+
+    // Check if given directory exists
+    if (dir.exists()) {
+        // Set filter
+        dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+
+        // Set sorting
+        dir.setSorting(QDir::Name | QDir::Reversed);
+
+        // Define entry list
+        QStringList list = dir.entryList(QStringList() << "*.avi" << "*.mp4" << "*.wav", QDir::Files | QDir::Readable | QDir::Writable);
+
+        // Define iterator
+        QStringListIterator iterator(list);
+        while (iterator.hasNext()) {
+            const QString str = iterator.next();
+            
+            // Append URL
+            urls.append(QUrl::fromLocalFile(dir.filePath(str)));
+        }
+    }
+
+    // Returns URLs
+    return urls;
+}
+
 QString Processor::read(const QJsonDocument& cfg, const QString& pattern) const {
     QJsonObject obj = cfg.object();
 
