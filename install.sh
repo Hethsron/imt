@@ -116,33 +116,24 @@ function installMissingRPM() {
 
 #   String arrays of packages
 declare -a PKGS_CENTOS=(
+                "build-essential"
                 "cmake3"
                 "doxygen"
                 "gcc"
                 "gcc-c++"
                 "git"
-                "qt5-qtbase"
-                "qt5-qtbase-devel"
-                "qt5-qtbase-gui"
-                "qt5-qtdeclarative"
-                "qt5-qtlocation"
-                "qt5-qtquickcontrols"
-                "qt5-qtscript"
-                "qt5-qtsensors"
-                "qt5-qttools-common"
-                "qt5-qtwebkit"
-                "qt5-qtx11extras"
-                "qt5-qtxmlpatterns"
-                "libstdc++-devel"
-                "mesa-libGL-devel"
+                "make"
+                "qtcreator"
 )
 
 declare -a PKGS_DEBIAN=(
+                "build-essential"
                 "cmake"
                 "doxygen"
                 "gcc"
                 "g++"
                 "git"
+                "make"
                 "qtbase5-dev" 
                 "qtdeclarative5-dev"
                 "qtmultimedia5-dev"
@@ -150,11 +141,13 @@ declare -a PKGS_DEBIAN=(
 )
 
 declare -a PKGS_KALI=(
+                "build-essential"
                 "cmake"
                 "doxygen"
                 "gcc"
                 "g++"
                 "git"
+                "make"
                 "qtbase5-dev" 
                 "qtdeclarative5-dev"
                 "qtmultimedia5-dev"
@@ -162,7 +155,11 @@ declare -a PKGS_KALI=(
 )
 
 declare -a PKGS_MAGEIA=(
-                ""
+                "cmake"
+                "gcc"
+                "gcc-c++"
+                "git"
+                "make"
 )
 
 #   Display Welcome message
