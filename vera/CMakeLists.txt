@@ -43,7 +43,7 @@ endif()
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Searches after the QT library on the system and defines some variables
-find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui Help Multimedia MultimediaWidgets UiTools Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui Help Multimedia MultimediaWidgets PrintSupport UiTools Widgets)
 
 # Handle The QT MOC processor automatically
 set(CMAKE_AUTOMOC ON)
@@ -100,7 +100,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 add_library(${BINARY}-${CMAKE_PROJECT_VERSION} SHARED ${SRCS})
 
 # Adding target link libraries
-target_link_libraries(${BINARY}-${CMAKE_PROJECT_VERSION} PRIVATE Qt5::Core Qt5::Gui Qt5::UiTools Qt5::Widgets)
+target_link_libraries(${BINARY}-${CMAKE_PROJECT_VERSION} PRIVATE Qt5::Core Qt5::DBus Qt5::Gui Qt5::Help Qt5::Multimedia Qt5::MultimediaWidgets Qt5::PrintSupport Qt5::UiTools Qt5::Widgets)
 
 # Set executable output path
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
@@ -109,7 +109,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 add_executable(${BINARY} ${SRCS} ${HEADERS})
 
 # Adding target link libraries
-target_link_libraries(${BINARY} PRIVATE Qt5::Core Qt5::DBus Qt5::Gui Qt5::Help Qt5::Multimedia Qt5::MultimediaWidgets Qt5::UiTools Qt5::Widgets)
+target_link_libraries(${BINARY} PRIVATE Qt5::Core Qt5::DBus Qt5::Gui Qt5::Help Qt5::Multimedia Qt5::MultimediaWidgets Qt5::PrintSupport Qt5::UiTools Qt5::Widgets)
 
 # Check doxygen
 find_package(Doxygen QUIET)

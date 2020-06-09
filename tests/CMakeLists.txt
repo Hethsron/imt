@@ -14,7 +14,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Searches after the library on the system and defines some variables
-find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui Help UiTools Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui Help Multimedia MultimediaWidgets PrintSupport UiTools Widgets)
 
 # Handle The QT MOC processor automatically
 set(CMAKE_AUTOMOC ON)
@@ -84,4 +84,4 @@ elseif(APPLE)
 endif()
 
 # Adding target link libraries
-target_link_libraries(${BINARY} PRIVATE ${EXTERNAL_LIBS} gtest Qt5::Core Qt5::DBus Qt5::Gui Qt5::Help Qt5::UiTools Qt5::Widgets)
+target_link_libraries(${BINARY} PRIVATE ${EXTERNAL_LIBS} gtest Qt5::Core Qt5::DBus Qt5::Gui Qt5::Help Qt5::Multimedia Qt5::MultimediaWidgets Qt5::PrintSupport Qt5::UiTools Qt5::Widgets)

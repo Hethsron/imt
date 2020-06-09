@@ -8,7 +8,7 @@
 #include <model/kinect.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), isToolBar(false), isKinect(false) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), license(nullptr), isToolBar(false), isKinect(false) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -20,6 +20,9 @@ MainView::MainView(QWidget* parent)
         QSize size = QApplication::screens()[0]->size();
         move((size.width() / 2) - (frameSize().width() / 2), (size.height() / 2) - (frameSize().height() / 2));
         
+        // Update license manager
+        license = new LicenseManager(this);
+
         createHelpWindow();
         createActions();
         createStatusBar();
@@ -1307,6 +1310,11 @@ void MainView::createViewMenu() {
     viewMenu = menuBar->addMenu(tr("&View"));
 }
 
+void MainView::manageLicense() {
+    // Display license manager
+    license->show();
+}
+
 void MainView::createToolsMenu() {
     Boxes infos;
     toolsMenu = menuBar->addMenu(tr("&Tools"));
@@ -1330,6 +1338,15 @@ void MainView::createToolsMenu() {
     mvnAct->setIconVisibleInMenu(true);
     // TODO : connect
     toolsMenu->addAction(mvnAct);
+
+    // Adding seperator
+    toolsMenu->addSeparator();
+
+    // Setting licences Action
+    QAction* licenseAct = new QAction(tr("&Manage License ...       "), this);
+    licenseAct->setStatusTip(tr("Product License Registration"));
+    connect(licenseAct, &QAction::triggered, this, &MainView::manageLicense);
+    toolsMenu->addAction(licenseAct);
 }
 
 void MainView::createHelpMenu() {
@@ -1341,7 +1358,7 @@ void MainView::createHelpMenu() {
     const QIcon summaryIcon = QIcon(infos.getCollections()[12]);
     
     // Setting Summary Action
-    QAction* summaryAct = new QAction(summaryIcon, tr("&Summary...          "), this);
+    QAction* summaryAct = new QAction(summaryIcon, tr("&Summary ...          "), this);
     summaryAct->setShortcuts(QKeySequence::HelpContents);
     summaryAct->setStatusTip(tr("Provide informations about application's functionalities and usage"));
     summaryAct->setIconVisibleInMenu(true);
@@ -1352,13 +1369,13 @@ void MainView::createHelpMenu() {
     helpMenu->addSeparator();
 
     // Setting Forums Action
-    QAction* forumsAct = new QAction(tr("&Forums...         "), this);
+    QAction* forumsAct = new QAction(tr("&Forums ...         "), this);
     forumsAct->setStatusTip(tr("Self-help forum on Vera solution"));
     // TODO : connect
     helpMenu->addAction(forumsAct);
 
     // Setting Bug tracker
-    QAction* bugAct = new QAction(tr("&Bug tracker...           "), this);
+    QAction* bugAct = new QAction(tr("&Bug tracker ...           "), this);
     bugAct->setStatusTip(tr("Reports suggestions for improvements in case you encounter problems"));
     // TODO : connect
     helpMenu->addAction(bugAct);

@@ -28,6 +28,7 @@
 #include <view/audiochart.hpp>
 #include <view/helpbrowser.hpp>
 #include <view/histogramchart.hpp>
+#include <view/license.hpp>
 #include <view/mainview.hpp>
 #include <view/playercontrols.hpp>
 #include <view/splashview.hpp>
