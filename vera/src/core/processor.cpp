@@ -76,8 +76,8 @@ QList<QUrl> Processor::writeBack(const QString& cfg) const {
 QString Processor::read(const QJsonDocument& cfg, const QString& pattern) const {
     QJsonObject obj = cfg.object();
 
-    // Define distinguished name
-    QString pathname;
+    // Define founded data
+    QString result;
 
     // Check if QJsonObject instance is empty
     if (!obj.isEmpty()) {
@@ -97,7 +97,7 @@ QString Processor::read(const QJsonDocument& cfg, const QString& pattern) const 
             if (match.hasMatch()) {
 
                 // Save distinguished name
-                pathname = obj.take(str).toString();
+                result = obj.take(str).toString();
 
                 // Leave loop
                 break;
@@ -105,7 +105,7 @@ QString Processor::read(const QJsonDocument& cfg, const QString& pattern) const 
         }
     }
 
-    return pathname;
+    return result;
 }
 
 QList<QStringList> Processor::deepRead(const QString& cfg) const {

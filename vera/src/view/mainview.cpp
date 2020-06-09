@@ -1,4 +1,5 @@
 #include <view/mainview.hpp>
+#include <view/annotation.hpp>
 #include <view/helpbrowser.hpp>
 #include <view/videoview.hpp>
 #include <core/backwriter.hpp>
@@ -804,7 +805,18 @@ void MainView::uploadClicked() {
 }
 
 void MainView::annotationClicked() {
+    // Define File Name
+    QString fileName = QInputDialog::getText(this, 
+                    tr("Add Annotation"), 
+                    tr("Annotation name"), 
+                    QLineEdit::Normal,
+                    tr("Untitled annotation"));
 
+    // Check if name is empty
+    if (!fileName.isEmpty()) {
+        Annotation* view = new Annotation(fileName, config, this);
+        view->show();
+    }
 }
 
 void MainView::colorClicked() {

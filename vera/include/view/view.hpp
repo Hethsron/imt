@@ -24,6 +24,7 @@
  *  \date 			21th May 2020
  */
 
+#include <view/annotation.hpp>
 #include <view/audiochart.hpp>
 #include <view/helpbrowser.hpp>
 #include <view/histogramchart.hpp>
