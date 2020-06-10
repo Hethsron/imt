@@ -26,6 +26,7 @@
 
 #include <view/annotation.hpp>
 #include <view/audiochart.hpp>
+#include <view/depth.hpp>
 #include <view/helpbrowser.hpp>
 #include <view/histogramchart.hpp>
 #include <view/license.hpp>

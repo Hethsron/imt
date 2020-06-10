@@ -26,6 +26,7 @@
 
 #include <model/playlist.hpp>
 #include <model/sensor.hpp>
+#include <view/depth.hpp>
 #include <view/histogramchart.hpp>
 #include <view/license.hpp>
 #include <view/playercontrols.hpp>
@@ -444,6 +445,8 @@ class MainView : public QMainWindow
         QString trackInfo;                              /*!< Application inner playlist track information */
         Sensor* sensor;                                 /*!< Application inner sensor */
         LicenseManager* license;                        /*!< Application inner license manager */
+        QStringList depth;                              /*!< Application inner playlist depth files */
+        Depth* depthLabel;                              /*!< Application inner playlist depth label */
         bool isToolBar;                                 /*!< Application main tool bar status */
         bool isKinect;                                  /*!< Application kinet tool status */
         qint64 pDuration;                               /*!< Application playlist duration */
