@@ -26,6 +26,7 @@
 
 #include <model/ambiant.hpp>
 #include <model/kinect.hpp>
+#include <model/measurements.hpp>
 #include <model/pattern.hpp>
 #include <model/playlist.hpp>
 #include <model/robots.hpp>

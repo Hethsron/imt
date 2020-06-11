@@ -631,7 +631,8 @@ void MainView::updateDurationInfo(qint64 duration) {
 
         // Check if depth is not empty
         if (!depth.isEmpty()) {
-            const int index = player->position() / (1000 / 30);
+            
+            const int index = player->position() / (depth.size() / controls->getRate());
             // Check if index is smaller than depth size
             if (index < depth.size()) {
                 depthLabel->setPixmap(QPixmap(depth.at(index)));
