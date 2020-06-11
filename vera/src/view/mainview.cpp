@@ -8,7 +8,7 @@
 #include <model/kinect.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), license(nullptr), depth(QStringList()), depthLabel(nullptr), isToolBar(false), isKinect(false) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), license(nullptr), depth(QStringList()), depthLabel(nullptr), isToolBar(false), isKinect(false), depthStatus(false), currentIndex(-1) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -632,7 +632,10 @@ void MainView::updateDurationInfo(qint64 duration) {
         // Check if depth is not empty
         if (!depth.isEmpty()) {
             const int index = player->position() / (1000 / 30);
-            depthLabel->setPixmap(QPixmap(depth.at(index)));
+            // Check if index is smaller than depth size
+            if (index < depth.size()) {
+                depthLabel->setPixmap(QPixmap(depth.at(index)));
+            }
         }
     }
 
@@ -847,35 +850,68 @@ void MainView::colorClicked() {
 }
 
 void MainView::depthClicked() {
-    // Define depth directory
-    QString location = playlist->media(playlist->currentIndex()).canonicalUrl().toString().split("file://").at(1).split(".").at(0).split("RGB").at(0) + QString("Depth");
-    QDir dir(location);
+    // Check if current index is different
+    if (currentIndex != playlist->currentIndex() && !depthStatus) {
+        // Update current index
+        currentIndex = playlist->currentIndex();
 
-    // Check if depth files is empty
-    if (!depth.empty()) {
-        // Clear depth files
-        depth.clear();
-    }
+        // Update depth status
+        depthStatus = true;
 
-    // Check if directory exists
-    if (dir.exists()) {
-        // Set filter
-        dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+        // Define depth directory
+        QString location = playlist->media(playlist->currentIndex()).canonicalUrl().toString().split("file://").at(1).split(".").at(0).split("RGB").at(0) + QString("Depth");
+        QDir dir(location);
 
-        // Set sorting
-        dir.setSorting(QDir::Time | QDir::Reversed);
-
-        // Define entry list
-        QStringList list = dir.entryList(QStringList() << "*.png", QDir::Files | QDir::Readable | QDir::Writable);
-
-        // Define iterator
-        QStringListIterator iterator(list);
-        while (iterator.hasNext()) {
-            const QString str = iterator.next();
-            
-            // Append founded files
-            depth.append(dir.filePath(str));
+        // Check if depth files is empty
+        if (!depth.empty()) {
+            // Clear depth files
+            depth.clear();
         }
+
+        // Check if directory exists
+        if (dir.exists()) {
+            // Set filter
+            dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+
+            // Set sorting
+            dir.setSorting(QDir::Time | QDir::Reversed);
+
+            // Define entry list
+            QStringList list = dir.entryList(QStringList() << "*.png" << "*.jpg" << "*.jpeg", QDir::Files | QDir::Readable | QDir::Writable);
+
+            // Define iterator
+            QStringListIterator iterator(list);
+            while (iterator.hasNext()) {
+                const QString str = iterator.next();
+                
+                // Append founded files
+                depth.append(dir.filePath(str));
+            }
+        }
+    }
+    else if (currentIndex == playlist->currentIndex() && depthStatus) {
+        // Hide depth label
+        depthLabel->hide();
+
+        // Update depth status
+        depthStatus = false;
+    }
+    else if (currentIndex != playlist->currentIndex() && depthStatus) {
+        // Hide depth label
+        depthLabel->hide();
+
+        // Update depth status
+        depthStatus = false;
+    }
+    else {
+        // Show depth label
+        depthLabel->show();
+
+        // Update depth status
+        depthStatus = false;
+
+        // Update current index
+        currentIndex = -1;
     }
 }
 

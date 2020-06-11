@@ -1,10 +1,15 @@
 #include <view/license.hpp>
 #include <QtPrintSupport/QtPrintSupport>
+#include <core/boxes.hpp>
 
 License::License(QWidget* parent)
     : QWizardPage(parent), topLabel(nullptr), registerButton(nullptr), evaluateButton(nullptr) {
         // Define title
         setTitle(tr("License Manager"));
+
+        // Define pixmap watermark
+        Boxes infos;
+        setPixmap(QWizard::WatermarkPixmap, QPixmap(infos.getSplash()));
 
         // Update top label
         topLabel = new QLabel(tr("This manager will help you to register your copy  of "
@@ -188,6 +193,10 @@ Conclusion::Conclusion(QWidget* parent)
     : QWizardPage(parent), bottomLabel(nullptr), agreeCheckBox(nullptr) {
         // Define title
         setTitle(tr("Complete Your Registration"));
+
+        // Define pixmap watermark
+        Boxes infos;
+        setPixmap(QWizard::WatermarkPixmap, QPixmap(infos.getSplash()));
 
         // Update label
         bottomLabel = new QLabel(this);

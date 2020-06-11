@@ -449,7 +449,9 @@ class MainView : public QMainWindow
         Depth* depthLabel;                              /*!< Application inner playlist depth label */
         bool isToolBar;                                 /*!< Application main tool bar status */
         bool isKinect;                                  /*!< Application kinet tool status */
+        bool depthStatus;                               /*!< Application inner playlist depth status */
         qint64 pDuration;                               /*!< Application playlist duration */
+        int currentIndex;                               /*!< Application playlist current index */
 };
 
 #endif // ! MAINVIEW_HPP
