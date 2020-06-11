@@ -1,5 +1,5 @@
-<div id="ahora">
+<div id="vera">
 	<p align="center">
-	  <img src="resources/assets/img/imt.png" title="imt">
+	  <img src="resources/assets/img/vera.png" title="vera">
 	</p>
 </div>

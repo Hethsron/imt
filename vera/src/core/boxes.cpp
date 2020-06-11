@@ -22,8 +22,8 @@ void Boxes::assignment() {
     QDir dir;
     if (dir.cdUp() && dir.cdUp() && dir.cd(assets)) {
         background = dir.filePath("splash.jpg");
-        splash = dir.filePath("imt.png");
-        icon = dir.filePath("imt.ico");
+        splash = dir.filePath("vera.png");
+        icon = dir.filePath("vera.ico");
         collections.append("new.png");
         collections.append("open.png");
         collections.append("save.png");
