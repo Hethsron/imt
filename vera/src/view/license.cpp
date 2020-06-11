@@ -9,7 +9,7 @@ License::License(QWidget* parent)
 
         // Define pixmap watermark
         Boxes infos;
-        setPixmap(QWizard::WatermarkPixmap, QPixmap(infos.getSplash()));
+        setPixmap(QWizard::WatermarkPixmap, QPixmap(infos.getIcon()));
 
         // Update top label
         topLabel = new QLabel(tr("This manager will help you to register your copy  of "
@@ -196,7 +196,7 @@ Conclusion::Conclusion(QWidget* parent)
 
         // Define pixmap watermark
         Boxes infos;
-        setPixmap(QWizard::WatermarkPixmap, QPixmap(infos.getSplash()));
+        setPixmap(QWizard::WatermarkPixmap, QPixmap(infos.getIcon()));
 
         // Update label
         bottomLabel = new QLabel(this);
