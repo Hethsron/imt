@@ -8,7 +8,7 @@
 #include <model/kinect.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), license(nullptr), depth(QStringList()), depthLabel(nullptr), isToolBar(false), isKinect(false), depthStatus(false), currentIndex(-1) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), license(nullptr), depth(QStringList()), depthLabel(nullptr), isToolBar(false), isKinect(false), depthStatus(false), cDuration(0), currentIndex(-1) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -631,11 +631,27 @@ void MainView::updateDurationInfo(qint64 duration) {
 
         // Check if depth is not empty
         if (!depth.isEmpty()) {
-            
-            const int index = player->position() / (depth.size() / controls->getRate());
-            // Check if index is smaller than depth size
-            if (index < depth.size()) {
-                depthLabel->setPixmap(QPixmap(depth.at(index)));
+            // Define frame rate
+            if (cDuration < pDuration) {
+                const int fps = 100 * controls->getRate();
+
+                // Define minimum value
+                const int minValue = cDuration * fps;
+                
+                // Define maximum value
+                const int maxValue = fps * (cDuration + 1);
+
+                // Update depth label pixmap
+                for (int i = minValue ; i < maxValue && i < depth.size(); ++i) {
+                    depthLabel->setPixmap(QPixmap(depth.at(i)));
+                }
+
+                // Increase duration
+                cDuration++;
+            }
+            else {
+                // Reset current duration
+                cDuration = 0;
             }
         }
     }

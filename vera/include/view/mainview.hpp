@@ -450,7 +450,8 @@ class MainView : public QMainWindow
         bool isToolBar;                                 /*!< Application main tool bar status */
         bool isKinect;                                  /*!< Application kinet tool status */
         bool depthStatus;                               /*!< Application inner playlist depth status */
-        qint64 pDuration;                               /*!< Application playlist duration */
+        qint64 pDuration;                               /*!< Application playlist final duration in milliseconds */
+        qint64 cDuration;                               /*!< Application playlist current duration in milliseconds*/
         int currentIndex;                               /*!< Application playlist current index */
 };
 
