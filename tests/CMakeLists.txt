@@ -13,6 +13,13 @@
 # Automatically add the current source and build directories to the include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+if (WIN32)
+    if(MINGW)
+        # Set prefix path
+        set(CMAKE_PREFIX_PATH "C:\\Qt\\Qt5.12.8\\5.12.8\\mingw73_32")
+    endif(MINGW)
+endif((WIN32))
+
 # Searches after the library on the system and defines some variables
 find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui Help Multimedia MultimediaWidgets PrintSupport UiTools Widgets)
 

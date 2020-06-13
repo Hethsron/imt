@@ -28,7 +28,7 @@ set(TESTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 # Compress html files
 find_program(GENERATOR qhelpgenerator)
 if(NOT GENERATOR)
-    message(FATAL_ERROR "Generator not found - cannot compress ${CMAKE_PROJECT_NAME} html files")
+    message(WARNING "Generator not found - cannot compress ${CMAKE_PROJECT_NAME} html files")
 else(NOT GENERATOR)
 	message(STATUS "Generator found - compressing ${CMAKE_PROJECT_NAME} html files")
 

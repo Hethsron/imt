@@ -37,10 +37,30 @@ elseif(APPLE)
         set(CMAKE_CXX_STANDARD 11)
         set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
     endif(MINGW)
+elseif(WIN32)
+    if(MINGW)
+        if(CMAKE_BUILD_TYPE MATCHES DEBUG)
+            message(STATUS "Debug mode")
+            set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+        else(CMAKE_BUILD_TYPE MATCHES DEBUG)
+            message(STATUS "Release mode")
+            set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
+        endif(CMAKE_BUILD_TYPE MATCHES DEBUG)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Werror")
+        set(CMAKE_CXX_STANDARD 11)
+        set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+    endif(MINGW)
 endif()
 
 # Automatically add the current source and build directories to the include path
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+if (WIN32)
+    if(MINGW)
+        # Set prefix path
+        set(CMAKE_PREFIX_PATH "C:\\Qt\\Qt5.12.8\\5.12.8\\mingw73_32")
+    endif(MINGW)
+endif((WIN32))
 
 # Searches after the QT library on the system and defines some variables
 find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui Help Multimedia MultimediaWidgets PrintSupport UiTools Widgets)
