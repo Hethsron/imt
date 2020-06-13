@@ -16,9 +16,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 if (WIN32)
     if(MINGW)
         # Set prefix path
-        set(CMAKE_PREFIX_PATH "C:\\Qt\\Qt5.12.8\\5.12.8\\mingw73_32")
+        set(CMAKE_PREFIX_PATH "C:\\Qt\\5.15.0\\mingw81_64")
     endif(MINGW)
-endif((WIN32))
+endif(WIN32)
 
 # Searches after the library on the system and defines some variables
 find_package(Qt5 REQUIRED COMPONENTS Core DBus Gui Help Multimedia MultimediaWidgets PrintSupport UiTools Widgets)
@@ -87,6 +87,11 @@ elseif(APPLE)
     if (MINGW)
         # Set variable for framework library
         set(EXTERNAL_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}/lib/lib${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}.dylib)
+    endif(MINGW)
+elseif(WIN32)
+    if (MINGW)
+        # Set variable for framework library
+        set(EXTERNAL_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}/lib/lib${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}.dll)
     endif(MINGW)
 endif()
 
