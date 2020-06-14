@@ -54,6 +54,14 @@ class DeepReader : public Command
         static QList<QStringList> release(const QString& cfg);
 
         /**
+         * @fn      sort
+         * @brief   Static function that sorts given frames list
+         * 
+         * @param[in]       frames      Given frames list
+         */
+        static void sort(QStringList* frames);
+
+        /**
          * @fn      execute
          * @brief   Virtual function that performs operations on some external data source
          */

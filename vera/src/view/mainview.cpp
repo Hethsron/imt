@@ -3,6 +3,7 @@
 #include <view/helpbrowser.hpp>
 #include <view/videoview.hpp>
 #include <core/backwriter.hpp>
+#include <core/deepreader.hpp>
 #include <core/writer.hpp>
 #include <core/boxes.hpp>
 #include <model/kinect.hpp>
@@ -910,64 +911,8 @@ void MainView::depthClicked() {
                 depth.append(dir.filePath(str));
             }
 
-            // Define depth frame number array
-            QList<int> array;
-
-            // Get frame number to array
-            for (int i = 0; i < depth.size(); ++i) {
-                // Extract number
-                const QString number = depth.at(i).split("frame").at(1).split(".png").at(0);
-
-                // Define digit regex
-                QRegExp re("\\d*");
-
-                // Check if extrated string is a number
-                if (re.exactMatch(number)) {
-                    // convert string number to digit and append the result into the array
-                    array.append(number.toInt());
-                }
-            }
-
-            // Sort depth frame number array
-            for (int i = 0; i < array.size() - 1; ++i) {
-                // Define minimum
-                int min = i;
-
-                // Find the minimum value in unsorted array
-                for (int j = i + 1; j < array.size(); ++j) {
-                    if (array[j] < array[min]) {
-                        min = j;
-                    }
-                }
-
-                // Swap the founded minimum element with the first one
-                if (min != i) {
-                    int temp = array[min];
-                    array[min] = array[i];
-                    array[i] = temp;
-                }
-            }
-
-            // Define depth file prefix regex
-            QRegExp reg("\\d*.png");
-
-            // Define depth file prefix
-            const QString prefix = depth.at(0).split(reg).at(0);
-
-            // Clear depth files
-            depth.clear();
-
-            // Update sorted depth files
-            for (int i = 0; i < array.size(); ++i) {
-                // Define file name
-                const QString fileName = prefix +  QString::number(i) + QString(".png");
-                
-                // Append sorted files
-                depth.append(fileName);
-            }
-
-            // Clear sorted array
-            array.clear();
+            // Sort frames
+            DeepReader::sort(&depth);
         }
     }
     else if (currentIndex == playlist->currentIndex() && depthStatus) {
