@@ -11,7 +11,7 @@ void Manager::notify() {
     splash->show();
     QApplication::processEvents();
 
-    QTime time;
+    QElapsedTimer time;
     time.start();
 
     while (time.elapsed() < LOAD_TIME_MSEC) {

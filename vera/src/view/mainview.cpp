@@ -876,7 +876,12 @@ void MainView::depthClicked() {
         depthStatus = true;
 
         // Define depth directory
-        QString location = playlist->media(playlist->currentIndex()).canonicalUrl().toString().split("file://").at(1).split(".").at(0).split("RGB").at(0) + QString("Depth");
+        #if _WIN32
+            QString location = playlist->media(playlist->currentIndex()).request().url().toString().split("file://").at(1).split(".").at(0).split("RGB").at(0) + QString("Depth");
+        #else
+            QString location = playlist->media(playlist->currentIndex()).canonicalUrl().toString().split("file://").at(1).split(".").at(0).split("RGB").at(0) + QString("Depth");
+        #endif // ! _WIN32
+        
         QDir dir(location);
 
         // Check if depth files is empty
