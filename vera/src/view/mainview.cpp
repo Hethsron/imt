@@ -877,10 +877,12 @@ void MainView::depthClicked() {
         depthStatus = true;
 
         // Define depth directory
+        QRegExp re("(RGB|Video)");
         #if _WIN32
-            QString location = playlist->media(playlist->currentIndex()).request().url().toString().split("file://").at(1).split(".").at(0).split("RGB").at(0) + QString("Depth");
+            QRegExp reg("[A-Z]:");
+            QString location = playlist->media(playlist->currentIndex()).request().url().toString().split("file://").at(1).split(".").at(0).split(re).at(0).split(reg).at(1) + QString("Depth");
         #else
-            QString location = playlist->media(playlist->currentIndex()).canonicalUrl().toString().split("file://").at(1).split(".").at(0).split("RGB").at(0) + QString("Depth");
+            QString location = playlist->media(playlist->currentIndex()).canonicalUrl().toString().split("file://").at(1).split(".").at(0).split(re).at(0) + QString("Depth");
         #endif // ! _WIN32
         
         QDir dir(location);
