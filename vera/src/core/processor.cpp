@@ -57,7 +57,7 @@ QList<QUrl> Processor::writeBack(const QString& cfg) const {
         dir.setSorting(QDir::Name | QDir::Reversed);
 
         // Define entry list
-        QStringList list = dir.entryList(QStringList() << "*.avi" << "*.mp4" << "*.wav" << "*.wmv", QDir::Files | QDir::Readable | QDir::Writable);
+        QStringList list = dir.entryList(QStringList() << "*.avi" << "*.mp4" << "*.wmv", QDir::Files | QDir::Readable | QDir::Writable);
 
         // Define iterator
         QStringListIterator iterator(list);
