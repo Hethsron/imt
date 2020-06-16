@@ -61,6 +61,38 @@ class Wearables : public Sensor
          */
         virtual bool isEmpty() const override;
 
+        /**
+         * @fn      contains
+         * @brief   Virtual function that returns true if measurement data contains given name, false otherwise
+         * 
+         * @param[in]       name            Given measurement name
+         * @return          true if measurement data contains given name, false otherwise
+         */
+        virtual bool contains(const QString& name) const;
+
+        /**
+         * @fn      get
+         * @brief   Virtual function that returns the measurement data that match with the given name, nullptr otherwise
+         * 
+         * @param[in]       name            Given measurement name
+         * @return          Measurement data, nullptr otherwise
+         */
+        virtual Measurements* get(const QString& name) const;
+
+        /**
+         * @fn      append
+         * @brief   Virtual function that appends measurements data from given distinguished name of JSON file
+         * 
+         * @param[in]       fileName        Given distinguished name of JSON file
+         */
+        virtual void append(const QString& fileName);
+
+        /**
+         * @fn      clear
+         * @brief   Virtual function that clears the measurements data
+         */
+        virtual void clear();
+
     private:
         /**
          * @fn      Wearables
