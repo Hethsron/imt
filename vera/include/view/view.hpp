@@ -32,6 +32,7 @@
 #include <view/license.hpp>
 #include <view/mainview.hpp>
 #include <view/playercontrols.hpp>
+#include <view/qcustomplot.hpp>
 #include <view/splashview.hpp>
 #include <view/videoview.hpp>
 
