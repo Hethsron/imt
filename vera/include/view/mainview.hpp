@@ -30,6 +30,7 @@
 #include <view/histogramchart.hpp>
 #include <view/license.hpp>
 #include <view/playercontrols.hpp>
+#include <view/qcustomplot.hpp>
 #include <QtWidgets/QtWidgets>
 #include <QtGui/QtGui>
 
@@ -425,6 +426,7 @@ class MainView : public QMainWindow
         QVideoWidget* videoWidget;                      /*!< Application inner video widget */
         PlayList* playlistModel;                        /*!< Application inner playlist model */
         PlayerControls* controls;                       /*!< Application inner player controls */
+        QCustomPlot* customPlot;                        /*!< Application inner custom plot for wearables */
         QAbstractItemView* playlistView;                /*!< Application inner playlist view */
         QSlider* playlistSlider;                        /*!< Application inner playlist slider */
         QLabel* playlistDuration;                       /*!< Application inner playlist duration label */ 
