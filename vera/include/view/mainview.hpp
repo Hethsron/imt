@@ -304,6 +304,12 @@ class MainView : public QMainWindow
         virtual void closeKinectVisualizer();
 
         /**
+         * @fn      closeWearablesVisualizer
+         * @brief   Virtual function that references Wearables closing visualizer Action in QMenu
+         */
+        virtual void closeWearablesVisualizer();
+
+        /**
          * @fn      updateDurationInfo
          * @brief   Virtual function that references duration information of Kinect visualizer in playlist
          * 
@@ -431,8 +437,8 @@ class MainView : public QMainWindow
         QSlider* playlistSlider;                        /*!< Application inner playlist slider */
         QLabel* playlistDuration;                       /*!< Application inner playlist duration label */ 
         QLabel* playlistCover;                          /*!< Application inner playlist cover label */
-        QSpinBox* playlistActivities;                   /*!< Application inner playlist activities QSpinBox */
-        QSpinBox* playlistSubjects;                     /*!< Application inner playlist subjects QSpinBox */
+        QSpinBox* activities;                           /*!< Application inner activities QSpinBox */
+        QSpinBox* subjects;                             /*!< Application inner subjects QSpinBox */
         QPushButton* loadButton;                        /*!< Application inner playlist Upload push button */
         QPushButton* annotationButton;                  /*!< Application inner playlist Annotation push button */
         QPushButton* colorButton;                       /*!< Application inner playlist Color Viewer button */
@@ -450,7 +456,8 @@ class MainView : public QMainWindow
         QStringList depth;                              /*!< Application inner playlist depth files */
         Depth* depthLabel;                              /*!< Application inner playlist depth label */
         bool isToolBar;                                 /*!< Application main tool bar status */
-        bool isKinect;                                  /*!< Application kinet tool status */
+        bool isKinect;                                  /*!< Application kinect tool status */
+        bool isWearables;                               /*!< Application Wearables tool status */
         bool depthStatus;                               /*!< Application inner playlist depth status */
         qint64 pDuration;                               /*!< Application playlist final duration in milliseconds */
         qint64 cDuration;                               /*!< Application playlist current duration in milliseconds*/

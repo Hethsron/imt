@@ -10,7 +10,7 @@
 #include <model/wearables.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), customPlot(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), playlistActivities(nullptr), playlistSubjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), license(nullptr), depth(QStringList()), depthLabel(nullptr), isToolBar(false), isKinect(false), depthStatus(false), cDuration(0), currentIndex(-1) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), customPlot(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), activities(nullptr), subjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), license(nullptr), depth(QStringList()), depthLabel(nullptr), isToolBar(false), isKinect(false), isWearables(false), depthStatus(false), cDuration(0), currentIndex(-1) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -323,6 +323,59 @@ void MainView::saveAsMonitoring() {
     }
 }
 
+void MainView::closeWearablesVisualizer() {
+    // Reset inner sensor
+    if (sensor != nullptr) {
+        sensor = nullptr;
+    }
+
+    // Reset inner customplot
+    if (customPlot != nullptr) {
+        // Check if customplot is closed
+        if (customPlot->close()) {
+            customPlot = nullptr;
+        }
+    }
+
+    // Close inner activities spinbox
+    if (activities != nullptr) {
+        // Check if activities spinbox is closed
+        if (activities->close()) {
+            activities = nullptr;
+        }
+    }
+
+    // Close inner subjects spinbox
+    if (subjects != nullptr) {
+        // Check if subjects spinbox is closed
+        if (subjects->close()) {
+            subjects = nullptr;
+        }
+    }
+
+    // Close inner Upload button
+    if (loadButton != nullptr) {
+        // Check if Upload button is closed
+        if (loadButton->close()) {
+            loadButton = nullptr;
+        }
+    }
+
+    // Reset inner layout
+    if (widget->layout() != nullptr) {
+        // Check if widget is closed
+        if (widget->close()) {
+            // Define new widget
+            widget = new QWidget();
+            // Update central widget
+            setCentralWidget(widget);
+        }
+    }
+
+    // Reset status
+    isWearables = false;
+}
+
 void MainView::closeKinectVisualizer() {
     // Reset inner player
     if (player != nullptr) {
@@ -362,19 +415,19 @@ void MainView::closeKinectVisualizer() {
         }
     }
 
-    // Close inner playlist activities
-    if (playlistActivities != nullptr) {
-        // Check if playlist activities spinbox is closed
-        if (playlistActivities->close()) {
-            playlistActivities = nullptr;
+    // Close inner activities spinbox
+    if (activities != nullptr) {
+        // Check if activities spinbox is closed
+        if (activities->close()) {
+            activities = nullptr;
         }
     }
 
-    // Close inner playlist subjects
-    if (playlistSubjects != nullptr) {
-        // Check if playlist subjects spinbox is closed
-        if (playlistSubjects->close()) {
-            playlistSubjects = nullptr;
+    // Close inner subjects spinbox
+    if (subjects != nullptr) {
+        // Check if subjects spinbox is closed
+        if (subjects->close()) {
+            subjects = nullptr;
         }
     }
 
@@ -507,6 +560,12 @@ void MainView::closeMonitoring() {
     if (isKinect) {
         // Closing Kinect visualiser
         closeKinectVisualizer();
+    }
+
+    // Check if Wearables visualizer has been enables
+    if (isWearables) {
+        // Closing Wearables visualizer
+        closeWearablesVisualizer();
     }
 
     // Removes all actions from the toolbar
@@ -831,8 +890,8 @@ void MainView::clearHistogramCharts() {
 
 void MainView::uploadClicked() {
     // Getting indexes
-    const int i = playlistActivities->value() - 1;
-    const int j = playlistSubjects->value() - 1;
+    const int i = activities->value() - 1;
+    const int j = subjects->value() - 1;
 
     // Release back writer
     QList<QUrl> urls = BackWriter::release(sensor->getStorage().at(i).at(j));
@@ -957,6 +1016,12 @@ void MainView::skeletonClicked() {
 }
 
 void MainView::kinectVisualizer() {
+    // Check if Wearables visualizer has been closed
+    if (isWearables) {
+        // Closing Wearables visualiser
+        closeWearablesVisualizer();
+    }
+
     // Define Kinect sensor
     sensor = new Kinect(config);
 
@@ -1023,18 +1088,18 @@ void MainView::kinectVisualizer() {
     playlistDuration = new QLabel(this);
 
     // Define playlist activities
-    playlistActivities = new QSpinBox(this);
-    playlistActivities->setPrefix(tr("Activity  "));
-    playlistActivities->setSuffix(tr(" °"));
-    playlistActivities->setRange(1, sensor->count());
-    playlistActivities->setStatusTip(tr("Choose the activity to be monitored"));
+    activities = new QSpinBox(this);
+    activities->setPrefix(tr("Activity  "));
+    activities->setSuffix(tr(" °"));
+    activities->setRange(1, sensor->count());
+    activities->setStatusTip(tr("Choose the activity to be monitored"));
 
     // Define playlist subjects
-    playlistSubjects = new QSpinBox(this);
-    playlistSubjects->setPrefix(tr("Subject "));
-    playlistSubjects->setSuffix(tr(" °"));
-    playlistSubjects->setRange(1, sensor->count(playlistActivities->value() - 1));
-    playlistSubjects->setStatusTip(tr("Choose the subject to be monitored"));
+    subjects = new QSpinBox(this);
+    subjects->setPrefix(tr("Subject "));
+    subjects->setSuffix(tr(" °"));
+    subjects->setRange(1, sensor->count(activities->value() - 1));
+    subjects->setStatusTip(tr("Choose the subject to be monitored"));
 
     // Define Upload push button
     loadButton = new QPushButton(tr("Upload"), this);
@@ -1099,8 +1164,8 @@ void MainView::kinectVisualizer() {
     // Define control layout
     QBoxLayout* controlLayout = new QHBoxLayout(this);
     controlLayout->setContentsMargins(0, 0, 0, 0);
-    controlLayout->addWidget(playlistActivities);
-    controlLayout->addWidget(playlistSubjects);
+    controlLayout->addWidget(activities);
+    controlLayout->addWidget(subjects);
     controlLayout->addWidget(loadButton);
     controlLayout->addStretch(1);
     controlLayout->addWidget(controls);
@@ -1169,7 +1234,7 @@ void MainView::kinectVisualizer() {
         audio->setEnabled(false);
     }
 
-    // Set status
+    // Sets status
     isKinect = true;
 
     // Change meta data
@@ -1198,6 +1263,12 @@ void MainView::wearablesVisualizer() {
         // Closing Kinect visualiser
         closeKinectVisualizer();
     }
+
+    // Define Wearables sensor
+    sensor = new Wearables(config);
+
+    // Sets status
+    isWearables = true;
 }
 
 void MainView::xsensVisualizer() {
