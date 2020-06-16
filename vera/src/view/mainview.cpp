@@ -13,7 +13,7 @@ MainView::MainView(QWidget* parent)
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
-        setWindowIcon(QIcon(infos.getIcon()));
+        setWindowIcon(QIcon(QPixmap(infos.getIcon())));
         setCentralWidget(widget);
         setStyleSheet(infos.getStyleSheet());
 
@@ -1212,8 +1212,8 @@ void MainView::createFileMenu() {
     fileMenu = menuBar->addMenu(tr("&File"));
 
     // Setting Icons
-    const QIcon exitIcon = QIcon(infos.getCollections()[3]);
-    const QIcon configIcon = QIcon(infos.getCollections()[11]);
+    const QIcon exitIcon = QIcon(QPixmap(infos.getCollections().at(3)));
+    const QIcon configIcon = QIcon(QPixmap(infos.getCollections().at(11)));
 
     // Setting Configuration Action
     QAction* configAct = new QAction(configIcon, tr("&Configuration  "), this);
@@ -1252,10 +1252,10 @@ void MainView::createMonitoringMenu() {
     monitoringMenu = menuBar->addMenu(tr("&Monitoring"));
 
     // Setting Icons
-    const QIcon newIcon = QIcon(infos.getCollections()[0]);
-    const QIcon openIcon = QIcon(infos.getCollections()[1]);
-    const QIcon saveIcon = QIcon(infos.getCollections()[2]);
-    const QIcon closeIcon = QIcon(infos.getCollections()[3]);
+    const QIcon newIcon = QIcon(QPixmap(infos.getCollections().at(0)));
+    const QIcon openIcon = QIcon(QPixmap(infos.getCollections().at(1)));
+    const QIcon saveIcon = QIcon(QPixmap(infos.getCollections().at(2)));
+    const QIcon closeIcon = QIcon(QPixmap(infos.getCollections().at(3)));
 
     // Setting New Action
     QAction* newAct = new QAction(newIcon, tr("&New         "), this);
@@ -1373,11 +1373,11 @@ void MainView::createEditMenu() {
     editMenu = menuBar->addMenu(tr("&Edit"));
 
     // Setting Icons
-    const QIcon undoIcon = QIcon(infos.getCollections()[4]);
-    const QIcon redoIcon = QIcon(infos.getCollections()[5]);
-    const QIcon cutIcon = QIcon(infos.getCollections()[6]);
-    const QIcon copyIcon = QIcon(infos.getCollections()[7]);
-    const QIcon pasteIcon = QIcon(infos.getCollections()[8]);
+    const QIcon undoIcon = QIcon(QPixmap(infos.getCollections().at(4)));
+    const QIcon redoIcon = QIcon(QPixmap(infos.getCollections().at(5)));
+    const QIcon cutIcon = QIcon(QPixmap(infos.getCollections().at(6)));
+    const QIcon copyIcon = QIcon(QPixmap(infos.getCollections().at(7)));
+    const QIcon pasteIcon = QIcon(QPixmap(infos.getCollections().at(8)));
 
     // Setting Undo Action
     QAction* undoAct = new QAction(undoIcon, tr("&Undo          "), this);
@@ -1437,7 +1437,7 @@ void MainView::createToolsMenu() {
     toolsMenu = menuBar->addMenu(tr("&Tools"));
 
     // Setting Icons
-    const QIcon extractIcon = QIcon(infos.getCollections()[9]);
+    const QIcon extractIcon = QIcon(QPixmap(infos.getCollections().at(9)));
 
     // Setting XEF toolkit Action
     QAction* xefAct = new QAction(extractIcon, tr("&XEF toolkit          "), this);
@@ -1471,8 +1471,8 @@ void MainView::createHelpMenu() {
     helpMenu = menuBar->addMenu(tr("&Help"));
 
     // Setting Icons
-    const QIcon aboutIcon = QIcon(infos.getCollections()[10]);
-    const QIcon summaryIcon = QIcon(infos.getCollections()[12]);
+    const QIcon aboutIcon = QIcon(QPixmap(infos.getCollections().at(10)));
+    const QIcon summaryIcon = QIcon(QPixmap(infos.getCollections().at(12)));
     
     // Setting Summary Action
     QAction* summaryAct = new QAction(summaryIcon, tr("&Summary ...          "), this);

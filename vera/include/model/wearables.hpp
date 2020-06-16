@@ -24,6 +24,7 @@
  *  \date           21th May 2020
  */
 
+#include <model/measurements.hpp>
 #include <model/pattern.hpp>
 #include <model/sensor.hpp>
 
@@ -66,6 +67,8 @@ class Wearables : public Sensor
          * @brief   Default constructor of class
          */
         Wearables();
+
+        QVector<Measurements*> measurements;                /*!< Wearables measurements data */
 };
 
 #endif // WEARABLES_HPP

@@ -37,6 +37,7 @@ void Boxes::assignment() {
         collections.append("about.png");
         collections.append("configuration.png");
         collections.append("webHelp.png");
+        collections.append("license.png");
 
         if (dir.cdUp()) {
             #if _WIN32

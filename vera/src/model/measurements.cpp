@@ -1,7 +1,7 @@
 #include <model/measurements.hpp>
 
 Measurements::Measurements()
-    : name(QString()) {}
+    : name(QString()), time(QVector<double>()), accelX(QVector<double>()), accelY(QVector<double>()), accelZ(QVector<double>()), gyroX(QVector<double>()), gyroY(QVector<double>()), gyroZ(QVector<double>()) {}
 
 Measurements::Measurements(const QString& key)
     : name(key), time(QVector<double>()), accelX(QVector<double>()), accelY(QVector<double>()), accelZ(QVector<double>()), gyroX(QVector<double>()), gyroY(QVector<double>()), gyroZ(QVector<double>()) {}
@@ -149,7 +149,7 @@ double Measurements::getMinGyro() const {
 }
 
 bool Measurements::isEmpty() const {
-    return (time.size() == 0 && accelX.size() == 0 && accelY.size() == 0 && accelZ.size() == 0 && gyroX.size() == 0 && gyroY.size() == 0 && gyroZ.size() == 0);
+    return (time.isEmpty() && accelX.isEmpty() && accelY.isEmpty() && accelZ.isEmpty() && gyroX.isEmpty() && gyroY.isEmpty() && gyroZ.isEmpty());
 }
 
 void Measurements::clear() {

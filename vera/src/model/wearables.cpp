@@ -1,13 +1,13 @@
 #include <model/wearables.hpp>
 
 Wearables::Wearables()
-    : Sensor() {}
+    : Sensor(), measurements(QVector<Measurements*>()) {}
 
 Wearables::Wearables(const QJsonDocument& cfg)
-    : Sensor(Type::Wearables, Pattern::Wearables, cfg) {}
+    : Sensor(Type::Wearables, Pattern::Wearables, cfg), measurements(QVector<Measurements*>()) {}
 
 Wearables::Wearables(const Wearables& other)
-    : Sensor(other) {}
+    : Sensor(other), measurements(other.measurements) {}
 
 Wearables::~Wearables() {}
 
