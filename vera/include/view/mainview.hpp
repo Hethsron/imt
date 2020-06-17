@@ -455,6 +455,14 @@ class MainView : public QMainWindow
         LicenseManager* license;                        /*!< Application inner license manager */
         QStringList depth;                              /*!< Application inner playlist depth files */
         Depth* depthLabel;                              /*!< Application inner playlist depth label */
+        QCPAxisRect* accelAxis;                         /*!< Application inner accelerometer rectangle axis */
+        QCPAxisRect* gyroAxis;                          /*!< Application inner gyroscope rectangle axis */
+        QCPGraph* accelX;                               /*!< Application inner accelerometer X graph */
+        QCPGraph* accelY;                               /*!< Application inner accelerometer Y graph */
+        QCPGraph* accelZ;                               /*!< Application inner accelerometer Z graph */
+        QCPGraph* gyroX;                                /*!< Application inner gyroscope X graph */
+        QCPGraph* gyroY;                                /*!< Application inner gyroscope Y graph */
+        QCPGraph* gyroZ;                                /*!< Application inner gyroscope Z graph */
         bool isToolBar;                                 /*!< Application main tool bar status */
         bool isKinect;                                  /*!< Application kinect tool status */
         bool isWearables;                               /*!< Application Wearables tool status */

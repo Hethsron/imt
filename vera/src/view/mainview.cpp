@@ -10,7 +10,7 @@
 #include <model/wearables.hpp>
 
 MainView::MainView(QWidget* parent) 
-    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), customPlot(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), activities(nullptr), subjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), license(nullptr), depth(QStringList()), depthLabel(nullptr), isToolBar(false), isKinect(false), isWearables(false), depthStatus(false), cDuration(0), currentIndex(-1) {
+    : QMainWindow(parent), widget(new QWidget()), statusBar(new QStatusBar()), menuBar(new QMenuBar()), fileMenu(new QMenu()), recentFilesMenu(new QMenu()), monitoringMenu(new QMenu()), editMenu(new QMenu()), viewMenu(new QMenu()), toolsMenu(new QMenu()), helpMenu(new QMenu()), monitoringToolBar(new QToolBar()), config(QJsonDocument()), recentFilesAct(QList<QAction*>()), recentFiles(QStringList()), helpWindow(new QDockWidget()), player(nullptr), playlist(nullptr), videoWidget(nullptr), playlistModel(nullptr), controls(nullptr), customPlot(nullptr), playlistView(nullptr), playlistSlider(nullptr), playlistDuration(nullptr), playlistCover(nullptr), activities(nullptr), subjects(nullptr), loadButton(nullptr), annotationButton(nullptr), colorButton(nullptr), depthButton(nullptr), dButton(nullptr), editorButton(nullptr), skeletonButton(nullptr), video(nullptr), audio(nullptr), videoProbe(nullptr), audioProbe(nullptr), trackInfo(QString()), sensor(nullptr), license(nullptr), depth(QStringList()), depthLabel(nullptr), accelAxis(nullptr), gyroAxis(nullptr), accelX(nullptr), accelY(nullptr), accelZ(nullptr), gyroX(nullptr), gyroY(nullptr), gyroZ(nullptr), isToolBar(false), isKinect(false), isWearables(false), depthStatus(false), cDuration(0), currentIndex(-1) {
         Boxes infos;
         resize(infos.getWidth(), infos.getHeight());
         setWindowTitle(infos.getTitle());
@@ -329,12 +329,55 @@ void MainView::closeWearablesVisualizer() {
         sensor = nullptr;
     }
 
-    // Reset inner customplot
+    // Close inner customplot
     if (customPlot != nullptr) {
+        // Clear customplot layout
+        customPlot->plotLayout()->clear();
+        
         // Check if customplot is closed
         if (customPlot->close()) {
             customPlot = nullptr;
         }
+    }
+
+    // Reset inner accelerometer axis
+    if (accelAxis != nullptr) {
+        accelAxis = nullptr;
+    }
+
+    // Reset inner gyroscope axis
+    if (gyroAxis != nullptr) {
+        gyroAxis = nullptr;
+    }
+
+    // Reset inner accelerometer X graph
+    if (accelX != nullptr) {
+        accelX = nullptr;
+    }
+
+    // Reset inner accelerometer Y graph
+    if (accelY != nullptr) {
+        accelY = nullptr;
+    }
+
+    // Reset inner accelerometer Z graph
+    if (accelZ != nullptr) {
+        accelZ = nullptr;
+    }
+
+    // Reset inner gyroscope X graph
+    if (gyroX != nullptr) {
+        gyroX = nullptr;
+    }
+
+    // Reset inner gyroscope Y graph
+    if (gyroY != nullptr) {
+        gyroY = nullptr;
+    }
+
+    // Reset inner gyroscope Z graph
+    if (gyroZ != nullptr) {
+        gyroZ = nullptr;
     }
 
     // Close inner activities spinbox
@@ -355,7 +398,7 @@ void MainView::closeWearablesVisualizer() {
 
     // Close inner Upload button
     if (loadButton != nullptr) {
-        // Check if Upload button is closed
+        // Check if Load button is closed
         if (loadButton->close()) {
             loadButton = nullptr;
         }
@@ -893,18 +936,26 @@ void MainView::uploadClicked() {
     const int i = activities->value() - 1;
     const int j = subjects->value() - 1;
 
-    // Release back writer
-    QList<QUrl> urls = BackWriter::release(sensor->getStorage().at(i).at(j));
+    // Check if there is Kinect visualizer
+    if (isKinect) {
+        // Release back writer
+        QList<QUrl> urls = BackWriter::release(sensor->getStorage().at(i).at(j));
 
-    // Check if urls is not empty
-    if (!urls.isEmpty()) {
-        // Append media files URLs to playlist
-        addToPlaylist(urls);
+        // Check if urls is not empty
+        if (!urls.isEmpty()) {
+            // Append media files URLs to playlist
+            addToPlaylist(urls);
+        }
+        else {
+            QMessageBox::information(this, 
+                        tr("No experiences per activity"),
+                        tr("The subject you are attempting to upload contains no experiences"));
+        }
     }
-    else {
-        QMessageBox::information(this, 
-                    tr("No experiences per activity"),
-                    tr("The subject you are attempting to upload contains no experiences"));
+
+    // Check if there is Wearables visualizer
+    if (isWearables) {
+        // TODO :
     }
 }
 
@@ -1016,6 +1067,9 @@ void MainView::skeletonClicked() {
 }
 
 void MainView::kinectVisualizer() {
+	// Sets status
+    isKinect = true;
+
     // Check if Wearables visualizer has been closed
     if (isWearables) {
         // Closing Wearables visualiser
@@ -1234,9 +1288,6 @@ void MainView::kinectVisualizer() {
         audio->setEnabled(false);
     }
 
-    // Sets status
-    isKinect = true;
-
     // Change meta data
     changeMetaData();
 }
@@ -1258,6 +1309,9 @@ void MainView::robotsVisualizer() {
 }
 
 void MainView::wearablesVisualizer() {
+    // Sets status
+    isWearables = true;
+
     // Check if kinect visualizer has been closed
     if (isKinect) {
         // Closing Kinect visualiser
@@ -1267,8 +1321,98 @@ void MainView::wearablesVisualizer() {
     // Define Wearables sensor
     sensor = new Wearables(config);
 
-    // Sets status
-    isWearables = true;
+    // Define custom plot
+    customPlot = new QCustomPlot(this);
+
+    // Clear customplot layout
+    customPlot->plotLayout()->clear();
+
+    // Define accelerometer axis
+    accelAxis = new QCPAxisRect(customPlot);
+
+    // Define gyrosocope axis
+    gyroAxis = new QCPAxisRect(customPlot);
+
+    // Adding axis of accelerometer plots
+    customPlot->plotLayout()->addElement(0, 0, accelAxis);
+    
+    // Adding title of accelerometer plots
+    customPlot->plotLayout()->addElement(1, 0, new QCPTextElement(customPlot, tr("Acceleration")));
+
+    // Adding axis of gyroscope plots
+    customPlot->plotLayout()->addElement(2, 0, gyroAxis);
+
+    // Adding title of gyroscope plots
+    customPlot->plotLayout()->addElement(3, 0, new QCPTextElement(customPlot, tr("Rotation")));
+
+    // Creating plots of accel_x / time
+    accelX = customPlot->addGraph(accelAxis->axis(QCPAxis::atBottom), accelAxis->axis(QCPAxis::atLeft));
+    accelX->setPen(QPen(Qt::red));
+    accelX->setName(tr("accel_x"));
+
+    // Creating plots of accel_y / time
+    accelY = customPlot->addGraph(accelAxis->axis(QCPAxis::atBottom), accelAxis->axis(QCPAxis::atLeft));
+    accelY->setPen(QPen(Qt::green));
+    accelY->setName(tr("accel_y"));
+
+    // Creating plots of accel_z / time
+    accelZ = customPlot->addGraph(accelAxis->axis(QCPAxis::atBottom), accelAxis->axis(QCPAxis::atLeft));
+    accelZ->setPen(QPen(Qt::blue));
+    accelZ->setName(tr("accel_z"));
+
+    // Creating plots of gyro_x / time
+    gyroX = customPlot->addGraph(gyroAxis->axis(QCPAxis::atBottom), gyroAxis->axis(QCPAxis::atLeft));
+    gyroX->setPen(QPen(Qt::red));
+    gyroX->setName(tr("gyro_x"));
+
+    // Creating plots of gyro_y / time
+    gyroY = customPlot->addGraph(gyroAxis->axis(QCPAxis::atBottom), gyroAxis->axis(QCPAxis::atLeft));
+    gyroY->setPen(QPen(Qt::green));
+    gyroY->setName(tr("gyro_y"));
+
+    // Creating plots of gyro_z / time
+    gyroZ = customPlot->addGraph(gyroAxis->axis(QCPAxis::atBottom), gyroAxis->axis(QCPAxis::atLeft));
+    gyroZ->setPen(QPen(Qt::blue));
+    gyroZ->setName(tr("gyro_z"));
+
+    // Define playlist activities
+    activities = new QSpinBox(this);
+    activities->setPrefix(tr("Activity  "));
+    activities->setSuffix(tr(" °"));
+    activities->setRange(1, sensor->count());
+    activities->setStatusTip(tr("Choose the activity to be monitored"));
+
+    // Define playlist subjects
+    subjects = new QSpinBox(this);
+    subjects->setPrefix(tr("Subject "));
+    subjects->setSuffix(tr(" °"));
+    subjects->setRange(1, sensor->count(activities->value() - 1));
+    subjects->setStatusTip(tr("Choose the subject to be monitored"));
+
+    // Define Upload push button
+    loadButton = new QPushButton(tr("Upload"), this);
+    loadButton->setStatusTip(tr("Upload kinect sensor database"));
+    connect(loadButton, &QPushButton::clicked, this, &MainView::uploadClicked);
+    
+    // Define display layout
+    QBoxLayout* displayLayout = new QHBoxLayout(this);
+    displayLayout->addWidget(customPlot);
+
+    // Define control layout
+    QBoxLayout* controlLayout = new QHBoxLayout(this);
+    controlLayout->setContentsMargins(0, 0, 0, 0);
+    controlLayout->addWidget(activities);
+    controlLayout->addWidget(subjects);
+    controlLayout->addWidget(loadButton);
+    controlLayout->addStretch(1);
+
+    // Define vertical layout
+    QBoxLayout* vLayout = new QVBoxLayout(this);
+    vLayout->addLayout(displayLayout);
+    vLayout->addLayout(controlLayout);
+
+    // Set Layout
+    widget->setLayout(vLayout);
 }
 
 void MainView::xsensVisualizer() {
