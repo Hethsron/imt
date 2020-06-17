@@ -54,6 +54,15 @@ class BackWriter : public Command
         static QList<QUrl> release(const QString& cfg);
 
         /**
+         * @fn      compute
+         * @brief   Static function that writes JSON files from sensors database
+         * 
+         * @param[in]       cfg     Distinguished name of sensors database
+         * @return          JSON files
+         */
+        static QStringList compute(const QString& cfg);
+
+        /**
          * @fn      getUrls
          * @brief   Virtual function that returns media files URLs
          * 

@@ -37,6 +37,27 @@ bool Wearables::contains(const QString& name) const {
     return false;
 }
 
+QStringList Wearables::getNames() const {
+    // Define result
+    QStringList result;
+
+    // Define iterator
+    QVectorIterator<Measurements*> iterator(measurements);
+    while (iterator.hasNext()) {
+        Measurements* measurement = iterator.next();
+
+        // Appends names
+        result.append(measurement->getName());
+    }
+
+    // Returns results
+    return result;
+}
+
+QVector<Measurements*> Wearables::get() const {
+    return measurements;
+}
+
 Measurements* Wearables::get(const QString& name) const {
     // Define iterator
     QVectorIterator<Measurements*> iterator(measurements);

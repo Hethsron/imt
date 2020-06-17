@@ -71,6 +71,22 @@ class Wearables : public Sensor
         virtual bool contains(const QString& name) const;
 
         /**
+         * @fn      getNames
+         * @brief   Virtual function that returns measurements names
+         * 
+         * @return          Measurements names
+         */
+        virtual QStringList getNames() const;
+
+        /**
+         * @fn      get
+         * @brief   Virtual function that returns all measurements data
+         * 
+         * @return          All measurements data
+         */
+        virtual QVector<Measurements*> get() const;
+
+        /**
          * @fn      get
          * @brief   Virtual function that returns the measurement data that match with the given name, nullptr otherwise
          * 

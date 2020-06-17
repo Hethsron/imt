@@ -26,6 +26,7 @@
 
 #include <model/playlist.hpp>
 #include <model/sensor.hpp>
+#include <model/wearables.hpp>
 #include <view/depth.hpp>
 #include <view/histogramchart.hpp>
 #include <view/license.hpp>
@@ -248,6 +249,14 @@ class MainView : public QMainWindow
          */
         virtual void seek(int second);
 
+         /**
+         * @fn      nameClicked
+         * @brief   Virtual function that references selected name when the mouse button is clicked on an item
+         * 
+         * @param[in]       item            Specified item when the mouse button is clicked
+         */
+        virtual void nameClicked(QListWidgetItem* item);
+
         /**
          * @fn      previousClicked
          * @brief   Virtual function that references playlist previous action event
@@ -348,6 +357,14 @@ class MainView : public QMainWindow
          * @param[in]       urls            Selected urls to append
          */
         virtual void addToPlaylist(const QList<QUrl>& urls);
+
+        /**
+         * @fn      addToGraphs
+         * @brief   Virtual function that appends selected jsonls in graphs
+         * 
+         * @param[in]       jsonls          Selected jsonls to append
+         */
+        virtual void addToGraphs(const QStringList& jsonls);
 
     private:
         /**
@@ -463,6 +480,8 @@ class MainView : public QMainWindow
         QCPGraph* gyroX;                                /*!< Application inner gyroscope X graph */
         QCPGraph* gyroY;                                /*!< Application inner gyroscope Y graph */
         QCPGraph* gyroZ;                                /*!< Application inner gyroscope Z graph */
+        QListWidget* names;                             /*!< Application inner wearables measurements names */
+        Wearables* wearables;                           /*!< Application inner wearables sensor */
         bool isToolBar;                                 /*!< Application main tool bar status */
         bool isKinect;                                  /*!< Application kinect tool status */
         bool isWearables;                               /*!< Application Wearables tool status */
