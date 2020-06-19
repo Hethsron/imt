@@ -919,19 +919,25 @@ void MainView::seek(int second) {
 
 void MainView::nameClicked(QListWidgetItem* item) {
     // Setting accelerometer graph data
-    accelX->setData(wearables->get(item->text())->getTime(), wearables->get("Mug")->getAccelX());
-    accelY->setData(wearables->get(item->text())->getTime(), wearables->get("Mug")->getAccelY());
-    accelZ->setData(wearables->get(item->text())->getTime(), wearables->get("Mug")->getAccelZ());
+    accelX->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelX());
+    accelY->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelY());
+    accelZ->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelZ());
 
     // Setting gyroscope graph data
-    gyroX->setData(wearables->get(item->text())->getTime(), wearables->get("Mug")->getGyroX());
-    gyroY->setData(wearables->get(item->text())->getTime(), wearables->get("Mug")->getGyroY());
-    gyroZ->setData(wearables->get(item->text())->getTime(), wearables->get("Mug")->getGyroZ());
+    gyroX->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroX());
+    gyroY->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroY());
+    gyroZ->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroZ());
 
-    // Setting values of axis X
-    accelX->valueAxis()->setRange(wearables->get(item->text())->getMinAccel(), wearables->get("Mug")->getMaxAccel());
-    gyroX->valueAxis()->setRange(wearables->get(item->text())->getMinAccel(), wearables->get("Mug")->getMaxAccel());
+    // Setting accelerometer graph range
+    accelX->valueAxis()->setRange(wearables->get(item->text())->getMinAccelX(), wearables->get(item->text())->getMaxAccelX());
+    accelY->valueAxis()->setRange(wearables->get(item->text())->getMinAccelY(), wearables->get(item->text())->getMaxAccelY());
+    accelZ->valueAxis()->setRange(wearables->get(item->text())->getMinAccelZ(), wearables->get(item->text())->getMaxAccelZ());
 
+    // Setting gyroscope graph range
+    gyroX->valueAxis()->setRange(wearables->get(item->text())->getMinGyroX(), wearables->get(item->text())->getMaxGyroX());
+    gyroY->valueAxis()->setRange(wearables->get(item->text())->getMinGyroY(), wearables->get(item->text())->getMaxGyroY());
+    gyroZ->valueAxis()->setRange(wearables->get(item->text())->getMinGyroZ(), wearables->get(item->text())->getMaxGyroZ());
+    
     // Repaints graphs
     customPlot->replot();
 }

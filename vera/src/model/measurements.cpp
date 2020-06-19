@@ -52,7 +52,7 @@ QVector<double> Measurements::getGyroZ() const {
     return gyroZ;
 }
 
-double Measurements::getMaxAccel() const {
+double Measurements::getMaxAccelX() const {
     double value = accelX.at(0);
 
     for (int i = 0; i < accelX.size(); ++i) {
@@ -61,11 +61,23 @@ double Measurements::getMaxAccel() const {
         }
     }
 
+    return value;
+}
+
+double Measurements::getMaxAccelY() const {
+    double value = accelY.at(0);
+
     for (int i = 0; i < accelY.size(); ++i) {
         if (accelY.at(i) > value) {
             value = accelY.at(i);
         }
     }
+
+    return value;
+}
+
+double Measurements::getMaxAccelZ() const {
+    double value = accelZ.at(0);
 
     for (int i = 0; i < accelZ.size(); ++i) {
         if (accelZ.at(i) > value) {
@@ -76,7 +88,7 @@ double Measurements::getMaxAccel() const {
     return value;
 }
 
-double Measurements::getMinAccel() const {
+double Measurements::getMinAccelX() const {
     double value = accelX.at(0);
     
     for (int i = 0; i < accelX.size(); ++i) {
@@ -85,11 +97,23 @@ double Measurements::getMinAccel() const {
         }
     }
 
+    return value;
+}
+
+double Measurements::getMinAccelY() const {
+    double value = accelY.at(0);
+
     for (int i = 0; i < accelY.size(); ++i) {
         if (accelY.at(i) < value) {
             value = accelY.at(i);
         }
     }
+
+    return value;
+}
+
+double Measurements::getMinAccelZ() const {
+    double value = accelZ.at(0);
 
     for (int i = 0; i < accelZ.size(); ++i) {
         if (accelZ.at(i) < value) {
@@ -100,7 +124,7 @@ double Measurements::getMinAccel() const {
     return value;
 }
 
-double Measurements::getMaxGyro() const {
+double Measurements::getMaxGyroX() const {
     double value = gyroX.at(0);
 
     for (int i = 0; i < gyroX.size(); ++i) {
@@ -109,11 +133,23 @@ double Measurements::getMaxGyro() const {
         }
     }
 
+    return value;
+}
+
+double Measurements::getMaxGyroY() const {
+    double value = gyroY.at(0);
+
     for (int i = 0; i < gyroY.size(); ++i) {
         if (gyroY.at(i) > value) {
             value = gyroY.at(i);
         }
     }
+
+    return value;
+}
+
+double Measurements::getMaxGyroZ() const {
+    double value = gyroZ.at(0);
 
     for (int i = 0; i < gyroZ.size(); ++i) {
         if (gyroZ.at(i) > value) {
@@ -124,7 +160,7 @@ double Measurements::getMaxGyro() const {
     return value;
 }
 
-double Measurements::getMinGyro() const {
+double Measurements::getMinGyroX() const {
     double value = gyroX.at(0);
 
     for (int i = 0; i < gyroX.size(); ++i) {
@@ -133,11 +169,23 @@ double Measurements::getMinGyro() const {
         }
     }
 
+    return value;
+}
+
+double Measurements::getMinGyroY() const {
+    double value = gyroY.at(0);
+
     for (int i = 0; i < gyroY.size(); ++i) {
         if (gyroY.at(i) < value) {
             value = gyroY.at(i);
         }
     }
+
+    return value;
+}
+
+double Measurements::getMinGyroZ() const {
+    double value = gyroZ.at(0);
 
     for (int i = 0; i < gyroZ.size(); ++i) {
         if (gyroZ.at(i) < value) {

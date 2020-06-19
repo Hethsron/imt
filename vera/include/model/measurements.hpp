@@ -131,36 +131,100 @@ class Measurements
         virtual QVector<double> getGyroZ() const;
 
         /**
-         * @fn      getMaxAccel
-         * @brief   Virtual function that returns the maximum value of the plot axis between accelX, accelY and accelZ
+         * @fn      getMaxAccelX
+         * @brief   Virtual function that returns the maximum value of the plot accelX
          * 
-         * @return          Maximum value of the plot axis between accelX, accelY and accelZ
+         * @return          Maximum value of the plot accelX
          */
-        virtual double getMaxAccel() const;
+        virtual double getMaxAccelX() const;
 
         /**
-         * @fn      getMinAccel
-         * @brief   Virtual function that returns the minimum value of the plot axis between accelX, accelY and accelZ
+         * @fn      getMaxAccelY
+         * @brief   Virtual function that returns the maximum value of the plot accelY
          * 
-         * @return          Minimum value of the plot axis between accelX, accelY and accelZ
+         * @return          Maximum value of the plot accelY
          */
-        virtual double getMinAccel() const;
+        virtual double getMaxAccelY() const;
 
         /**
-         * @fn      getMaxGyro
-         * @brief   Virtual function that returns the maximum value of the plot axis between gyroX, gyroY and gyroZ
+         * @fn      getMaxAccelZ
+         * @brief   Virtual function that returns the maximum value of the plot accelZ
          * 
-         * @return          Maximum value of the plot axis between gyroX, gyroY and gyroZ
+         * @return          Maximum value of the plot accelZ
          */
-        virtual double getMaxGyro() const;
+        virtual double getMaxAccelZ() const;
 
         /**
-         * @fn      getMinGyro
-         * @brief   Virtual function that returns the minimum value of the plot axis between gyroX, gyroY and gyroZ
+         * @fn      getMinAccelX
+         * @brief   Virtual function that returns the minimum value of the plot accelX
          * 
-         * @return          Minimum value of the plot axis between gyroX, gyroY and gyroZ
+         * @return          Minimum value of the plot accelX
          */
-        virtual double getMinGyro() const;
+        virtual double getMinAccelX() const;
+
+        /**
+         * @fn      getMinAccelY
+         * @brief   Virtual function that returns the minimum value of the plot accelY
+         * 
+         * @return          Minimum value of the plot accelY
+         */
+        virtual double getMinAccelY() const;
+
+        /**
+         * @fn      getMinAccelZ
+         * @brief   Virtual function that returns the minimum value of the plot accelZ
+         * 
+         * @return          Minimum value of the plot accelZ
+         */
+        virtual double getMinAccelZ() const;
+
+        /**
+         * @fn      getMaxGyroX
+         * @brief   Virtual function that returns the maximum value of the plot gyroX
+         * 
+         * @return          Maximum value of the plot gyroX
+         */
+        virtual double getMaxGyroX() const;
+
+         /**
+         * @fn      getMaxGyroY
+         * @brief   Virtual function that returns the maximum value of the plot gyroY
+         * 
+         * @return          Maximum value of the plot gyroY
+         */
+        virtual double getMaxGyroY() const;
+
+         /**
+         * @fn      getMaxGyroZ
+         * @brief   Virtual function that returns the maximum value of the plot gyroZ
+         * 
+         * @return          Maximum value of the plot gyroZ
+         */
+        virtual double getMaxGyroZ() const;
+
+        /**
+         * @fn      getMinGyroX
+         * @brief   Virtual function that returns the minimum value of the plot gyroX
+         * 
+         * @return          Minimum value of the plot gyroX
+         */
+        virtual double getMinGyroX() const;
+
+        /**
+         * @fn      getMinGyroY
+         * @brief   Virtual function that returns the minimum value of the plot gyroY
+         * 
+         * @return          Minimum value of the plot gyroY
+         */
+        virtual double getMinGyroY() const;
+
+        /**
+         * @fn      getMinGyroZ
+         * @brief   Virtual function that returns the minimum value of the plot gyroZ
+         * 
+         * @return          Minimum value of the plot gyroZ
+         */
+        virtual double getMinGyroZ() const;
 
         /**
          * @fn      isEmpty
