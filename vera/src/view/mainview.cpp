@@ -918,15 +918,51 @@ void MainView::seek(int second) {
 }
 
 void MainView::nameClicked(QListWidgetItem* item) {
+    // Check accelerometer graph data X is empty
+    if (!accelX->data()->isEmpty()) {
+        // Clear graph data
+        accelX->data()->clear();
+    }
+
+    // Check accelerometer graph data Y is empty
+    if (!accelY->data()->isEmpty()) {
+        // Clear graph data
+        accelY->data()->clear();
+    }
+
+    // Check accelerometer graph data Z is empty
+    if (!accelZ->data()->isEmpty()) {
+        // Clear graph data
+        accelZ->data()->clear();
+    }
+
+    // Check gyroscope graph data X is empty
+    if (!gyroX->data()->isEmpty()) {
+        // Clear graph data
+        gyroX->data()->clear();
+    }
+
+    // Check gyroscope graph data Y is empty
+    if (!gyroY->data()->isEmpty()) {
+        // Clear graph data
+        gyroY->data()->clear();
+    }
+
+    // Check gyroscope graph data Z is empty
+    if (!gyroZ->data()->isEmpty()) {
+        // Clear graph data
+        gyroZ->data()->clear();
+    }
+    
     // Setting accelerometer graph data
-    accelX->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelX());
-    accelY->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelY());
-    accelZ->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelZ());
+    accelX->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelX());
+    accelY->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelY());
+    accelZ->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelZ());
 
     // Setting gyroscope graph data
-    gyroX->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroX());
-    gyroY->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroY());
-    gyroZ->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroZ());
+    gyroX->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroX());
+    gyroY->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroY());
+    gyroZ->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroZ());
 
     // Setting accelerometer graph range
     accelX->valueAxis()->setRange(wearables->get(item->text())->getMinAccelX(), wearables->get(item->text())->getMaxAccelX());
