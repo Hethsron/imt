@@ -918,51 +918,28 @@ void MainView::seek(int second) {
 }
 
 void MainView::nameClicked(QListWidgetItem* item) {
-    // Check accelerometer graph data X is empty
-    if (!accelX->data()->isEmpty()) {
-        // Clear graph data
-        accelX->data()->clear();
-    }
-
-    // Check accelerometer graph data Y is empty
-    if (!accelY->data()->isEmpty()) {
-        // Clear graph data
-        accelY->data()->clear();
-    }
-
-    // Check accelerometer graph data Z is empty
-    if (!accelZ->data()->isEmpty()) {
-        // Clear graph data
-        accelZ->data()->clear();
-    }
-
-    // Check gyroscope graph data X is empty
-    if (!gyroX->data()->isEmpty()) {
-        // Clear graph data
-        gyroX->data()->clear();
-    }
-
-    // Check gyroscope graph data Y is empty
-    if (!gyroY->data()->isEmpty()) {
-        // Clear graph data
-        gyroY->data()->clear();
-    }
-
-    // Check gyroscope graph data Z is empty
-    if (!gyroZ->data()->isEmpty()) {
-        // Clear graph data
-        gyroZ->data()->clear();
-    }
-    
     // Setting accelerometer graph data
-    accelX->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelX());
-    accelY->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelY());
-    accelZ->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelZ());
+    accelX->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelX());
+    accelY->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelY());
+    accelZ->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getAccelZ());
+
+    // Setting xAxis range of accelerometer graph
+    accelAxis->axis(QCPAxis::atBottom)->setLabel(tr("Time (s)"));
+    accelAxis->axis(QCPAxis::atLeft)->setLabel(tr("Acceleration (m/s^2)"));
+    accelAxis->axis(QCPAxis::atLeft)->setRange(wearables->get(item->text())->getMinAccel(), wearables->get(item->text())->getMaxAccel());
+    accelAxis->parentPlot()->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 
     // Setting gyroscope graph data
-    gyroX->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroX());
-    gyroY->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroY());
-    gyroZ->addData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroZ());
+    gyroX->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroX());
+    gyroY->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroY());
+    gyroZ->setData(wearables->get(item->text())->getTime(), wearables->get(item->text())->getGyroZ());
+
+    // Setting xAxis range of gyroscope graph
+    gyroAxis->axis(QCPAxis::atBottom)->setLabel(tr("Time (s)"));
+    gyroAxis->axis(QCPAxis::atBottom)->setRange(wearables->get(item->text())->getMinTime(), wearables->get(item->text())->getMaxTime());
+    gyroAxis->axis(QCPAxis::atLeft)->setLabel(tr("Rotation (°/s)"));
+    gyroAxis->axis(QCPAxis::atLeft)->setRange(wearables->get(item->text())->getMinGyro(), wearables->get(item->text())->getMaxGyro());
+    gyroAxis->parentPlot()->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 
     // Setting accelerometer graph range
     accelX->valueAxis()->setRange(wearables->get(item->text())->getMinAccelX(), wearables->get(item->text())->getMaxAccelX());
@@ -973,6 +950,9 @@ void MainView::nameClicked(QListWidgetItem* item) {
     gyroX->valueAxis()->setRange(wearables->get(item->text())->getMinGyroX(), wearables->get(item->text())->getMaxGyroX());
     gyroY->valueAxis()->setRange(wearables->get(item->text())->getMinGyroY(), wearables->get(item->text())->getMaxGyroY());
     gyroZ->valueAxis()->setRange(wearables->get(item->text())->getMinGyroZ(), wearables->get(item->text())->getMaxGyroZ());
+
+    // Setting xAxis range
+    customPlot->xAxis->setRange(wearables->get(item->text())->getMinTime(), wearables->get(item->text())->getMaxTime());
     
     // Repaints graphs
     customPlot->replot();
@@ -1461,17 +1441,28 @@ void MainView::wearablesVisualizer() {
     // Define gyrosocope axis
     gyroAxis = new QCPAxisRect(customPlot);
 
-    // Adding axis of accelerometer plots
-    customPlot->plotLayout()->addElement(0, 0, accelAxis);
-    
     // Adding title of accelerometer plots
-    customPlot->plotLayout()->addElement(1, 0, new QCPTextElement(customPlot, tr("Acceleration")));
+    customPlot->plotLayout()->addElement(0, 0, new QCPTextElement(customPlot, tr("Accelerometer graphs in one plot"), QFont("sans", 12, QFont::Bold)));
 
-    // Adding axis of gyroscope plots
-    customPlot->plotLayout()->addElement(2, 0, gyroAxis);
+    // Adding axis of accelerometer plots
+    customPlot->plotLayout()->addElement(1, 0, accelAxis);
 
     // Adding title of gyroscope plots
-    customPlot->plotLayout()->addElement(3, 0, new QCPTextElement(customPlot, tr("Rotation")));
+    customPlot->plotLayout()->addElement(2, 0, new QCPTextElement(customPlot, tr("Gyroscope graphs in one plot"), QFont("sans", 12, QFont::Bold)));
+
+    // Adding axis of gyroscope plots
+    customPlot->plotLayout()->addElement(3, 0, gyroAxis);
+
+    // Adding title of legend
+    customPlot->plotLayout()->addElement(4, 0, new QCPTextElement(customPlot, tr("Graphs common legend")));
+
+    // Adding general legend
+    QCPLayoutGrid *subLayout = new QCPLayoutGrid();
+    customPlot->plotLayout()->addElement(5, 0, subLayout);
+    subLayout->setMargins(QMargins(20, 10, 20, 10));
+    QCPLegend* legend = new QCPLegend();
+    legend->setFillOrder(QCPLegend::foColumnsFirst);
+    subLayout->addElement(0, 0, legend);
 
     // Creating plots of accel_x / time
     accelX = customPlot->addGraph(accelAxis->axis(QCPAxis::atBottom), accelAxis->axis(QCPAxis::atLeft));

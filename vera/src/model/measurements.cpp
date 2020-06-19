@@ -196,6 +196,126 @@ double Measurements::getMinGyroZ() const {
     return value;
 }
 
+double Measurements::getMaxTime() const {
+    double value = time.at(0);
+
+    for (int i = 0; i < time.size(); ++i) {
+        if (time.at(i) > value) {
+            value = time.at(i);
+        }
+    }
+
+    return value;
+}
+
+double Measurements::getMinTime() const {
+    double value = time.at(0);
+
+    for (int i = 0; i < time.size(); ++i) {
+        if (time.at(i) < value) {
+            value = time.at(i);
+        }
+    }
+
+    return value;
+}
+
+double Measurements::getMaxAccel() const {
+    double value = accelX.at(0);
+
+    for (int i = 0; i < accelX.size(); ++i) {
+        if (accelX.at(i) > value) {
+            value = accelX.at(i);
+        }
+    }
+
+    for (int i = 0; i < accelY.size(); ++i) {
+        if (accelY.at(i) > value) {
+            value = accelY.at(i);
+        }
+    }
+
+    for (int i = 0; i < accelZ.size(); ++i) {
+        if (accelZ.at(i) > value) {
+            value = accelZ.at(i);
+        }
+    }
+
+    return value;
+}
+
+double Measurements::getMinAccel() const {
+    double value = accelX.at(0);
+
+    for (int i = 0; i < accelX.size(); ++i) {
+        if (accelX.at(i) < value) {
+            value = accelX.at(i);
+        }
+    }
+
+    for (int i = 0; i < accelY.size(); ++i) {
+        if (accelY.at(i) < value) {
+            value = accelY.at(i);
+        }
+    }
+
+    for (int i = 0; i < accelZ.size(); ++i) {
+        if (accelZ.at(i) < value) {
+            value = accelZ.at(i);
+        }
+    }
+
+    return value;
+}
+
+double Measurements::getMaxGyro() const {
+    double value = gyroX.at(0);
+
+    for (int i = 0; i < gyroX.size(); ++i) {
+        if (gyroX.at(i) > value) {
+            value = gyroX.at(i);
+        }
+    }
+
+    for (int i = 0; i < gyroY.size(); ++i) {
+        if (gyroY.at(i) > value) {
+            value = gyroY.at(i);
+        }
+    }
+
+    for (int i = 0; i < gyroZ.size(); ++i) {
+        if (gyroZ.at(i) > value) {
+            value = gyroZ.at(i);
+        }
+    }
+
+    return value;
+}
+
+double Measurements::getMinGyro() const {
+    double value = gyroX.at(0);
+
+    for (int i = 0; i < gyroX.size(); ++i) {
+        if (gyroX.at(i) < value) {
+            value = gyroX.at(i);
+        }
+    }
+
+    for (int i = 0; i < gyroY.size(); ++i) {
+        if (gyroY.at(i) < value) {
+            value = gyroY.at(i);
+        }
+    }
+
+    for (int i = 0; i < gyroZ.size(); ++i) {
+        if (gyroZ.at(i) < value) {
+            value = gyroZ.at(i);
+        }
+    }
+
+    return value;
+}
+
 bool Measurements::isEmpty() const {
     return (time.isEmpty() && accelX.isEmpty() && accelY.isEmpty() && accelZ.isEmpty() && gyroX.isEmpty() && gyroY.isEmpty() && gyroZ.isEmpty());
 }

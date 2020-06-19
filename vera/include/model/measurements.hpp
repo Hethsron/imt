@@ -227,6 +227,54 @@ class Measurements
         virtual double getMinGyroZ() const;
 
         /**
+         * @fn      getMaxTime
+         * @brief   Virtual function that returns the maximum value of time
+         * 
+         * @return          Maximum value of time
+         */
+        virtual double getMaxTime() const;
+
+        /**
+         * @fn      getMinTime
+         * @brief   Virtual function that returns the minimum value of time
+         * 
+         * @return          Minimum value of time
+         */
+        virtual double getMinTime() const;
+
+        /**
+         * @fn      getMaxAccel
+         * @brief   Virtual function that returns the maximum value beetwen accelX, accelY and accelZ
+         * 
+         * @return          Maximum value between accelX, accelY and accelZ
+         */
+        virtual double getMaxAccel() const;
+
+        /**
+         * @fn      getMinAccel
+         * @brief   Virtual function that returns the minimum value beetwen accelX, accelY and accelZ
+         * 
+         * @return          Minimum value between accelX, accelY and accelZ
+         */
+        virtual double getMinAccel() const;
+
+        /**
+         * @fn      getMaxGyro
+         * @brief   Virtual function that returns the maximum value beetwen gyroX, gyroY and gyroZ
+         * 
+         * @return          Maximum value between gyroX, gyroY and gyroZ
+         */
+        virtual double getMaxGyro() const;
+
+        /**
+         * @fn      getMinGyro
+         * @brief   Virtual function that returns the minimum value beetwen gyroX, gyroY and gyroZ
+         * 
+         * @return          Minimum value between gyroX, gyroY and gyroZ
+         */
+        virtual double getMinGyro() const;
+
+        /**
          * @fn      isEmpty
          * @brief   Virtual function that returns true if time, accelerometer and gyroscope data are empty, false otherwise
          * 
