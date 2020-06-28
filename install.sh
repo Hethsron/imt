@@ -54,6 +54,10 @@ function checkDistrib() {
         # Define appropriate download manager for Mageia Distribution
         DOWN_MANAG="urpmi"
         PKG_MANAG="rpm"
+    elif [[ "$DISTRIB" = "Arch" ]]; then
+        # Define appropriate download manager for Arch Linux Distribution
+        DOWN_MANAG="pacman"
+        PKG_MANAG="pacman"
     else
         return 1
     fi
@@ -75,6 +79,25 @@ function installMissingPKG() {
             ${PREROGATIVE} ${DOWN_MANAG} install -y $1 > /dev/null
             sleep 2
             ${ECHO} "${OK} $1 has been installed"
+        fi
+    fi
+}
+
+function installMissingPKGBUILD() {
+    if [ -z "$1" ]; then
+        echo "\$PKG is empty"
+    else
+        COMMAND=$(${PKG_MANAG} -Qi $1)
+        if [ -z "$COMMAND" ]; then
+            ${ECHO} "${ERROR} $1 is not installed"
+            sleep 2
+            ${ECHO} "${DEBUG} Installation of $1 ..."
+            ${PREROGATIVE} ${DOWN_MANAG} -Syy $1 > /dev/null
+            sleep 2
+            ${ECHO} "${OK} $1 has been installed"
+        else
+            ${ECHO} "${OK} $1 is installed"
+            sleep 1
         fi
     fi
 }
@@ -162,6 +185,57 @@ declare -a PKGS_MAGEIA=(
                 "make"
 )
 
+declare -a PKGS_ARCH=(
+                "cmake"
+                "gcc"
+                "make"
+                "git"
+                "qt5-3d"
+                "qt5-base"
+                "qt5-charts"
+                "qt5-connectivity"
+                "qt5-datavis3d"
+                "qt5-declarative"
+                "qt5-doc"
+                "qt5-examples"
+                "qt5-gamepad"
+                "qt5-graphicaleffects"
+                "qt5-imageformats"
+                "qt5-location"
+                "qt5-lottie"
+                "qt5-multimedia"
+                "qt5-networkauth"
+                "qt5-purchasing"
+                "qt5-quick3d"
+                "qt5-quickcontrols"
+                "qt5-quickcontrols2"
+                "qt5-quicktimeline"
+                "qt5-remoteobjects"
+                "qt5-script"
+                "qt5-scxml"
+                "qt5-sensors"
+                "qt5-serialbus"
+                "qt5-serialport"
+                "qt5-speech"
+                "qt5-svg"
+                "qt5-tools"
+                "qt5-translations"
+                "qt5-virtualkeyboard"
+                "qt5-wayland"
+                "qt5-webchannel"
+                "qt5-webengine"
+                "qt5-webglplugin"
+                "qt5-websockets"
+                "qt5-webview"
+                "qt5-x11extras"
+                "qt5-xmlpatterns"
+                "doxygen"
+                "graphviz"
+                "dot2tex"
+                "python-graphviz"
+                "python-pydot"
+)
+
 #   Display Welcome message
 ${ECHO} "Vera © Plateform"
 ${ECHO} "GPLv3+ : GNU GPL version 3 or later"
@@ -190,6 +264,12 @@ elif [[ "$DISTRIB" = "Kali" ]]; then
     for PKG in "${PKGS_KALI[@]}"; do
         #   Execute Install missing package function
         installMissingPKG ${PKG}
+    done
+elif [[ "$DISTRIB" = "Arch" ]]; then
+    #   Loop list of pakages
+    for PKG in "${PKGS_ARCH[@]}"; do
+        #   Execute Install missing package function
+        installMissingPKGBUILD ${PKG}
     done
 fi
 

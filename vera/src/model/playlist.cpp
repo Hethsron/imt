@@ -42,7 +42,7 @@ QVariant PlayList::data(const QModelIndex& index, int role) const {
             #if _WIN32
                 QUrl location = playlist->media(index.row()).request().url();
             #else
-                QUrl location = playlist->media(index.row()).canonicalUrl();
+                QUrl location = playlist->media(index.row()).request().url();
             #endif // _WIN32
             
             return QFileInfo(location.path()).fileName();

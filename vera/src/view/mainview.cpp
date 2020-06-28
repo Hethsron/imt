@@ -1101,7 +1101,7 @@ void MainView::depthClicked() {
             QRegExp reg("[A-Z]:");
             QString location = playlist->media(playlist->currentIndex()).request().url().toString().split("file://").at(1).split(".").at(0).split(re).at(0).split(reg).at(1) + QString("Depth");
         #else
-            QString location = playlist->media(playlist->currentIndex()).canonicalUrl().toString().split("file://").at(1).split(".").at(0).split(re).at(0) + QString("Depth");
+            QString location = playlist->media(playlist->currentIndex()).request().url().toString().split("file://").at(1).split(".").at(0).split(re).at(0) + QString("Depth");
         #endif // ! _WIN32
         
         QDir dir(location);
